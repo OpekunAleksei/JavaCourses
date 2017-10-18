@@ -10,9 +10,9 @@ package lesson3task3;
  * @author Алексей
  */
 public class Vasilki extends Flower {
-       private int PriceVasilki = 47;
-    Vasilki(){
-      super.setPrice(PriceVasilki);
-    System.out.println("Vasilki add to bouquet");
+      
+    Vasilki(int Price){
+      super.setPrice(Price);
+      super.setName("Vasilki");
     }
 }

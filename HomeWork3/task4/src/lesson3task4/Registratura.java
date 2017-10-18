@@ -19,8 +19,8 @@ public class Registratura {
          doctors = new Doctor[10];
     }
 
-   public void createpatients(String namesurname){
-   patients[kolvopatients] = new Patient();
+   public void createpatients(String namesurname,int ID){
+   patients[kolvopatients] = new Patient(ID);
    patients[kolvopatients].setNameSurname(namesurname);
    kolvopatients=kolvopatients+1;
    }
@@ -29,22 +29,38 @@ public class Registratura {
    doctors[kolvodoctors].setNameSurname(namesurname);
    kolvodoctors=kolvodoctors+1;
    }
-     public void zapic(String namesurname){
-         for (int i = 0 ; i < kolvodoctors;i++){
-             boolean equals = doctors[i].getNameSurname().equals(namesurname);
+     public void entry(String Doctorname,int id){
+         int numberpatient =0;
+          for (int i = 0 ; i < kolvopatients;i++){
+             boolean equals = patients[i].getID() == id;
              if (equals==true){
-       doctors[i].setzapic();
+                numberpatient=i;
+             }      
+         } 
+         for (int i = 0 ; i < kolvodoctors;i++){
+             boolean equals = doctors[i].getNameSurname().equals(Doctorname);
+             if (equals==true){
+    
+               doctors[i].entrypatient(patients[numberpatient].getNameSurname(),patients[numberpatient].getID());
+         
              }      
          }     
      }
-        public void otpis(String namesurname){
-         for (int i = 0 ; i < kolvodoctors;i++){
-             boolean equals = doctors[i].getNameSurname().equals(namesurname);
+        public void describe(String DoctorName,int id){
+              int numberpatient =0;
+          for (int i = 0 ; i < kolvopatients;i++){
+             boolean equals = patients[i].getID() == id;
              if (equals==true){
-       doctors[i].setotpis();
+                numberpatient=i;
+             }   
+         for ( i = 0 ; i < kolvodoctors;i++){
+              equals = doctors[i].getNameSurname().equals(DoctorName);
+             if (equals==true){
+       doctors[i].deletepatient(patients[numberpatient].getID());
              }      
          }     
      }
+        }
      public int NPacientZapicKDoctor(String namesurname){
          int ID = 0;
     for (int i = 0 ; i < kolvodoctors;i++){
@@ -53,13 +69,13 @@ public class Registratura {
         ID=i;
              }      
          } 
-return doctors[ID].getKolichestvoPatientov();
+return doctors[ID].getnumberPatientov();
    }    
-public int kolichestvoDoctors(){
+public int numberDoctors(){
  
   return  kolvodoctors;  
 }
-public int kolichestvoPatients(){
+public int numberPatients(){
  
   return  kolvopatients;  
 }

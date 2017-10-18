@@ -17,8 +17,9 @@ public class Lesson3Task1 {
    
     public static void main(String[] args) {
 
-Massiv massiv = new Massiv(10);
-    System.out.println("Массив чисел: "+massiv.getMassiv());
+ParseStringMassiv massiv = new ParseStringMassiv(10);
+massiv.getMassiv();
+    System.out.println("Массив чисел: "+massiv.StringMassiv());
     System.out.println("Сумма чисел: "+massiv.getSumm());
     }
 }

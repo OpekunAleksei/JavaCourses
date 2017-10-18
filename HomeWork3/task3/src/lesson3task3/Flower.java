@@ -11,6 +11,16 @@ package lesson3task3;
  */
 public class Flower {
     private int price;
+    private String name; 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
  public int getPrice()
    {
      return price;

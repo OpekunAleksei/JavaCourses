@@ -10,10 +10,10 @@ package lesson3task3;
  * @author Алексей
  */
 public class Rose extends Flower{
-    private int PriceRose = 100;
-    Rose(){
-      super.setPrice(PriceRose);
-    System.out.println("Rose add to bouquet");
+  
+    Rose(int i){
+      super.setPrice(i);
+      super.setName("Rose");
     }
     
 }
