@@ -15,9 +15,9 @@ public class Lesson3Task2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-randomNumber massiv = new randomNumber();
-    System.out.println("Random number: "+massiv.GetRundomNumber());
-    System.out.println("Max numeral: "+massiv.GetMaxNumeral());
+        randomNumber massiv = new randomNumber();
+        System.out.println("Random number: " + massiv.GetRundomNumber());
+        System.out.println("Max numeral: " + massiv.GetMaxNumeral());
     }
-    
+
 }

@@ -10,8 +10,8 @@ package lesson3task4;
  * @author Алексей
  */
 public class Human {
-    private String NameSurname;
 
+    private String NameSurname;
 
     public void setNameSurname(String nameSurname) {
         this.NameSurname = nameSurname;
@@ -20,7 +20,5 @@ public class Human {
     public String getNameSurname() {
         return NameSurname;
     }
-
-
 
 }

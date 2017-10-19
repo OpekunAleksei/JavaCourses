@@ -15,15 +15,14 @@ public class Lesson3Task3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-Bucket bucket= new Bucket();
-bucket.SetBucket("Rose", 2200);
-bucket.SetBucket("Romashka", 2500);
-bucket.SetBucket("Rose", 1700);
-bucket.SetBucket("Romashka", 1100);
-bucket.SetBucket("Rose", 5000);
-
-    System.out.println("Cost of a bouquet: " + bucket.getSumm());
+        Bucket bucket = new Bucket();
+        bucket.SetBucket("Rose", 2200);
+        bucket.SetBucket("Romashka", 2500);
+        bucket.SetBucket("Rose", 1700);
+        bucket.SetBucket("Romashka", 1100);
+        bucket.SetBucket("Rose", 5000);
+        System.out.println("Cost of a bouquet: " + bucket.getSumm());
 
     }
-    
+
 }

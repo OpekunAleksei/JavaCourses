@@ -9,16 +9,11 @@ package lesson3task3;
  *
  * @author Алексей
  */
-public class Romashka extends Flower{
+public class Romashka extends Flower {
 
-    Romashka(int Price){
-    super.setPrice(Price);
-    super.setName("Romashka");
-    }   
+    Romashka(int Price) {
+        super.setPrice(Price);
+        super.setName("Romashka");
+    }
 
-    
-
- 
-
-   
 }

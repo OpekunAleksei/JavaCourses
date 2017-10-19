@@ -9,12 +9,14 @@ package lesson3task4;
  *
  * @author Алексей
  */
-public class Patient extends Human{
-private int ID;
-Patient(int ID){
-  this.ID=ID; 
-  
-}
+public class Patient extends Human {
+
+    private int ID;
+
+    Patient(int ID) {
+        this.ID = ID;
+
+    }
 
     public void setID(int ID) {
         this.ID = ID;

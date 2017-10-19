@@ -10,8 +10,9 @@ package lesson3task3;
  * @author Алексей
  */
 public class Flower {
+
     private int price;
-    private String name; 
+    private String name;
 
     public String getName() {
         return name;
@@ -20,13 +21,12 @@ public class Flower {
     public void setName(String name) {
         this.name = name;
     }
-    
- public int getPrice()
-   {
-     return price;
-   }
- public void setPrice(int price)
-   {
-     this.price = price;
-   }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }
