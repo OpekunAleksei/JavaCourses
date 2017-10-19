@@ -5,10 +5,6 @@
  */
 package lesson3task3;
 
-/**
- *
- * @author Алексей
- */
 public class Flower {
 
     private int price;

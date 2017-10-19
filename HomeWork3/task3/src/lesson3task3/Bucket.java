@@ -1,49 +1,29 @@
 package lesson3task3;
 
-/**
- *
- * @author Алексей
- */
 public class Bucket {
 
     private int counter = 0;
-    private int amount = 5;
+    private int number = 5;
     private Flower bucket[];
 
     Bucket() {
-        this.bucket = new Flower[amount];
+        this.bucket = new Flower[number];
     }
 
-    public void SetBucket(String name, int price) {
-        if (counter < amount) {
-            switch (name) {
-                case "Rose":
-                    bucket[counter] = new Rose(price);
-                    counter++;
-                    break;
-                case "Romashka":
-                    bucket[counter] = new Romashka(price);
-                    counter++;
-                    break;
-                case "Vasilki":
-                    bucket[counter] = new Vasilki(price);
-                    counter++;
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            System.out.println("Out of range");
-        }
-
+    public void assemble(Flower flower) {
+        this.bucket[this.counter] = flower;
+        this.bucket[this.counter].setName(flower.getName());
+        this.bucket[this.counter].setPrice(flower.getPrice());
+        this.counter++;
     }
 
-    public int getSumm() {
-        int summa = 0;
-        for (int i = 0; i < amount; i++) {
-            summa = bucket[i].getPrice() + summa;
+    public int getAmount() {
+
+        int amount = 0;
+        for (int i = 0; i < this.counter; i++) {
+            amount = this.bucket[i].getPrice() + amount;
         }
-        return summa;
+        return amount;
     }
 
 }

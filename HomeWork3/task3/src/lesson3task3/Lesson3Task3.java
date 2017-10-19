@@ -5,10 +5,6 @@
  */
 package lesson3task3;
 
-/**
- *
- * @author Алексей
- */
 public class Lesson3Task3 {
 
     /**
@@ -16,12 +12,13 @@ public class Lesson3Task3 {
      */
     public static void main(String[] args) {
         Bucket bucket = new Bucket();
-        bucket.SetBucket("Rose", 2200);
-        bucket.SetBucket("Romashka", 2500);
-        bucket.SetBucket("Rose", 1700);
-        bucket.SetBucket("Romashka", 1100);
-        bucket.SetBucket("Rose", 5000);
-        System.out.println("Cost of a bouquet: " + bucket.getSumm());
+        Rose rose = new Rose(20);
+        Romashka romashka = new Romashka(50);
+        Vasilki vasilki = new Vasilki(150);
+        bucket.assemble(rose);
+        bucket.assemble(vasilki);
+        bucket.assemble(romashka);
+        System.out.println("Cost of a bouquet: " + bucket.getAmount());
 
     }
 

@@ -5,10 +5,6 @@
  */
 package lesson3task4;
 
-/**
- *
- * @author Алексей
- */
 public class Patient extends Human {
 
     private int ID;

@@ -5,47 +5,43 @@
  */
 package lesson3task4;
 
-/**
- *
- * @author Алексей
- */
-public class Registratura {
+public class Registry {
 
     private Patient patients[];
     private Doctor doctors[];
-    private int kolvopatients = 0;
-    private int kolvodoctors = 0;
+    private int numberPatients = 0;
+    private int numberDoctors = 0;
 
-    public Registratura() {
+    public Registry() {
         patients = new Patient[10];
         doctors = new Doctor[10];
     }
 
-    public void createpatients(String namesurname, int ID) {
-        patients[kolvopatients] = new Patient(ID);
-        patients[kolvopatients].setNameSurname(namesurname);
-        kolvopatients = kolvopatients + 1;
+    public void createPatients(String namesurname, int ID) {
+        patients[numberPatients] = new Patient(ID);
+        patients[numberPatients].setNameSurname(namesurname);
+        numberPatients = numberPatients + 1;
     }
 
-    public void createdoctors(String namesurname) {
-        doctors[kolvodoctors] = new Doctor();
-        doctors[kolvodoctors].setNameSurname(namesurname);
-        kolvodoctors = kolvodoctors + 1;
+    public void createDoctors(String namesurname) {
+        doctors[numberDoctors] = new Doctor();
+        doctors[numberDoctors].setNameSurname(namesurname);
+        numberDoctors = numberDoctors + 1;
     }
 
     public void entry(String Doctorname, int id) {
         int numberpatient = 0;
-        for (int i = 0; i < kolvopatients; i++) {
+        for (int i = 0; i < numberPatients; i++) {
             boolean equals = patients[i].getID() == id;
             if (equals == true) {
                 numberpatient = i;
             }
         }
-        for (int i = 0; i < kolvodoctors; i++) {
+        for (int i = 0; i < numberDoctors; i++) {
             boolean equals = doctors[i].getNameSurname().equals(Doctorname);
             if (equals == true) {
 
-                doctors[i].entrypatient(patients[numberpatient].getNameSurname(), patients[numberpatient].getID());
+                doctors[i].entryPatient(patients[numberpatient].getNameSurname(), patients[numberpatient].getID());
 
             }
         }
@@ -53,38 +49,38 @@ public class Registratura {
 
     public void describe(String DoctorName, int id) {
         int numberpatient = 0;
-        for (int i = 0; i < kolvopatients; i++) {
+        for (int i = 0; i < numberPatients; i++) {
             boolean equals = patients[i].getID() == id;
             if (equals == true) {
                 numberpatient = i;
             }
-            for (i = 0; i < kolvodoctors; i++) {
+            for (i = 0; i < numberDoctors; i++) {
                 equals = doctors[i].getNameSurname().equals(DoctorName);
                 if (equals == true) {
-                    doctors[i].deletepatient(patients[numberpatient].getID());
+                    doctors[i].deletePatient(patients[numberpatient].getID());
                 }
             }
         }
     }
 
-    public int NPacientZapicKDoctor(String namesurname) {
+    public int getNumberPatientsOnDoctor(String namesurname) {
         int ID = 0;
-        for (int i = 0; i < kolvodoctors; i++) {
+        for (int i = 0; i < numberDoctors; i++) {
             boolean equals = doctors[i].getNameSurname().equals(namesurname);
             if (equals == true) {
                 ID = i;
             }
         }
-        return doctors[ID].getnumberPatientov();
+        return doctors[ID].getNumberPatientov();
     }
 
     public int numberDoctors() {
 
-        return kolvodoctors;
+        return numberDoctors;
     }
 
     public int numberPatients() {
 
-        return kolvopatients;
+        return numberPatients;
     }
 }

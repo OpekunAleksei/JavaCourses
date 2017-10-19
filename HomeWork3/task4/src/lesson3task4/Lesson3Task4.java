@@ -5,34 +5,28 @@
  */
 package lesson3task4;
 
-/**
- *
- * @author Алексей
- */
 public class Lesson3Task4 {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Registratura reg = new Registratura();
-        reg.createpatients("Пётр Петров", 12);
-        reg.createpatients("Семён Семёнов", 13);
-        reg.createpatients("Анстасия Ёрш", 15);
-        reg.createpatients("Валерия Поклин", 17);
-        reg.createpatients("Норман Петигрю", 20);
-        reg.createdoctors("Гарри Поттер");
-        reg.createdoctors("Том Рэдл");
-        reg.createdoctors("Альбус Дамблдор");
-        reg.createdoctors("Северус Снэйп");
-        reg.entry("Том Рэдл", 15);
-        reg.entry("Том Рэдл", 20);
-        reg.entry("Том Рэдл", 17);
-        System.out.println("Количество пациентов записанных к Том Рэдл " + reg.NPacientZapicKDoctor("Том Рэдл"));
-        reg.describe("Том Рэдл", 20);
-        System.out.println("Количество пациентов записанных к Том Рэдл " + reg.NPacientZapicKDoctor("Том Рэдл"));
-        System.out.println("Колличество Докторов " + reg.numberDoctors());
-        System.out.println("Колличество Пациентов " + reg.numberPatients());
+        Registry reg = new Registry();
+        reg.createPatients("Petr Norman", 12);
+        reg.createPatients("Alex Bak", 13);
+        reg.createPatients("Hanna Lion", 15);
+        reg.createPatients("Lia Long", 17);
+        reg.createDoctors("Harry Potter");
+        reg.createDoctors("Tom Ridl");
+        reg.createDoctors("Albus Dambldor");
+        reg.createDoctors("Severus Shark");
+        reg.entry("Tom Ridl", 15);
+        reg.entry("Tom Ridl", 17);
+        System.out.println("The number of patients recorded by Tom Ridl " + reg.getNumberPatientsOnDoctor("Tom Ridl"));
+        reg.describe("Tom Ridl", 20);
+        System.out.println("The number of patients recorded by Tom Ridl " + reg.getNumberPatientsOnDoctor("Tom Ridl"));
+        System.out.println("Number of doctors" + reg.numberDoctors());
+        System.out.println("Number of patients" + reg.numberPatients());
 
     }
 

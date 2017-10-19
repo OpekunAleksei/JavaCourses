@@ -5,44 +5,38 @@
  */
 package lesson3task4;
 
-/**
- *
- * @author Алексей
- */
 public class Doctor extends Human {
 
-    private int kolichestvoPatientov;
+    private int numberPatients;
     private Patient patient[];
 
     Doctor() {
         patient = new Patient[10];
-        this.kolichestvoPatientov = 0;
+        this.numberPatients = 0;
     }
 
-    public void entrypatient(String name, int id) {
-        this.patient[this.kolichestvoPatientov] = new Patient(id);
-        this.patient[this.kolichestvoPatientov].setNameSurname(name);
-        this.kolichestvoPatientov = this.kolichestvoPatientov + 1;
+    public void entryPatient(String name, int id) {
+        this.patient[this.numberPatients] = new Patient(id);
+        this.patient[this.numberPatients].setNameSurname(name);
+        this.numberPatients = this.numberPatients + 1;
     }
 
-    public void deletepatient(int id) {
-        int numberpatient = 0;
-        for (int i = 0; i < this.kolichestvoPatientov; i++) {
+    public void deletePatient(int id) {
+        int numberPatient = 0;
+        for (int i = 0; i < this.numberPatients; i++) {
             boolean equals = this.patient[i].getID() == id;
             if (equals == true) {
-                numberpatient = i;
+                numberPatient = i;
             }
-            for (i = numberpatient; i < this.kolichestvoPatientov - 1; i++) {
-
+            for (i = numberPatient; i < this.numberPatients - 1; i++) {
                 this.patient[i].setID(this.patient[i + 1].getID());
                 this.patient[i].setNameSurname(this.patient[i + 1].getNameSurname());
             }
-
         }
-        this.kolichestvoPatientov = this.kolichestvoPatientov - 1;
+        this.numberPatients = this.numberPatients - 1;
     }
 
-    public int getnumberPatientov() {
-        return kolichestvoPatientov;
+    public int getNumberPatientov() {
+        return numberPatients;
     }
 }

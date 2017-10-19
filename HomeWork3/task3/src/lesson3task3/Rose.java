@@ -5,14 +5,10 @@
  */
 package lesson3task3;
 
-/**
- *
- * @author Алексей
- */
 public class Rose extends Flower {
 
-    Rose(int i) {
-        super.setPrice(i);
+    Rose(int price) {
+        super.setPrice(price);
         super.setName("Rose");
     }
 
