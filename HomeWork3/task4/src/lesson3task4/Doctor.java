@@ -10,14 +10,14 @@ public class Doctor extends Human {
     private int numberPatients;
     private Patient patient[];
 
-    Doctor() {
+    Doctor(String name) {
+        super.setNameSurname(name);
         patient = new Patient[10];
         this.numberPatients = 0;
     }
 
     public void entryPatient(String name, int id) {
-        this.patient[this.numberPatients] = new Patient(id);
-        this.patient[this.numberPatients].setNameSurname(name);
+        this.patient[this.numberPatients] = new Patient(id, name);
         this.numberPatients = this.numberPatients + 1;
     }
 

@@ -6,20 +6,20 @@
 package lesson3task4;
 
 public class Patient extends Human {
-
+    
     private int ID;
-
-    Patient(int ID) {
+    
+    Patient(int ID, String name) {
         this.ID = ID;
-
+        super.setNameSurname(name);
     }
-
+    
     public void setID(int ID) {
         this.ID = ID;
     }
-
+    
     public int getID() {
         return ID;
     }
-
+    
 }

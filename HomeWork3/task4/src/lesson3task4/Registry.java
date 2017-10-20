@@ -17,56 +17,54 @@ public class Registry {
         doctors = new Doctor[10];
     }
 
-    public void createPatients(String namesurname, int ID) {
-        patients[numberPatients] = new Patient(ID);
-        patients[numberPatients].setNameSurname(namesurname);
+    public void createPatients(String nameSurname, int ID) {
+        patients[numberPatients] = new Patient(ID, nameSurname);
         numberPatients = numberPatients + 1;
     }
 
-    public void createDoctors(String namesurname) {
-        doctors[numberDoctors] = new Doctor();
-        doctors[numberDoctors].setNameSurname(namesurname);
+    public void createDoctors(String nameSurname) {
+        doctors[numberDoctors] = new Doctor(nameSurname);
         numberDoctors = numberDoctors + 1;
     }
 
     public void entry(String Doctorname, int id) {
-        int numberpatient = 0;
+        int numberPatient = 0;
         for (int i = 0; i < numberPatients; i++) {
             boolean equals = patients[i].getID() == id;
             if (equals == true) {
-                numberpatient = i;
+                numberPatient = i;
             }
         }
         for (int i = 0; i < numberDoctors; i++) {
             boolean equals = doctors[i].getNameSurname().equals(Doctorname);
             if (equals == true) {
 
-                doctors[i].entryPatient(patients[numberpatient].getNameSurname(), patients[numberpatient].getID());
+                doctors[i].entryPatient(patients[numberPatient].getNameSurname(), patients[numberPatient].getID());
 
             }
         }
     }
 
-    public void describe(String DoctorName, int id) {
-        int numberpatient = 0;
+    public void describe(String doctorName, int id) {
+        int numberPatient = 0;
         for (int i = 0; i < numberPatients; i++) {
             boolean equals = patients[i].getID() == id;
             if (equals == true) {
-                numberpatient = i;
+                numberPatient = i;
             }
             for (i = 0; i < numberDoctors; i++) {
-                equals = doctors[i].getNameSurname().equals(DoctorName);
+                equals = doctors[i].getNameSurname().equals(doctorName);
                 if (equals == true) {
-                    doctors[i].deletePatient(patients[numberpatient].getID());
+                    doctors[i].deletePatient(patients[numberPatient].getID());
                 }
             }
         }
     }
 
-    public int getNumberPatientsOnDoctor(String namesurname) {
+    public int getNumberPatientsOnDoctor(String nameSurname) {
         int ID = 0;
         for (int i = 0; i < numberDoctors; i++) {
-            boolean equals = doctors[i].getNameSurname().equals(namesurname);
+            boolean equals = doctors[i].getNameSurname().equals(nameSurname);
             if (equals == true) {
                 ID = i;
             }

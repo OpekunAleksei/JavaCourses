@@ -7,14 +7,14 @@ package lesson3task4;
 
 public class Human {
 
-    private String NameSurname;
+    private String nameSurname;
 
     public void setNameSurname(String nameSurname) {
-        this.NameSurname = nameSurname;
+        this.nameSurname = nameSurname;
     }
 
     public String getNameSurname() {
-        return NameSurname;
+        return nameSurname;
     }
 
 }
