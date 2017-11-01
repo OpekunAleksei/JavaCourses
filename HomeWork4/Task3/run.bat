@@ -1,2 +1,2 @@
-java -cp %cd%\program.jar;%cd\lib%cd%\textFileWorker.jar by.grsy.ftf.lesson4task1.Runner guestFile.txt masters.txt roomFile.txt serviceFile.txt 
+java -cp %cd%\program.jar;%cd%\textFileWorker.jar com.senla.hotel.runner.Hotel roomFile.txt guestFile.txt serviceFile.txt 
 @pause
