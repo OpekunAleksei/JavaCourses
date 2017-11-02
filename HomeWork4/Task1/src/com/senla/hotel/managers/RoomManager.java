@@ -11,13 +11,16 @@ import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.storages.RoomStorage;
 import java.util.Arrays;
 
-
 public class RoomManager {
 
     private RoomStorage roomStorage;
 
     public RoomManager(String path) {
         roomStorage = new RoomStorage(path);
+    }
+
+    public void writeToRoomFile(String[] array) {
+        roomStorage.writeToRoomFile(array);
     }
 
     public void a() {

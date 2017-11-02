@@ -18,25 +18,28 @@ public class FileWorker {
         return stringArray;
 
     }
-    public void writeToGuestFile(String path,String line[]){
-        if (path==null){
-            path="D:\\guestFile.txt";
+
+    public void writeToGuestFile(String path, String line[]) {
+        if (path == null) {
+            path = "D:\\guestFile.txt";
         }
-      textFileWorker=  new TextFileWorker(path);
-      textFileWorker.writeToFile(line);
+        textFileWorker = new TextFileWorker(path);
+        textFileWorker.writeToFile(line);
     }
-        public void writeToRoomFile(String path,String line[]){
-              if (path==null){
-            path="D:\\RoomFile.txt";
+
+    public void writeToRoomFile(String path, String line[]) {
+        if (path == null) {
+            path = "D:\\RoomFile.txt";
         }
-      textFileWorker=  new TextFileWorker(path);
-      textFileWorker.writeToFile(line);
+        textFileWorker = new TextFileWorker(path);
+        textFileWorker.writeToFile(line);
     }
-            public void writeToServiceFile(String path,String line[]){
-                  if (path==null){
-            path="D:\\ServiceFile.txt";
+
+    public void writeToServiceFile(String path, String line[]) {
+        if (path == null) {
+            path = "D:\\ServiceFile.txt";
         }
-      textFileWorker=  new TextFileWorker(path);
-      textFileWorker.writeToFile(line);
+        textFileWorker = new TextFileWorker(path);
+        textFileWorker.writeToFile(line);
     }
 }

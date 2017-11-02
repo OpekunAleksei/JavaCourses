@@ -23,9 +23,6 @@ public class Room extends Entity {
     private String listOfGRoomFromTextFile[] = new String[10];
 
     public Room(String path) {
-        if (path == null) {
-            path = "D:\\roomFile.txt";
-        }
         this.fileWorker = new FileWorker();
         if (fileWorker.readFromFile(path)[counter] != null) {
             this.listOfGRoomFromTextFile = fileWorker.readFromFile(path)[counter].split(";");

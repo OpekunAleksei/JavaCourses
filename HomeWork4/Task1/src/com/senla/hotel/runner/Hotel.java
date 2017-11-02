@@ -20,17 +20,18 @@ public class Hotel {
         for (int i = 0; i < args.length; ++i) {
             arg[i] = args[i];
         }
+
+        HotelAdministrator hotelAdministrator = new HotelAdministrator(arg[0], arg[1], arg[2]);
         //   String array[];
         // array = new String[4];
-        //HotelAdministrator hotelAdministrator =new HotelAdministrator() ;
+
         //array[0]="209;5;7;1;3;repaired;";
-       // array[1]="209;5;7;1;3;repaired;";
-       // array[2]="209;5;7;1;3;repaired;";
-       // array[3]="209;5;7;1;3;repaired;";
-       // hotelAdministrator.writeToRoomFile(arg[0], barg);
-       HotelAdministrator hotelAdministrator = new HotelAdministrator(arg[0], arg[1], arg[2]);
+        // array[1]="209;5;7;1;3;repaired;";
+        // array[2]="209;5;7;1;3;repaired;";
+        // array[3]="209;5;7;1;3;repaired;";
+        // hotelAdministrator.writeToRoomFile(array);
         Date date = new Date();
-                Printer printer = new Printer();
+        Printer printer = new Printer();
         SimpleDateFormat dateformat3 = new SimpleDateFormat("dd/MM/yyyy");
         date = dateformat3.parse("23/07/1989");
         hotelAdministrator.createService();
@@ -48,8 +49,7 @@ public class Hotel {
         hotelAdministrator.addServiceToGuest(999, 3);
         hotelAdministrator.evictedFromRoom(1, 208);
         hotelAdministrator.evictedFromRoom(2, 208);
-printer.print(hotelAdministrator.getSortEmptyRoomsByCapacity());
- 
+        printer.print(hotelAdministrator.getSortEmptyRoomsByCapacity());
 
     }
 

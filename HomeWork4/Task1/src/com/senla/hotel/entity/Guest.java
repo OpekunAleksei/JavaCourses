@@ -24,9 +24,7 @@ public class Guest extends Entity {
     private String listOfGuestFromTextFile[] = new String[10];
 
     public Guest(String path) throws ParseException {
-        if (path == null) {
-            path = "D:\\guestFile.txt";
-        }
+
         SimpleDateFormat dateformat3 = new SimpleDateFormat("dd/MM/yyyy");
         this.fileWorker = new FileWorker();
         if (fileWorker.readFromFile(path)[counter] != null) {

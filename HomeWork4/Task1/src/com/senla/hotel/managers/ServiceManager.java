@@ -16,6 +16,10 @@ public class ServiceManager {
         serviceStorage = new ServiceStorage(path);
     }
 
+    public void writeToServiceFile(String[] array) {
+        serviceStorage.writeToServiceFile(array);
+    }
+
     public void createService() {
         serviceStorage.setService();
     }

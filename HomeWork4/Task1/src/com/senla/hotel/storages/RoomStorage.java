@@ -7,6 +7,7 @@ package com.senla.hotel.storages;
 
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.enums.RoomStatus;
+import com.senla.hotel.utils.FileWorker;
 import com.senla.hotel.utils.TextWorker;
 import java.util.Objects;
 
@@ -16,12 +17,21 @@ public class RoomStorage {
     private Room room[];
     private Integer count = 0;
     private String path;
+    private FileWorker fileWorker;
 
     public RoomStorage(String path) {
 
         this.room = new Room[100];
         this.counterForRoom = 0;
+        if (path == null) {
+            path = "D:\\roomFile.txt";
+        }
         this.path = path;
+    }
+
+    public void writeToRoomFile(String[] array) {
+        this.fileWorker = new FileWorker();
+        fileWorker.writeToRoomFile(this.path, array);
     }
 
     public void createRoom() {

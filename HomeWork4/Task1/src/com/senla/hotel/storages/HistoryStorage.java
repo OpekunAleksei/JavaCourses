@@ -11,7 +11,6 @@ import com.senla.hotel.entity.History;
 import com.senla.hotel.entity.Guest;
 import com.senla.hotel.utils.TextWorker;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 

@@ -22,9 +22,7 @@ public class Service extends Entity {
 
     public Service(String path) {
         this.fileWorker = new FileWorker();
-        if (path == null) {
-            path = "D:\\serviceFile.txt";
-        }
+
         if (fileWorker.readFromFile(path)[counter] != null) {
             this.listOfServiceFromTextFile = fileWorker.readFromFile(path)[counter].split(";");
             this.id = Integer.parseInt(listOfServiceFromTextFile[0]);

@@ -5,8 +5,6 @@ package com.senla.hotel.entity;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 public class History {
 
     private Room room;

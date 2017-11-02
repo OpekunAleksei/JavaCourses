@@ -23,6 +23,10 @@ public class GuestManager {
         guestStorage.createGuest();
     }
 
+    public void writeToGuestFile(String[] array) {
+        guestStorage.writeToGuestFile(array);
+    }
+
     public Guest getGuest(Integer id) {
         return guestStorage.getGuest(id);
     }

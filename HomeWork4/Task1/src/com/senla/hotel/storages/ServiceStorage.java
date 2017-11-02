@@ -6,17 +6,27 @@
 package com.senla.hotel.storages;
 
 import com.senla.hotel.entity.Service;
+import com.senla.hotel.utils.FileWorker;
 
 public class ServiceStorage {
 
     private Service service[];
     private Integer counter;
     private String path;
+    private FileWorker fileWorker;
 
     public ServiceStorage(String path) {
         service = new Service[100];
         this.counter = 0;
+        if (path == null) {
+            path = "D:\\serviceFile.txt";
+        }
         this.path = path;
+    }
+
+    public void writeToServiceFile(String[] array) {
+        this.fileWorker = new FileWorker();
+        fileWorker.writeToServiceFile(this.path, array);
     }
 
     public Integer getNumberOfSrvice(Service service) {

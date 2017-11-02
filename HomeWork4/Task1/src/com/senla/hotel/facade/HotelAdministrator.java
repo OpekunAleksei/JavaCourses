@@ -10,7 +10,6 @@ import com.senla.hotel.managers.RoomManager;
 import com.senla.hotel.managers.HistoryManager;
 import com.senla.hotel.managers.GuestManager;
 import com.senla.hotel.enums.RoomStatus;
-import com.senla.hotel.utils.FileWorker;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -21,19 +20,13 @@ public class HotelAdministrator {
     private RoomManager roomManager;
     private ServiceManager serviceManager;
     private HistoryManager historyManager;
-    private FileWorker fileWorker;
-    
 
     public HotelAdministrator(String roomPath, String guestPath, String servicePath) {
         roomManager = new RoomManager(roomPath);
         guestManager = new GuestManager(guestPath);
         serviceManager = new ServiceManager(servicePath);
         historyManager = new HistoryManager();
-              
-    }
 
-    public HotelAdministrator() {
-         fileWorker= new FileWorker();
     }
 
     public String getGuestPriceForAccommodation(Integer guestId) {
@@ -51,15 +44,19 @@ public class HotelAdministrator {
     public void createService() {
         serviceManager.createService();
     }
-public void writeToGuestFile(String path,String[] array){
-    fileWorker.writeToGuestFile(path,array);
-}
-public void writeToRoomFile(String path,String[] array){
-    fileWorker.writeToRoomFile(path,array);
-}
-public void writeToServiceFile(String path,String[] array){
-    fileWorker.writeToServiceFile(path,array);
-}
+
+    public void writeToGuestFile(String[] array) {
+        guestManager.writeToGuestFile(array);
+    }
+
+    public void writeToRoomFile(String[] array) {
+        roomManager.writeToRoomFile(array);
+    }
+
+    public void writeToServiceFile(String[] array) {
+        serviceManager.writeToServiceFile(array);
+    }
+
     public void changeRoomPrice(Integer numberOfRoom, Integer price) {
         roomManager.changeRoomPrice(numberOfRoom, price);
     }
