@@ -1,0 +1,4 @@
+2;taxi;900
+1;ironing;1
+3;wake-up;3
+13;wakeup;500
