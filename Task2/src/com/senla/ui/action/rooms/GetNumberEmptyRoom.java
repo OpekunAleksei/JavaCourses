@@ -5,24 +5,18 @@
  */
 package com.senla.ui.action.rooms;
 
-import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.HotelAdministrator;
-import com.senla.hotel.utils.Printer;
-import com.senla.ui.action.OpenMenuRoom;
-import com.senla.ui.utils.Helper;
+import com.senla.ui.utils.TextWorker;
 import com.senla.ui.api.IAction;
 
 public class GetNumberEmptyRoom implements IAction {
 
-    private Helper helper = new Helper();
-    private Printer printer = new Printer();
-    private RoomStatus status;
+    private TextWorker textWorker = new TextWorker();
 
     @Override
     public void execute() {
 
-        printer.println( HotelAdministrator.getInstance(null, null, null).getNumberEmptyRoomInHotel());
-        OpenMenuRoom openMenuRoom = new OpenMenuRoom();
-        openMenuRoom.execute();
+        textWorker.println(HotelAdministrator.getInstance().getNumberEmptyRoomInHotel());
+
     }
 }

@@ -5,16 +5,25 @@
  */
 package com.senla.ui.facade;
 
-import com.senla.ui.utils.Helper;
+import com.senla.ui.managers.Builder;
+import com.senla.ui.managers.Navigator;
+
+import com.senla.ui.utils.TextWorker;
 
 public class MenuController {
 
-    private Helper administrator = new Helper();
+    private TextWorker textWorker = new TextWorker();
 
     public void run() {
-        administrator.getBuilder().buildMainMenu();
-        administrator.getNavigator().setCurentMenu(administrator.getBuilder().getRootMenu());
-        administrator.getNavigator().printMenu();
-        administrator.getNavigator().navigate(administrator.getIntegerInput());
+
+        Builder builder = new Builder();
+        builder.buildMainMenu();
+        Navigator navigator = new Navigator(builder.getRootMenu());
+        do {
+            navigator.printMenu();
+
+            navigator.navigate(textWorker.getIntegerInput());
+        } while (navigator.getCurentMenu() != null);
     }
+
 }

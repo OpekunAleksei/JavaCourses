@@ -6,24 +6,18 @@
 package com.senla.ui.action.guest;
 
 import com.senla.hotel.facade.HotelAdministrator;
-import com.senla.hotel.utils.Printer;
-import com.senla.ui.action.OpenMenuGuest;
 import com.senla.ui.api.IAction;
-import com.senla.ui.utils.Helper;
-
+import com.senla.ui.utils.TextWorker;
 
 public class GetSortServicesOfGuestByPrice implements IAction {
 
-    private Helper helper = new Helper();
-    private Printer printer = new Printer();
+    private TextWorker textWorker = new TextWorker();
 
     @Override
     public void execute() {
-        printer.println( HotelAdministrator.getInstance(null, null, null).getSortGuestByName());
-        printer.println("Enter the line number where the guest(starting from 1)");
-        printer.println( HotelAdministrator.getInstance(null, null, null).getSortListServiceGuestByPrice( HotelAdministrator.getInstance(null, null, null).getGuestIdByNumberOnList(helper.getIntegerInput()-1)));
-        OpenMenuGuest openMenuGuest = new OpenMenuGuest();
-        openMenuGuest.execute();
+        textWorker.println(HotelAdministrator.getInstance().getSortGuestByName());
+        textWorker.println("Enter the line number where the guest(starting from 1)");
+        textWorker.println(HotelAdministrator.getInstance().getSortListServiceGuestByPrice(HotelAdministrator.getInstance().getGuestIdByNumberOnList(textWorker.getIntegerInput() - 1)));
 
     }
 }

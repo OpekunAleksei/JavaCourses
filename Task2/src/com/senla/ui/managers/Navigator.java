@@ -6,29 +6,36 @@
 package com.senla.ui.managers;
 
 import com.senla.ui.menu.Menu;
-import com.senla.hotel.utils.Printer;
+import com.senla.ui.api.IObserver;
+import com.senla.ui.utils.TextWorker;
 
-public class Navigator {
+public class Navigator implements IObserver {
 
     private Menu curentMenu;
-    private Printer printer;
+    private TextWorker textWorker;
 
+    public Navigator(Menu curentMenu) {
+        textWorker = new TextWorker();
+        setCurentMenu(curentMenu);
 
-    public Navigator() {
-        curentMenu = new Menu();
-        printer = new Printer();
     }
 
     public void printMenu() {
         for (Integer i = 0; i < this.curentMenu.getMenuItems().size(); i++) {
-            printer.print((i).toString() + " ");
-            printer.println(this.curentMenu.getNameMenuItem(i));
+            textWorker.print((i).toString() + " ");
+            textWorker.println(this.curentMenu.getNameMenuItem(i));
         }
     }
 
     public void navigate(Integer index) {
 
-        this.curentMenu.getMenuItems().get(index).doAction();
+        try {
+            this.curentMenu.getMenuItems().get(index).doAction();
+            setCurentMenu(this.curentMenu.getMenuItems().get(index).getNextMenu());
+        } catch (Exception e) {
+            textWorker.setLog("Wrong mewnu item", e);
+
+        }
 
     }
 
@@ -36,8 +43,13 @@ public class Navigator {
         return curentMenu;
     }
 
-    public void setCurentMenu(Menu curentMenu) {
+    private void setCurentMenu(Menu curentMenu) {
         this.curentMenu = curentMenu;
+        update();
     }
 
+    @Override
+    public void update() {
+        textWorker.println("You in" + curentMenu.getName());
+    }
 }

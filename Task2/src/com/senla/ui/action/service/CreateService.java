@@ -6,26 +6,22 @@
 package com.senla.ui.action.service;
 
 import com.senla.hotel.facade.HotelAdministrator;
-import com.senla.hotel.utils.Printer;
-import com.senla.ui.action.OpenMenuService;
-import com.senla.ui.utils.Helper;
+import com.senla.ui.utils.TextWorker;
 import com.senla.ui.api.IAction;
 
 public class CreateService implements IAction {
 
-    private Helper helper = new Helper();
-    private Printer printer = new Printer();
+    private TextWorker textWorker = new TextWorker();
 
     @Override
     public void execute() {
-        System.out.println("Enter price of service");
-        Integer price = helper.getIntegerInput();
-        System.out.println("Enter service category");
-        String category = helper.getStringInput();
-        System.out.println("Enter service id");
-        Integer id = helper.getIntegerInput();
-       HotelAdministrator.getInstance(null, null, null).createService(id, category, id);
-        OpenMenuService openMenuService = new OpenMenuService();
-        openMenuService.execute();
+        textWorker.println("Enter price of service");
+        Integer price = textWorker.getIntegerInput();
+        textWorker.println("Enter service category");
+        String category = textWorker.getStringInput();
+        textWorker.println("Enter service id");
+        Integer id = textWorker.getIntegerInput();
+        HotelAdministrator.getInstance().createService(price, category, id);
+
     }
 }

@@ -7,35 +7,27 @@ package com.senla.ui.action.rooms;
 
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.HotelAdministrator;
-import com.senla.hotel.utils.Printer;
-import com.senla.ui.action.OpenMenuRoom;
-
 import com.senla.ui.api.IAction;
-import com.senla.ui.utils.Helper;
+import com.senla.ui.utils.TextWorker;
 
-/**
- *
- * @author Алексей
- */
 public class ChangeRoomStatus implements IAction {
-    
-    private Helper helper = new Helper();
-    private Printer printer = new Printer();
+
+    private TextWorker textWorker = new TextWorker();
+
     private RoomStatus status;
 
     @Override
     public void execute() {
-        printer.println (HotelAdministrator.getInstance(null, null, null).getSortRoomsByPrice());
-        printer.println("Enter the line number where there is a service(starting from 1)");
-        Integer number =  HotelAdministrator.getInstance(null, null, null).getRoomIdByNumberOnList(helper.getIntegerInput() - 1);
-       printer.println("Enter 1 if room status repaired ,enter 2 if room status serviced");
-        if (helper.getIntegerInput() == 1) {
-            status = RoomStatus.repaired;            
+        textWorker.println(HotelAdministrator.getInstance().getSortRoomsByPrice());
+        textWorker.println("Enter the line number where there is a service(starting from 1)");
+        Integer number = HotelAdministrator.getInstance().getRoomIdByNumberOnList(textWorker.getIntegerInput() - 1);
+        textWorker.println("Enter 1 if room status repaired ,enter 2 if room status serviced");
+        if (textWorker.getIntegerInput() == 1) {
+            status = RoomStatus.repaired;
         } else {
-            status = RoomStatus.serviced;            
+            status = RoomStatus.serviced;
         }
-        HotelAdministrator.getInstance(null, null, null).changeRoomStatus(number, status);
-        OpenMenuRoom openMenuRoom = new OpenMenuRoom();
-        openMenuRoom.execute();
-    }    
+        HotelAdministrator.getInstance().changeRoomStatus(number, status);
+
+    }
 }

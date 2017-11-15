@@ -13,9 +13,9 @@ public class OpenMenuExit implements IAction {
     @Override
     public void execute() {
 
-       HotelAdministrator.getInstance(null, null, null).writeToGuestFile();
-       HotelAdministrator.getInstance(null, null, null).writeToRoomFile();
-        HotelAdministrator.getInstance(null, null, null).writeToServiceFile();
+        HotelAdministrator.getInstance().writeToGuestFile();
+        HotelAdministrator.getInstance().writeToRoomFile();
+        HotelAdministrator.getInstance().writeToServiceFile();
         System.exit(0);
 
     }

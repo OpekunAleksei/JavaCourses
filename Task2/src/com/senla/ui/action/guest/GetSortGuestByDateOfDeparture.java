@@ -6,20 +6,16 @@
 package com.senla.ui.action.guest;
 
 import com.senla.hotel.facade.HotelAdministrator;
-import com.senla.hotel.utils.Printer;
-import com.senla.ui.action.OpenMenuGuest;
-import com.senla.ui.utils.Helper;
+import com.senla.ui.utils.TextWorker;
 import com.senla.ui.api.IAction;
 
 public class GetSortGuestByDateOfDeparture implements IAction {
 
-    private Helper helper = new Helper();
-    private Printer printer = new Printer();
+    private TextWorker textWorker = new TextWorker();
 
     @Override
     public void execute() {
-        printer.println( HotelAdministrator.getInstance(null, null, null).getSortGuestByDateOfDeparture());
-        OpenMenuGuest openMenuGuest = new OpenMenuGuest();
-        openMenuGuest.execute();
+        textWorker.println(HotelAdministrator.getInstance().getSortGuestByDateOfDeparture());
+
     }
 }

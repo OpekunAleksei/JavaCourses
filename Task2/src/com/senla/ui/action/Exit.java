@@ -9,6 +9,7 @@ import com.senla.ui.api.IAction;
 import com.senla.ui.facade.MenuController;
 
 public class Exit implements IAction {
+
     @Override
     public void execute() {
         MenuController menuController = new MenuController();

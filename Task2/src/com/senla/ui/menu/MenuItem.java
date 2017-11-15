@@ -5,7 +5,6 @@
  */
 package com.senla.ui.menu;
 
-import com.senla.ui.menu.Menu;
 import com.senla.ui.api.IAction;
 
 public class MenuItem {
@@ -26,6 +25,10 @@ public class MenuItem {
         return title;
     }
 
+    public IAction getAction() {
+        return action;
+    }
+
     public void setAction(IAction action) {
         this.action = action;
     }
@@ -41,7 +44,9 @@ public class MenuItem {
     }
 
     public void doAction() {
-        action.execute();
+        if (action != null) {
+            action.execute();
+        }
     }
 
 }

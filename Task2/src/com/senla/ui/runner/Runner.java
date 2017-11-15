@@ -10,14 +10,10 @@ import java.text.ParseException;
 
 public class Runner {
 
-    /**
-     * @param args the command line arguments
-     * @throws java.text.ParseException
-     */
     public static void main(String[] args) throws ParseException {
 
-        MenuController m = new MenuController();
-        m.run();
+        MenuController menuController = new MenuController();
+        menuController.run();
 
     }
 
