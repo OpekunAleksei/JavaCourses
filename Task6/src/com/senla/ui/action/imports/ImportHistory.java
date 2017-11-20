@@ -3,15 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.senla.ui.action.exports;
+package com.senla.ui.action.imports;
 
 import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
 
-public class ExportRooms implements IAction {
+/**
+ *
+ * @author elena
+ */
+public class ImportHistory implements IAction {
 
     @Override
     public void execute() {
-        HotelAdministrator.getInstance().exportRooms();
+        HotelAdministrator.getInstance().importHistory();
     }
 }

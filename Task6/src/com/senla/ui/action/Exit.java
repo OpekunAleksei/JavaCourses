@@ -5,7 +5,6 @@
  */
 package com.senla.ui.action;
 
-
 import com.senla.ui.api.IAction;
 
 public class Exit implements IAction {

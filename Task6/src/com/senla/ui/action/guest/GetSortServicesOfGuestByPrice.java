@@ -17,7 +17,11 @@ public class GetSortServicesOfGuestByPrice implements IAction {
     public void execute() {
         textWorker.println(HotelAdministrator.getInstance().getSortGuestByName());
         textWorker.println("Enter the line number where the guest(starting from 1)");
-        textWorker.println(HotelAdministrator.getInstance().getSortListServiceGuestByPrice(HotelAdministrator.getInstance().getGuestIdByNumberOnList(textWorker.getIntegerInput() - 1)));
+        Integer id = HotelAdministrator.getInstance().getGuestIdByNumberOnList(textWorker.getIntegerInput() - 1);
+        textWorker.println(HotelAdministrator.getInstance().getSortRoomsByPrice());
+        textWorker.println("Enter the line number where there is a  room (starting from 1)");
+        Integer number = HotelAdministrator.getInstance().getRoomNumberByNumberOnList(textWorker.getIntegerInput() - 1);
+        textWorker.println(HotelAdministrator.getInstance().getSortListServiceGuestByPrice(id, number));
 
     }
 }

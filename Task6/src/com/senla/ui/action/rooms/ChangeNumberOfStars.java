@@ -9,15 +9,14 @@ import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.TextWorker;
 
-public class ChangeNumberOfStars implements IAction{
+public class ChangeNumberOfStars implements IAction {
+
     private TextWorker textWorker = new TextWorker();
-
-
 
     @Override
     public void execute() {
         textWorker.println("Enter new number of stars");
-        Integer numberOfStars =textWorker.getIntegerInput();
+        Integer numberOfStars = textWorker.getIntegerInput();
         HotelAdministrator.getInstance().changeNumberOfStars(textWorker.getNewNumberOfRoom(), numberOfStars);
 
     }

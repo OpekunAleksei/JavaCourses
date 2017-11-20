@@ -8,10 +8,14 @@ package com.senla.ui.action.exports;
 import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
 
-public class ExportRooms implements IAction {
+/**
+ *
+ * @author elena
+ */
+public class ExportHistory implements IAction {
 
     @Override
     public void execute() {
-        HotelAdministrator.getInstance().exportRooms();
+        HotelAdministrator.getInstance().exportHistory();
     }
 }

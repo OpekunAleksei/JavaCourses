@@ -9,9 +9,9 @@ import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
 
 public class ExportGuests implements IAction {
-    
+
     @Override
     public void execute() {
-HotelAdministrator.getInstance().exportGuests();
-    }  
+        HotelAdministrator.getInstance().exportGuests();
+    }
 }

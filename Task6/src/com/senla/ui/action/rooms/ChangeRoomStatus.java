@@ -18,19 +18,19 @@ public class ChangeRoomStatus implements IAction {
 
     @Override
     public void execute() {
-         if (HotelAdministrator.getInstance().getRoomAbility()==true)    {        
-        textWorker.println(HotelAdministrator.getInstance().getSortRoomsByPrice());
-        textWorker.println("Enter the line number where there is a room (starting from 1)");
-        Integer number = HotelAdministrator.getInstance().getRoomNumberByNumberOnList(textWorker.getIntegerInput() - 1);
-        textWorker.println("Enter 1 if room status repaired ,enter 2 if room status serviced");
-        if (textWorker.getIntegerInput() == 1) {
-            status = RoomStatus.repaired;
+        if (HotelAdministrator.getInstance().getRoomAbility() == true) {
+            textWorker.println(HotelAdministrator.getInstance().getSortRoomsByPrice());
+            textWorker.println("Enter the line number where there is a room (starting from 1)");
+            Integer number = HotelAdministrator.getInstance().getRoomNumberByNumberOnList(textWorker.getIntegerInput() - 1);
+            textWorker.println("Enter 1 if room status repaired ,enter 2 if room status serviced");
+            if (textWorker.getIntegerInput() == 1) {
+                status = RoomStatus.repaired;
+            } else {
+                status = RoomStatus.serviced;
+            }
+            HotelAdministrator.getInstance().changeRoomStatus(number, status);
         } else {
-            status = RoomStatus.serviced;
+            textWorker.println("Sorry function change room status is unavailable");
         }
-        HotelAdministrator.getInstance().changeRoomStatus(number, status);
-         }else{ 
-             textWorker.println("Sorry function change room status is unavailable"); 
-         }
     }
 }

@@ -10,11 +10,11 @@ import com.senla.hotel.utils.Printer;
 import java.util.Scanner;
 
 public class TextWorker {
-    
+
     private Scanner scanner = new Scanner(System.in);
     private Logger logger = new Logger();
     private Printer printer = new Printer();
-    private Integer newNumberOfRoom=null;
+    private Integer newNumberOfRoom = null;
 
     public void setNewNumberOfRoom(Integer newNumberOfRoom) {
         this.newNumberOfRoom = newNumberOfRoom;
@@ -23,6 +23,7 @@ public class TextWorker {
     public Integer getNewNumberOfRoom() {
         return newNumberOfRoom;
     }
+
     public String getStringInput() {
         try {
             return scanner.next();
@@ -32,19 +33,19 @@ public class TextWorker {
             return null;
         }
     }
-    
+
     public void setLog(String line, Exception e) {
         logger.writeErrToFile(line, e);
     }
-    
+
     public void println(String line) {
         printer.println(line);
     }
-    
+
     public void print(String line) {
         printer.print(line);
     }
-    
+
     public Integer getIntegerInput() {
         try {
             return scanner.nextInt();
@@ -54,5 +55,5 @@ public class TextWorker {
             return null;
         }
     }
-    
+
 }

@@ -19,11 +19,14 @@ public class AddService implements IAction {
         textWorker.println(HotelAdministrator.getInstance().getSortGuestByName());
         textWorker.println("Enter the line number where the guest(starting from 1)");
         Integer guestId = HotelAdministrator.getInstance().getGuestIdByNumberOnList(textWorker.getIntegerInput() - 1);
+        textWorker.println(HotelAdministrator.getInstance().getSortRoomsByPrice());
+        textWorker.println("Enter the line number where there is a  room (starting from 1)");
+        Integer number = HotelAdministrator.getInstance().getRoomNumberByNumberOnList(textWorker.getIntegerInput() - 1);
         textWorker.println(HotelAdministrator.getInstance().getListOfServices());
         textWorker.println("Enter the line number where there is a service(starting from 1)");
         Integer serviceId = HotelAdministrator.getInstance().getServiceIdByNumberOnList(textWorker.getIntegerInput() - 1);
 
-        HotelAdministrator.getInstance().addServiceToGuest(serviceId, guestId);
+        HotelAdministrator.getInstance().addServiceToGuest(serviceId, guestId, number);
 
     }
 

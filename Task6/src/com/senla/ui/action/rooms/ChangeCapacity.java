@@ -9,11 +9,9 @@ import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.TextWorker;
 
-public class ChangeCapacity implements IAction{
-    
+public class ChangeCapacity implements IAction {
+
     private TextWorker textWorker = new TextWorker();
-
-
 
     @Override
     public void execute() {
@@ -23,4 +21,3 @@ public class ChangeCapacity implements IAction{
 
     }
 }
- 
