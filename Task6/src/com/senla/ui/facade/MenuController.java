@@ -5,6 +5,7 @@
  */
 package com.senla.ui.facade;
 
+import com.senla.ui.action.imports.ImportHistory;
 import com.senla.ui.managers.Builder;
 import com.senla.ui.managers.Navigator;
 
@@ -19,6 +20,8 @@ public class MenuController {
         Builder builder = new Builder();
         builder.buildMainMenu();
         Navigator navigator = new Navigator(builder.getRootMenu());
+        ImportHistory importHistory = new ImportHistory();
+        importHistory.execute();
         do {
             navigator.printMenu();
 

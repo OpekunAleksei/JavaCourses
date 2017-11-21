@@ -74,7 +74,6 @@ public final class Builder {
         importMenu.setName(" Import menu");
         importMenuItems.add(new MenuItem(" Import guests ", new ImportGuests(), importMenu));
         importMenuItems.add(new MenuItem(" Import rooms ", new ImportRooms(), importMenu));
-        importMenuItems.add(new MenuItem(" Import History ", new ImportHistory(), importMenu));
         importMenuItems.add(new MenuItem(" Import services ", new ImportServices(), importMenu));
         importMenuItems.add(new MenuItem(" Back to main menu", null, mainMenu));
         importMenu.setMenuItem(importMenuItems);
@@ -82,7 +81,6 @@ public final class Builder {
         exportMenu.setName(" Export menu");
         exportMenuItems.add(new MenuItem(" Export guests ", new ExportGuests(), exportMenu));
         exportMenuItems.add(new MenuItem(" Export rooms ", new ExportRooms(), exportMenu));
-        exportMenuItems.add(new MenuItem(" Export history ", new ExportHistory(), exportMenu));
         exportMenuItems.add(new MenuItem(" Export services ", new ExportServices(), exportMenu));
         exportMenuItems.add(new MenuItem(" Back to main menu ", null, mainMenu));
         exportMenu.setMenuItem(exportMenuItems);
