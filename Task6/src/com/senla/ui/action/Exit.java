@@ -1,21 +1,20 @@
+package com.senla.ui.action.imports;
+
+
+import com.senla.hotel.facade.HotelAdministrator;
+import com.senla.ui.api.IAction;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.senla.ui.action;
 
-import com.senla.ui.action.exports.ExportHistory;
-import com.senla.ui.api.IAction;
 
-public class Exit implements IAction {
-
+public class Exit implements IAction{
+    
     @Override
     public void execute() {
-        ExportHistory exportHistory= new ExportHistory();
-        exportHistory.execute();
-        System.exit(0);
-
-
+       HotelAdministrator.getInstance().writeData();
     }
 }

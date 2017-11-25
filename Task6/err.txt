@@ -1,22 +1,42 @@
-Wrong entry line number
-java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-java.util.ArrayList.rangeCheck(ArrayList.java:653)
-java.util.ArrayList.get(ArrayList.java:429)
-com.senla.hotel.storages.ServiceStorage.getIdByNumberOnList(ServiceStorage.java:31)
-com.senla.hotel.managers.ServiceManager.getIdByNumberOnList(ServiceManager.java:26)
-com.senla.hotel.facade.HotelAdministrator.getServiceIdByNumberOnList(HotelAdministrator.java:114)
-com.senla.ui.action.guest.AddService.execute(AddService.java:27)
+Wrong mewnu item
+java.lang.NumberFormatException: For input string: "Id"
+java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+java.lang.Integer.parseInt(Integer.java:580)
+java.lang.Integer.parseInt(Integer.java:615)
+com.senla.hotel.entity.Guest.<init>(Guest.java:33)
+com.senla.hotel.storages.GuestStorage.importGuests(GuestStorage.java:56)
+com.senla.hotel.managers.GuestManager.importGuests(GuestManager.java:27)
+com.senla.hotel.facade.HotelAdministrator.importGuests(HotelAdministrator.java:141)
+com.senla.ui.action.imports.ImportGuests.execute(ImportGuests.java:20)
 com.senla.ui.menu.MenuItem.doAction(MenuItem.java:48)
 com.senla.ui.managers.Navigator.navigate(Navigator.java:33)
-com.senla.ui.facade.MenuController.run(MenuController.java:25)
+com.senla.ui.facade.MenuController.run(MenuController.java:26)
 com.senla.ui.runner.Runner.main(Runner.java:16)
-Wrong entry line number
-java.lang.NullPointerException
-com.senla.hotel.storages.ServiceStorage.getService(ServiceStorage.java:62)
-com.senla.hotel.managers.ServiceManager.getService(ServiceManager.java:42)
-com.senla.hotel.facade.HotelAdministrator.addServiceToGuest(HotelAdministrator.java:233)
-com.senla.ui.action.guest.AddService.execute(AddService.java:29)
+Wrong mewnu item
+java.lang.NumberFormatException: For input string: "Number"
+java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+java.lang.Integer.parseInt(Integer.java:580)
+java.lang.Integer.parseInt(Integer.java:615)
+com.senla.hotel.entity.Room.<init>(Room.java:32)
+com.senla.hotel.storages.RoomStorage.importRooms(RoomStorage.java:46)
+com.senla.hotel.managers.RoomManager.importRooms(RoomManager.java:27)
+com.senla.hotel.facade.HotelAdministrator.importRooms(HotelAdministrator.java:110)
+com.senla.ui.action.imports.ImportRooms.execute(ImportRooms.java:18)
 com.senla.ui.menu.MenuItem.doAction(MenuItem.java:48)
 com.senla.ui.managers.Navigator.navigate(Navigator.java:33)
-com.senla.ui.facade.MenuController.run(MenuController.java:25)
+com.senla.ui.facade.MenuController.run(MenuController.java:26)
+com.senla.ui.runner.Runner.main(Runner.java:16)
+Wrong mewnu item
+java.lang.NumberFormatException: For input string: "Id"
+java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+java.lang.Integer.parseInt(Integer.java:580)
+java.lang.Integer.parseInt(Integer.java:615)
+com.senla.hotel.entity.Service.<init>(Service.java:20)
+com.senla.hotel.storages.ServiceStorage.importServices(ServiceStorage.java:63)
+com.senla.hotel.managers.ServiceManager.importServices(ServiceManager.java:34)
+com.senla.hotel.facade.HotelAdministrator.importServices(HotelAdministrator.java:125)
+com.senla.ui.action.imports.ImportServices.execute(ImportServices.java:18)
+com.senla.ui.menu.MenuItem.doAction(MenuItem.java:48)
+com.senla.ui.managers.Navigator.navigate(Navigator.java:33)
+com.senla.ui.facade.MenuController.run(MenuController.java:26)
 com.senla.ui.runner.Runner.main(Runner.java:16)

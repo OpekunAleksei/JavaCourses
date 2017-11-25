@@ -16,7 +16,6 @@ public class GetNumberGuestInHotel implements IAction {
     @Override
     public void execute() {
         textWorker.println(HotelAdministrator.getInstance().getNumberGuestInHotel());
-
     }
 
 }

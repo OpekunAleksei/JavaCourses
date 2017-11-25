@@ -12,7 +12,7 @@ import com.senla.ui.utils.TextWorker;
 public class Navigator implements IObserver {
 
     private Menu curentMenu;
-    private TextWorker textWorker;
+    private final TextWorker textWorker;
 
     public Navigator(Menu curentMenu) {
         textWorker = new TextWorker();

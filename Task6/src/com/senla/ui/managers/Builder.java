@@ -5,6 +5,7 @@
  */
 package com.senla.ui.managers;
 
+
 import com.senla.ui.menu.MenuItem;
 import com.senla.ui.menu.Menu;
 import com.senla.ui.action.rooms.GetSortEmptyRoomByPrice;
@@ -31,14 +32,12 @@ import com.senla.ui.action.rooms.GetSortRoomByNumberOfStars;
 import com.senla.ui.action.rooms.GetSortRoomByPrice;
 import com.senla.ui.action.guest.GetSortServicesOfGuestByPrice;
 import com.senla.ui.action.guest.GetSortServisecOfGuestByCategory;
-import com.senla.ui.action.Exit;
 import com.senla.ui.action.exports.ExportGuests;
-import com.senla.ui.action.exports.ExportHistory;
 import com.senla.ui.action.exports.ExportRooms;
 import com.senla.ui.action.exports.ExportServices;
 import com.senla.ui.action.guest.SettleInRoom;
+import com.senla.ui.action.imports.Exit;
 import com.senla.ui.action.imports.ImportGuests;
-import com.senla.ui.action.imports.ImportHistory;
 import com.senla.ui.action.imports.ImportRooms;
 import com.senla.ui.action.imports.ImportServices;
 import com.senla.ui.action.rooms.ChangeCapacity;
@@ -48,14 +47,14 @@ import java.util.ArrayList;
 
 public final class Builder {
 
-    private Menu mainMenu;
-    private Menu guestMenu;
-    private Menu roomMenu;
-    private Menu serviceMenu;
+    private final Menu mainMenu;
+    private final Menu guestMenu;
+    private final Menu roomMenu;
+    private final Menu serviceMenu;
     private Menu rootMenu;
-    private Menu importMenu;
-    private Menu exportMenu;
-    private Menu changeMenu;
+    private final Menu importMenu;
+    private final Menu exportMenu;
+    private final Menu changeMenu;
 
     public Builder() {
         changeMenu = new Menu();

@@ -7,11 +7,14 @@ package com.senla.ui.action.imports;
 
 import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
+import com.senla.ui.utils.TextWorker;
 
 public class ImportRooms implements IAction {
-
+    private final TextWorker textWorker = new TextWorker();
     @Override
     public void execute() {
-        HotelAdministrator.getInstance().importRooms();
+                textWorker.println("Please enter path to file");
+        String path = textWorker.getStringInput();
+     HotelAdministrator.getInstance().importRooms(path);
     }
 }

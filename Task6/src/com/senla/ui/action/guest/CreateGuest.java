@@ -18,9 +18,9 @@ public class CreateGuest implements IAction {
     public void execute() {
         textWorker.println("Enter name");
         String name = textWorker.getStringInput();
-        textWorker.println("Enter arrival date like 13/13/1666");
+        textWorker.println("Enter arrival date like 13.13.1666");
         String arrivalDate = textWorker.getStringInput();
-        textWorker.println("Enter date of departure like 13/13/1666");
+        textWorker.println("Enter date of departure like 13.13.1666");
         String dateOfDeparture = textWorker.getStringInput();
         textWorker.println("Enter id");
         Integer id = textWorker.getIntegerInput();
