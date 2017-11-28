@@ -44,8 +44,13 @@ public class Navigator implements IObserver {
     }
 
     private void setCurentMenu(Menu curentMenu) {
-        this.curentMenu = curentMenu;
-        update();
+        if (curentMenu != null) {
+            this.curentMenu = curentMenu;
+            update();
+        }else{
+            this.curentMenu = null;
+        }
+
     }
 
     @Override

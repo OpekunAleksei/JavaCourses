@@ -1,4 +1,4 @@
-package com.senla.ui.action.imports;
+package com.senla.ui.action;
 
 
 import com.senla.hotel.facade.HotelAdministrator;

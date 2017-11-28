@@ -14,7 +14,7 @@ import com.senla.ui.utils.TextWorker;
 
 public class MenuController {
 
-    private TextWorker textWorker = new TextWorker();
+    private final TextWorker textWorker = new TextWorker();
 
     public void run() {
         Builder builder = new Builder();
@@ -22,7 +22,6 @@ public class MenuController {
         Navigator navigator = new Navigator(builder.getRootMenu());
         do {
             navigator.printMenu();
-
             navigator.navigate(textWorker.getIntegerInput());
         } while (navigator.getCurentMenu() != null);
     }

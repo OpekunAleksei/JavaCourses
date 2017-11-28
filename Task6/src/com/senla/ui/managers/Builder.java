@@ -6,6 +6,7 @@
 package com.senla.ui.managers;
 
 
+import com.senla.ui.action.Exit;
 import com.senla.ui.menu.MenuItem;
 import com.senla.ui.menu.Menu;
 import com.senla.ui.action.rooms.GetSortEmptyRoomByPrice;
@@ -36,7 +37,7 @@ import com.senla.ui.action.exports.ExportGuests;
 import com.senla.ui.action.exports.ExportRooms;
 import com.senla.ui.action.exports.ExportServices;
 import com.senla.ui.action.guest.SettleInRoom;
-import com.senla.ui.action.imports.Exit;
+
 import com.senla.ui.action.imports.ImportGuests;
 import com.senla.ui.action.imports.ImportRooms;
 import com.senla.ui.action.imports.ImportServices;
