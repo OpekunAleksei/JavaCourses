@@ -16,60 +16,62 @@ import java.util.List;
 
 public class HistoryManager {
 
-    private final HistoryStorage historyStorage;
-
     public HistoryManager(String path) {
-        historyStorage = new HistoryStorage(path);
+        HistoryStorage.getInstance().setPath(path);
     }
 
     public void deserializeData() {
-        historyStorage.deserializeData();
+        HistoryStorage.getInstance().deserializeData();
 
     }
 
     public void serializeData() {
-        historyStorage.serializeData();
+        HistoryStorage.getInstance().serializeData();
     }
 
     public void settleInRoom(Guest guest, Room room) {
 
-        historyStorage.settleInRoom(guest, room);
+        HistoryStorage.getInstance().settleInRoom(guest, room);
     }
 
     public void evictedFromRoom(Guest guest, Room room) {
 
-        historyStorage.evictedFromRoom(guest, room);
+        HistoryStorage.getInstance().evictedFromRoom(guest, room);
     }
 
     public void addServiceToGuest(Service service, Guest guest, Room room) {
-        historyStorage.addServiceToGuest(service, guest, room);
+        HistoryStorage.getInstance().addServiceToGuest(service, guest, room);
     }
 
     public Integer getGuestPriceForAccommodation(Guest guest, Room room) {
-        return historyStorage.getGuestPriceForAccommodation(guest, room);
+        return HistoryStorage.getInstance().getGuestPriceForAccommodation(guest, room);
     }
 
     public Integer getNumberGuestInHotel() {
-        return historyStorage.getNumberGuestInHotel();
+        return HistoryStorage.getInstance().getNumberGuestInHotel();
     }
 
     public Boolean checkForPresenceGuestsInRoom(Room room) {
 
-        return historyStorage.checkForPresenceGuestsInRoom(room);
+        return HistoryStorage.getInstance().checkForPresenceGuestsInRoom(room);
     }
 
-    public String getListLeftGuestThisRoom(Room room, Integer count) {
-        return historyStorage.getListLeftGuestThisRoom(room, count);
+    public List<Guest> getListLeftGuestThisRoom(Room room, Integer count) {
+        return HistoryStorage.getInstance().getListLeftGuestThisRoom(room, count);
     }
 
-    public String getListOfRoomsAvailableByDate(Date date, List<Room> list) {
-        return historyStorage.getListOfRoomsAvailableByDate(date, list);
+    public List<Room> getListOfRoomsAvailableByDate(Date date, List<Room> list) {
+        return HistoryStorage.getInstance().getListOfRoomsAvailableByDate(date, list);
     }
 
-    public String sorting(Guest guest, Comparator comparator, Room room) {
-        List aList = historyStorage.getGuestServices(guest, room);
+    public List<Service> getGuestServices(Guest guest, Room room) {
+        return HistoryStorage.getInstance().getGuestServices(guest, room);
+    }
+
+    public void sorting(Guest guest, Comparator comparator, Room room) {
+        List aList = HistoryStorage.getInstance().getGuestServices(guest, room);
         Collections.sort(aList, comparator);
-        return historyStorage.getListOfGuestService(guest, room);
+
     }
 
 }

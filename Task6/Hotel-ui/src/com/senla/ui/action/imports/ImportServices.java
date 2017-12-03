@@ -10,11 +10,13 @@ import com.senla.ui.api.IAction;
 import com.senla.ui.utils.TextWorker;
 
 public class ImportServices implements IAction {
+
     private final TextWorker textWorker = new TextWorker();
+
     @Override
     public void execute() {
-                textWorker.println("Please enter path to file");
+        textWorker.println("Please enter path to file");
         String path = textWorker.getStringInput();
-      HotelAdministrator.getInstance().importServices(path);
+        HotelAdministrator.getInstance().importServices(path);
     }
 }

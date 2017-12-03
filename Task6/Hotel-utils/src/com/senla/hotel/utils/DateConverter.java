@@ -5,14 +5,18 @@
  */
 package com.senla.hotel.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateConverter {
 
     private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
-    public SimpleDateFormat getDateFormat() {
-        return format;
+    public String parseDate(Date date) {
+        return format.format(date);
     }
-
+        public Date parseDate(String date) throws ParseException {
+        return format.parse(date);
+    }
 }

@@ -11,7 +11,7 @@ import com.senla.ui.api.IAction;
 
 public class GetNumberGuestInHotel implements IAction {
 
-    private TextWorker textWorker = new TextWorker();
+    private final TextWorker textWorker = new TextWorker();
 
     @Override
     public void execute() {

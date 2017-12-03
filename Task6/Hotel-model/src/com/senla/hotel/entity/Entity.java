@@ -6,6 +6,6 @@ public abstract class Entity implements Serializable {
 
     public abstract Integer getId();
 
-    public abstract void setId(int id);
+    public abstract void setId(Integer id);
 
 }

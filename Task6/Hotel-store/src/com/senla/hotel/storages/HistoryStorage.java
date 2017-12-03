@@ -10,7 +10,6 @@ import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.History;
 import com.senla.hotel.entity.Guest;
 import com.senla.hotel.utils.Serialization;
-import com.senla.hotel.utils.TextWorker;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -22,17 +21,30 @@ public class HistoryStorage {
 
     private final Serialization serialization = new Serialization();
     private List<History> history;
-    private final String path;
+    private String path;
+    private static HistoryStorage historyStorage;
 
-    public HistoryStorage(String path) {
+    private HistoryStorage() {
         this.history = new ArrayList<>();
-        this.path = path;
+        this.path = null;
 
     }
 
+    public static HistoryStorage getInstance() {
+        if (historyStorage == null) {
+            historyStorage = new HistoryStorage();
+        }
+        return historyStorage;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public void deserializeData() {
-        if (serialization.deSerialize(path) != null) {
-            this.history = (ArrayList<History>) serialization.deSerialize(path);
+        Object deserializeData = serialization.deSerialize(this.path);
+        if (deserializeData != null) {
+            this.history = (ArrayList<History>) deserializeData;
         }
     }
 
@@ -69,7 +81,6 @@ public class HistoryStorage {
     }
 
     public void evictedFromRoom(Guest guest, Room room) {
-
         this.history.get(getItemNumberHistoryOfGuest(guest, room)).setEnable(Boolean.FALSE);
 
     }
@@ -85,9 +96,9 @@ public class HistoryStorage {
         return numberGuestInHotel;
     }
 
-    public String getListOfRoomsAvailableByDate(Date date, List<Room> rList) {
-        TextWorker textWorker = new TextWorker();
-        List aList = new ArrayList();
+    public List<Room> getListOfRoomsAvailableByDate(Date date, List<Room> rList) {
+
+        List<Room> aList = new ArrayList();
         Set hList = new HashSet<>();
         if (history.isEmpty()) {
             for (int i = 0; i < rList.size(); i++) {
@@ -114,22 +125,19 @@ public class HistoryStorage {
         hList.addAll(aList);
         aList.clear();
         aList.addAll(hList);
-        textWorker.CreateRoomList(aList, aList.size());
-        return textWorker.getList();
+        return aList;
     }
 
-    public String getListLeftGuestThisRoom(Room room, Integer count) {
-        TextWorker textWorker = new TextWorker();
-        List AList = new ArrayList<>();
+    public List<Guest> getListLeftGuestThisRoom(Room room, Integer count) {
+        List<Guest> aList = new ArrayList<>();
         if (Objects.equals(this.history.size(), count)) {
             for (int i = this.history.size() - 1; i >= this.history.size() - count; i--) {
                 if (Objects.equals(this.history.get(i).getRoom().getId(), room.getId()) && this.history.get(i).getEnable() == false) {
-                    AList.add(this.history.get(i).getGuest());
+                    aList.add(this.history.get(i).getGuest());
                 }
             }
-        }
-        textWorker.CreateGuestList(AList);
-        return textWorker.getList();
+        }     
+        return aList;
     }
 
     public Boolean checkForPresenceGuestsInRoom(Room room) {
@@ -155,9 +163,9 @@ public class HistoryStorage {
     }
 
     public Integer getGuestPriceForAccommodation(Guest guest, Room room) {
-        
+
         Integer days = (int) (this.history.get(getItemNumberHistoryOfGuest(guest, room)).getGuest().getDateOfDeparture().getTime() - this.history.get(getItemNumberHistoryOfGuest(guest, room)).getGuest().getArrivalDate().getTime()) / (24 * 60 * 60 * 1000);
-Integer guestAmountForAccommodation = this.history.get(getItemNumberHistoryOfGuest(guest, room)).getAmontForService() + this.history.get(getItemNumberHistoryOfGuest(guest, room)).getRoom().getPrice() * days;
+        Integer guestAmountForAccommodation = this.history.get(getItemNumberHistoryOfGuest(guest, room)).getAmontForService() + this.history.get(getItemNumberHistoryOfGuest(guest, room)).getRoom().getPrice() * days;
 
         return guestAmountForAccommodation;
     }
@@ -176,11 +184,4 @@ Integer guestAmountForAccommodation = this.history.get(getItemNumberHistoryOfGue
     public List<Service> getGuestServices(Guest guest, Room room) {
         return this.history.get(getItemNumberHistoryOfGuest(guest, room)).getService();
     }
-
-    public String getListOfGuestService(Guest guest, Room room) {
-        TextWorker textWorker = new TextWorker();
-        textWorker.CreateServiceList(this.history.get(getItemNumberHistoryOfGuest(guest, room)).getService());
-        return textWorker.getList();
-    }
-
 }

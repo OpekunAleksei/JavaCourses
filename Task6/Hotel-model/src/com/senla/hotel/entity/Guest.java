@@ -25,13 +25,12 @@ public class Guest extends Entity {
     }
 
     public Guest(String line) throws ParseException {
+        String[] arr = line.split(";");
         dateConverter = new DateConverter();
-        this.name = line.split(";")[0];
-        this.id = Integer.parseInt(line.split(";")[1]);
-        System.err.println(dateConverter.getDateFormat().toPattern());
-        this.arrivalDate = (Date) dateConverter.getDateFormat().parse(line.split(";")[2]);
-        System.err.println(line.split(";")[3]);
-        this.dateOfDeparture = dateConverter.getDateFormat().parse(line.split(";")[3]);
+        this.name = arr[0];
+        this.id = Integer.parseInt(arr[1]);
+        this.arrivalDate = dateConverter.parseDate(arr[2]);
+        this.dateOfDeparture = dateConverter.parseDate(arr[3]);
 
     }
 
@@ -65,7 +64,7 @@ public class Guest extends Entity {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

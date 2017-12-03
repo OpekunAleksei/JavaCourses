@@ -5,7 +5,6 @@
  */
 package com.senla.ui.managers;
 
-
 import com.senla.ui.action.Exit;
 import com.senla.ui.menu.MenuItem;
 import com.senla.ui.menu.Menu;

@@ -16,46 +16,43 @@ import java.util.List;
 
 public class GuestManager {
 
-    private final GuestStorage guestStorage;
-
     public GuestManager(String path) {
-        guestStorage = new GuestStorage(path);
-
+        GuestStorage.getInstance().setPath(path);
     }
 
     public void importGuests(String path) throws IOException, ParseException {
-        guestStorage.importGuests(path);
+        GuestStorage.getInstance().importGuests(path);
     }
 
     public void exportGuests(String path) throws IOException {
-        guestStorage.exportGuests(path);
+        GuestStorage.getInstance().exportGuests(path);
     }
 
     public Integer getIdByNumberOnList(Integer number) {
-        return guestStorage.getIdByNumberOnList(number);
+        return GuestStorage.getInstance().getIdByNumberOnList(number);
     }
 
     public void createGuest(String name, Date arrivalDate, Date dateOfDeparture, Integer id) throws ParseException {
-        guestStorage.createGuest(name, arrivalDate, dateOfDeparture, id);
+        GuestStorage.getInstance().createGuest(name, arrivalDate, dateOfDeparture, id);
     }
 
     public void serializeData() {
-        guestStorage.serializeData();
+        GuestStorage.getInstance().serializeData();
     }
 
     public void deserializeData() {
-        guestStorage.deserializeData();
+        GuestStorage.getInstance().deserializeData();
     }
 
     public Guest getGuestByID(Integer id) {
 
-        return guestStorage.getGuestById(id);
+        return GuestStorage.getInstance().getGuestById(id);
     }
 
-    public String sorting(Comparator comporator) {
-        List list = guestStorage.getGuests();
+    public List<Guest> sorting(Comparator comporator) {
+        List list = GuestStorage.getInstance().getGuests();
         Collections.sort(list, comporator);
-        return guestStorage.getLisOfGuest();
+        return GuestStorage.getInstance().getGuests();
     }
 
 }

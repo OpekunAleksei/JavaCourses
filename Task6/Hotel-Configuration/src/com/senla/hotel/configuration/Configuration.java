@@ -5,21 +5,23 @@
  */
 package com.senla.hotel.configuration;
 
+import com.senla.hotel.utils.Logger;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Configuration {
 
     private Properties properties;
+    private final Logger logger;
 
     public Configuration() {
+        logger = new Logger();
         properties = new Properties();
-        try {
-            properties.load(ClassLoader.getSystemClassLoader().getResourceAsStream("resources/properties.properties"));
+        try (InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("resources/properties.properties")) {
+            properties.load(is);
         } catch (IOException ex) {
-            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+            logger.writeErrToFile("Problem with properies file", ex);
         }
     }
 
@@ -27,19 +29,23 @@ public class Configuration {
         return Integer.valueOf(properties.getProperty("NUMBER_RECORDS_GUESTS"));
     }
 
-    public Boolean getAbilityChange_Room_Status() {
+    public Boolean getAbilityChangeRoomStatus() {
         return Boolean.valueOf(properties.getProperty("NUMBER_RECORDS_GUESTS"));
     }
- public String getGuestPath() {
+
+    public String getGuestPath() {
         return properties.getProperty("GUEST_PATH");
     }
-  public String getRoomPath() {
+
+    public String getRoomPath() {
         return properties.getProperty("ROOM_PATH");
     }
-   public String getServicePath() {
+
+    public String getServicePath() {
         return properties.getProperty("SERVICE_PATH");
     }
-      public String getHistoryPath() {
+
+    public String getHistoryPath() {
         return properties.getProperty("HISTORY_PATH");
     }
 }

@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class TextWorker {
 
-    private Scanner scanner = new Scanner(System.in);
-    private Logger logger = new Logger();
-    private Printer printer = new Printer();
+    private final Scanner scanner = new Scanner(System.in);
+    private final Logger logger = new Logger();
+    private final Printer printer = new Printer();
     private Integer newNumberOfRoom = null;
 
     public void setNewNumberOfRoom(Integer newNumberOfRoom) {
@@ -29,7 +29,6 @@ public class TextWorker {
             return scanner.next();
         } catch (Exception e) {
             logger.writeErrToFile("Wrong input data", e);
-            System.err.println("Chek your imput data");
             return null;
         }
     }
@@ -51,7 +50,6 @@ public class TextWorker {
             return scanner.nextInt();
         } catch (Exception e) {
             logger.writeErrToFile("Wrong input data", e);
-            System.err.println("Chek your imput data");
             return null;
         }
     }

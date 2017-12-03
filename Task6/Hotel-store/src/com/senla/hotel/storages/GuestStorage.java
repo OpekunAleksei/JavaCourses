@@ -19,27 +19,39 @@ import java.util.Objects;
 
 public class GuestStorage {
 
+    private final TextWorker textWorker;
     private final ListRefresher listRefresher;
     private List<Guest> guest;
-    private final String path;
+    private String path;
     private final Serialization serialization;
     private final Transfer transfer;
+    private static GuestStorage guestStorage;
 
-    public GuestStorage(String path) {
+    private GuestStorage() {
+        textWorker = new TextWorker();
         transfer = new Transfer();
         serialization = new Serialization();
         listRefresher = new ListRefresher();
         this.guest = new ArrayList<>();
-        this.path = path;
-
+    }
+    public static GuestStorage getInstance() {
+        if (guestStorage == null) {
+            guestStorage = new GuestStorage();
+        }
+        return guestStorage;
     }
 
     public List<Guest> getGuests() {
         return guest;
     }
 
+    public void setPath(String path) {
+        this.path = path;
+
+    }
+
     public void exportGuests(String path) throws IOException {
-        transfer.exportGuestData(path, getLisOfGuest());
+        transfer.exportGuestData(path, textWorker.CreateGuestList(guest));
     }
 
     public Integer getIdByNumberOnList(Integer number) {
@@ -51,18 +63,20 @@ public class GuestStorage {
     }
 
     public void importGuests(String path) throws IOException, ParseException {
-        for (int i = 1; i < transfer.importData(path).size(); i++) {
-            guest = listRefresher.refreshGuest(new Guest((String) transfer.importData(path).get(i)), guest);
+        List<String> list = transfer.importData(path);  
+        for (int i = 1; i < list.size(); i++) {
+            guest = listRefresher.refreshGuest(new Guest((String) list.get(i)), guest);
         }
     }
 
     public void serializeData() {
-        serialization.serializeGuest(path, this.guest);
+        serialization.serializeGuest(this.path, this.guest);
     }
 
     public void deserializeData() {
-        if (serialization.deSerialize(path) != null) {
-            this.guest = (ArrayList<Guest>) serialization.deSerialize(path);
+        Object deserializeData = serialization.deSerialize(this.path);
+        if (deserializeData != null) {
+            this.guest = (ArrayList<Guest>) deserializeData;
         }
     }
 
@@ -80,11 +94,4 @@ public class GuestStorage {
         }
         return null;
     }
-
-    public String getLisOfGuest() {
-        TextWorker textWorker = new TextWorker();
-        textWorker.CreateGuestList(guest);
-        return textWorker.getList();
-    }
-
 }

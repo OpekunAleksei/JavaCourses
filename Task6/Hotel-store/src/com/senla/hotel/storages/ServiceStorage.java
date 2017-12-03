@@ -16,23 +16,36 @@ import java.util.List;
 
 public class ServiceStorage {
 
-    private final Serialization serialization ;
-    private final ListRefresher listRefresher ;
+    private final Serialization serialization;
+    private final ListRefresher listRefresher;
     private List<Service> service;
     private final Transfer transfer;
-    private final String path;
-
-    public ServiceStorage(String path) {
+    private String path;
+    private static ServiceStorage serviceStorage;
+    private final TextWorker textWorker;
+    private ServiceStorage() {
+        textWorker = new TextWorker();
         transfer = new Transfer();
         serialization = new Serialization();
         listRefresher = new ListRefresher();
         this.service = new ArrayList<>();
+    }
+
+    public void setPath(String path) {
         this.path = path;
     }
 
+    public static ServiceStorage getInstance() {
+        if (serviceStorage == null) {
+            serviceStorage = new ServiceStorage();
+        }
+        return serviceStorage;
+    }
+
     public void deserializeData() {
-        if (serialization.deSerialize(path) != null) {
-            this.service = (ArrayList<Service>) serialization.deSerialize(path);
+        Object deserializeData = serialization.deSerialize(this.path);
+        if (deserializeData != null) {
+            this.service = (ArrayList<Service>) deserializeData;
         }
     }
 
@@ -44,10 +57,8 @@ public class ServiceStorage {
         serialization.serializeService(path, service);
     }
 
-    public String getListOfServices() {
-        TextWorker textWorker = new TextWorker();
-        textWorker.CreateServiceList(service);
-        return textWorker.getList();
+    public List<Service> getServices() {
+        return service;
     }
 
     public void setService(Integer price, String category, Integer id) {
@@ -56,14 +67,18 @@ public class ServiceStorage {
             service = (ArrayList<Service>) listRefresher.refreshService(new Service(price, category, id), service);
         }
     }
+
     public void importServices(String path) throws IOException {
-        for (int i = 1; i < transfer.importData(path).size(); i++) {
-            service = listRefresher.refreshService(new Service((String) transfer.importData(path).get(i)), service);
+        List<String> list = transfer.importData(path); 
+        for (int i = 1; i < list.size(); i++) {
+            service = listRefresher.refreshService(new Service((String) list.get(i)), service);
         }
     }
-        public void exportServices(String path) throws IOException {
-        transfer.exportServiceData(path,getListOfServices());
+
+    public void exportServices(String path) throws IOException {
+        transfer.exportServiceData(path,textWorker.CreateServiceList(service) );
     }
+
     public Service getService(Integer serviceId) {
         return this.service.get(getServiceById(serviceId));
     }

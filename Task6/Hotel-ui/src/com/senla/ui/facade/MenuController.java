@@ -5,8 +5,6 @@
  */
 package com.senla.ui.facade;
 
-
-
 import com.senla.ui.managers.Builder;
 import com.senla.ui.managers.Navigator;
 

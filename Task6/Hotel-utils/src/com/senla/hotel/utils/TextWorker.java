@@ -12,27 +12,14 @@ import java.util.List;
 
 public class TextWorker {
 
-    private String list;
+    private  String list;
     private final StringBuilder builder = new StringBuilder();
     private final DateConverter converter = new DateConverter();
 
-    public TextWorker() {
-        list = "";
-    }
-
-    public String getList() {
-        return list;
-    }
-
-    public void CreateList(Object object) {
-        builder.append(object);
-        builder.append(" ");
-        this.list = builder.toString();
-    }
-
-    public void CreateRoomList(List<Room> room, Integer count) {
-        int counter = 0;
-        if (count == room.size()) {
+    public String CreateRoomList(List<Room> room, Integer count) {
+     this.builder.setLength(0);
+        Integer counter;
+        if (count == null) {
             counter = room.size();
         } else {
             counter = count;
@@ -52,10 +39,13 @@ public class TextWorker {
             builder.append("\n");
         }
         this.list = builder.toString();
+        
+        return  this.list;
     }
 
-    public void CreateServiceList(List<Service> service) {
+    public String CreateServiceList(List<Service> service) {
 
+ this.builder.setLength(0);
         for (int i = 0; i < service.size(); i++) {
             builder.append(service.get(i).getId());
             builder.append(";");
@@ -66,21 +56,23 @@ public class TextWorker {
             builder.append("\n");
         }
         this.list = builder.toString();
+                return this.list;
     }
 
-    public void CreateGuestList(List<Guest> guest) {
-
+    public String CreateGuestList(List<Guest> guest) {
+   this.builder.setLength(0);
         for (int i = 0; i < guest.size(); i++) {
             builder.append(guest.get(i).getName());
             builder.append(";");
             builder.append(guest.get(i).getId());
             builder.append(";");
-            builder.append(converter.getDateFormat().format(guest.get(i).getArrivalDate()));
+            builder.append(converter.parseDate(guest.get(i).getArrivalDate()));
             builder.append(";");
-            builder.append(converter.getDateFormat().format(guest.get(i).getDateOfDeparture()));
+            builder.append(converter.parseDate(guest.get(i).getDateOfDeparture()));
             builder.append("\n");
         }
         this.list = builder.toString();
+        return this.list;
     }
 
 }

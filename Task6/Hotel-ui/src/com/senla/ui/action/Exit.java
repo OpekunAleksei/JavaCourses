@@ -1,6 +1,5 @@
 package com.senla.ui.action;
 
-
 import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.ui.api.IAction;
 
@@ -9,12 +8,10 @@ import com.senla.ui.api.IAction;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+public class Exit implements IAction {
 
-
-public class Exit implements IAction{
-    
     @Override
     public void execute() {
-       HotelAdministrator.getInstance().writeData();
+        HotelAdministrator.getInstance().writeData();
     }
 }

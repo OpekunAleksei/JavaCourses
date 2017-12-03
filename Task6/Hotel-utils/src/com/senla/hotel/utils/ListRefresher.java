@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class ListRefresher {
 
-    public List refreshGuest(Guest guest, List<Guest> guestList) {
+    public List<Guest> refreshGuest(Guest guest, List<Guest> guestList) {
         if (guestList.isEmpty()) {
             guestList.add(guest);
             return guestList;
@@ -35,7 +35,7 @@ public class ListRefresher {
         return guestList;
     }
 
-    public List refreshRoom(Room room, List<Room> roomList) {
+    public List<Room> refreshRoom(Room room, List<Room> roomList) {
         if (roomList.isEmpty()) {
             roomList.add(room);
             return roomList;
@@ -58,7 +58,7 @@ public class ListRefresher {
         return roomList;
     }
 
-    public List refreshService(Service service, List<Service> serviceList) {
+    public List<Service> refreshService(Service service, List<Service> serviceList) {
         if (serviceList.isEmpty()) {
             serviceList.add(service);
             return serviceList;

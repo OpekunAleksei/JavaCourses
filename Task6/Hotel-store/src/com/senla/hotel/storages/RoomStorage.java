@@ -21,30 +21,46 @@ public class RoomStorage {
     private final Serialization serialization;
     private final ListRefresher listRefresher;
     private List<Room> room;
-    private final String path;
+    private String path;
     private final Transfer transfer;
+    private static RoomStorage roomStorage;
+    private final TextWorker textWorker;
 
-    public RoomStorage(String path) {
+    public RoomStorage() {
+        textWorker = new TextWorker();
         listRefresher = new ListRefresher();
         serialization = new Serialization();
         this.room = new ArrayList<>();
-        this.path = path;
         this.transfer = new Transfer();
     }
 
+    public static RoomStorage getInstance() {
+        if (roomStorage == null) {
+            roomStorage = new RoomStorage();
+        }
+        return roomStorage;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public void deserializeData() {
-        if (serialization.deSerialize(path) != null) {
-            this.room = (ArrayList<Room>) serialization.deSerialize(path);
+        Object deserializeData = serialization.deSerialize(this.path);
+        if (deserializeData != null) {
+            this.room = (ArrayList<Room>) deserializeData;
         }
     }
 
-    public void importRooms(String path) throws IOException{
-        for (int i = 1; i < transfer.importData(path).size(); i++) {
-            room = listRefresher.refreshRoom(new Room((String) transfer.importData(path).get(i)), room);
+    public void importRooms(String path) throws IOException {
+        List<String> list = transfer.importData(path);               
+        for (int i = 1; i <list.size(); i++) {
+            room = listRefresher.refreshRoom(new Room((String) list.get(i)), room);
         }
     }
-        public void exportRooms(String path) throws IOException {
-        transfer.exportRoomData( path,getLisOfRooms());
+
+    public void exportRooms(String path) throws IOException {
+        transfer.exportRoomData(path, textWorker.CreateRoomList(room,null));
     }
 
     public void serializeData() {
@@ -91,12 +107,10 @@ public class RoomStorage {
 
     }
 
-    public String getDetailsOfRoom(Integer numberOfRoom) {
-        TextWorker textWorker = new TextWorker();
-        List aList = new ArrayList();
+    public List<Room> getDetailsOfRoom(Integer numberOfRoom) {
+        List<Room> aList = new ArrayList();
         aList.add(this.room.get(getItemNumberRoom(numberOfRoom)));
-        textWorker.CreateRoomList(room, aList.size());
-        return textWorker.getList();
+        return aList;
     }
 
     public Room getRoom(Integer numberOfRoom) {
@@ -126,21 +140,6 @@ public class RoomStorage {
             }
         }
         return null;
-    }
-
-    public String getLisOfEmptyRooms() {
-
-        TextWorker textWorker = new TextWorker();
-        textWorker.CreateRoomList(room, getNumberEmptyRoom());
-        return textWorker.getList();
-    }
-
-    public String getLisOfRooms() {
-
-        TextWorker textWorker = new TextWorker();
-        textWorker.CreateRoomList(this.room, this.room.size());
-
-        return textWorker.getList();
     }
 
     public List<Room> getRooms() {

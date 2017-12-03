@@ -28,13 +28,14 @@ public class Room extends Entity implements Cloneable {
     }
 
     public Room(String line) {
+        String[] arr = line.split(";");
         this.busy = Boolean.FALSE;
-        this.number = Integer.parseInt(line.split(";")[0]);
-        this.capacity = Integer.parseInt(line.split(";")[1]);
-        this.id = Integer.parseInt(line.split(";")[2]);
-        this.numberOfStars = Integer.parseInt(line.split(";")[3]);
-        this.price = Integer.parseInt(line.split(";")[4]);
-        if ("repaired".equals(line.split(";")[5])) {
+        this.number = Integer.parseInt(arr[0]);
+        this.capacity = Integer.parseInt(arr[1]);
+        this.id = Integer.parseInt(arr[2]);
+        this.numberOfStars = Integer.parseInt(arr[3]);
+        this.price = Integer.parseInt(arr[4]);
+        if ("repaired".equals(arr[5])) {
             this.status = RoomStatus.repaired;
         } else {
             this.status = RoomStatus.serviced;
@@ -47,7 +48,10 @@ public class Room extends Entity implements Cloneable {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        Room room = (Room) super.clone();
+        room.setId(null);
+        room.setNumber(null);
+        return room;
     }
 
     public void setNumber(Integer number) {
@@ -100,7 +104,7 @@ public class Room extends Entity implements Cloneable {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

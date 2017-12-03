@@ -8,20 +8,21 @@ package com.senla.hotel.facade;
 import com.senla.hotel.comparators.GuestComparator;
 import com.senla.hotel.comparators.RoomComparator;
 import com.senla.hotel.comparators.ServiceComparator;
+import com.senla.hotel.configuration.Configuration;
 import com.senla.hotel.managers.ServiceManager;
 import com.senla.hotel.managers.RoomManager;
 import com.senla.hotel.managers.HistoryManager;
 import com.senla.hotel.managers.GuestManager;
 import com.senla.hotel.enums.RoomStatus;
-import com.senla.hotel.storages.StoragePropertys;
 import com.senla.hotel.utils.DateConverter;
 import com.senla.hotel.utils.Logger;
-import com.senla.hotel.utils.Printer;
+import com.senla.hotel.utils.TextWorker;
 import java.io.IOException;
 import java.text.ParseException;
 
 public class HotelAdministrator {
 
+    private final TextWorker textWorker;
     private final GuestManager guestManager;
     private final RoomManager roomManager;
     private final ServiceManager serviceManager;
@@ -29,18 +30,17 @@ public class HotelAdministrator {
     private final Logger logger;
     private final DateConverter dateConverter;
     private static HotelAdministrator hotelAdministrator;
-    private static StoragePropertys storagePropertys;
-    private final Printer printer;
+    private static Configuration configuration;
 
     private HotelAdministrator() {
+        configuration = new Configuration();
+        textWorker = new TextWorker();
         dateConverter = new DateConverter();
-        storagePropertys = new StoragePropertys();
         logger = new Logger();
-        roomManager = new RoomManager(storagePropertys.getRoomPath());
-        guestManager = new GuestManager(storagePropertys.getGuestPath());
-        serviceManager = new ServiceManager(storagePropertys.getServicePath());
-        historyManager = new HistoryManager(storagePropertys.getHistoryPath());
-        printer = new Printer();
+        roomManager = new RoomManager(configuration.getRoomPath());
+        guestManager = new GuestManager(configuration.getGuestPath());
+        serviceManager = new ServiceManager(configuration.getServicePath());
+        historyManager = new HistoryManager(configuration.getHistoryPath());
         readData();
     }
 
@@ -59,8 +59,6 @@ public class HotelAdministrator {
             return null;
         }
     }
-
-
 
     public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars) {
         roomManager.changeNumberOfStars(numberOfRoom, numberOfStars);
@@ -95,19 +93,21 @@ public class HotelAdministrator {
 
     public void createGuest(String name, String arrivalDate, String dateOfDeparture, Integer id) {
         try {
-            guestManager.createGuest(name, dateConverter.getDateFormat().parse(arrivalDate), dateConverter.getDateFormat().parse(dateOfDeparture), id);
+            guestManager.createGuest(name, dateConverter.parseDate(arrivalDate), dateConverter.parseDate(dateOfDeparture), id);
         } catch (ParseException e) {
             logger.writeErrToFile("Wrong entry date", e);
 
         }
     }
-       public void importRooms(String path) {
+
+    public void importRooms(String path) {
         try {
             roomManager.importRooms(path);
         } catch (IOException e) {
             logger.writeErrToFile("Wrong path to file", e);
         }
     }
+
     public void exportRooms(String path) {
         try {
             roomManager.exportRooms(path);
@@ -116,14 +116,16 @@ public class HotelAdministrator {
         }
 
     }
-       public void importServices(String path) {
+
+    public void importServices(String path) {
         try {
             serviceManager.importServices(path);
         } catch (IOException e) {
             logger.writeErrToFile("Wrong path to file", e);
-        } 
+        }
 
     }
+
     public void exportServices(String path) {
         try {
             serviceManager.exportServices(path);
@@ -132,6 +134,7 @@ public class HotelAdministrator {
         }
 
     }
+
     public void importGuests(String path) {
         try {
             guestManager.importGuests(path);
@@ -142,6 +145,7 @@ public class HotelAdministrator {
         }
 
     }
+
     public void exportGuests(String path) {
         try {
             guestManager.exportGuests(path);
@@ -212,7 +216,8 @@ public class HotelAdministrator {
 
     public String getListOfRoomsAvailableByDate(String date) {
         try {
-            return historyManager.getListOfRoomsAvailableByDate(dateConverter.getDateFormat().parse(date), roomManager.getRooms());
+            
+            return textWorker.CreateRoomList( historyManager.getListOfRoomsAvailableByDate(dateConverter.parseDate(date), roomManager.getRooms()), null);
         } catch (ParseException e) {
             logger.writeErrToFile("Wrong entry date", e);
 
@@ -221,7 +226,7 @@ public class HotelAdministrator {
     }
 
     public Boolean getRoomAbility() {
-        return storagePropertys.getAbility();
+        return configuration.getAbilityChangeRoomStatus();
     }
 
     public void changeRoomStatus(Integer numberOfRoom, RoomStatus status) {
@@ -275,13 +280,12 @@ public class HotelAdministrator {
     }
 
     public String getListOfServices() {
-        return serviceManager.getListOfServices();
+        return textWorker.CreateServiceList(serviceManager.getServices());
     }
 
     public String getListLeftGuestThisRoom(Integer numberOfRoom) {
         try {
-
-            return historyManager.getListLeftGuestThisRoom(roomManager.getRoom(numberOfRoom), storagePropertys.getNumberLeftGuest());
+            return textWorker.CreateGuestList(historyManager.getListLeftGuestThisRoom(roomManager.getRoom(numberOfRoom), configuration.getNumberRecordsGuests())) ;
         } catch (Exception e) {
             logger.writeErrToFile("Wrong entry line number", e);
             return null;
@@ -290,8 +294,8 @@ public class HotelAdministrator {
 
     public String getDetailsOfRoom(Integer numberOfRoom) {
         try {
+            return textWorker.CreateRoomList(roomManager.getDetailsOfRoom(numberOfRoom), null);
 
-            return roomManager.getDetailsOfRoom(numberOfRoom);
         } catch (Exception e) {
             logger.writeErrToFile("Wrong entry line number", e);
             return null;
@@ -299,60 +303,57 @@ public class HotelAdministrator {
     }
 
     public String getSortRoomsByCapacity() {
-
-        return roomManager.sorting(new RoomComparator().getCapacityComparator());
+        roomManager.sorting(new RoomComparator().getCapacityComparator());
+        return textWorker.CreateRoomList(roomManager.getRooms(), null);
 
     }
 
     public String getSortRoomsByPrice() {
-        return roomManager.sorting(new RoomComparator().getPriceComparator());
+        roomManager.sorting(new RoomComparator().getPriceComparator());
+        return textWorker.CreateRoomList(roomManager.getRooms(), null);
     }
 
     public String getSortRoomsByNumberOfStars() {
-
-        return roomManager.sorting(new RoomComparator().getNumberStarsComparator());
-
+        roomManager.sorting(new RoomComparator().getNumberStarsComparator());
+        return textWorker.CreateRoomList(roomManager.getRooms(), null);
     }
 
     public String getSortEmptyRoomsByCapacity() {
 
-        return roomManager.sorting(new RoomComparator().getBusyComparator(), new RoomComparator().getCapacityComparator());
-
+        roomManager.sorting(new RoomComparator().getBusyComparator(), new RoomComparator().getCapacityComparator());
+        return textWorker.CreateRoomList(roomManager.getRooms(), roomManager.getNumberEmptyRoomInHotel());
     }
 
     public String getSortEmptyRoomsByPrice() {
-
-        return roomManager.sorting(new RoomComparator().getBusyComparator(), new RoomComparator().getPriceComparator());
+        roomManager.sorting(new RoomComparator().getBusyComparator(), new RoomComparator().getPriceComparator());
+        return textWorker.CreateRoomList(roomManager.getRooms(), roomManager.getNumberEmptyRoomInHotel());
 
     }
 
     public String getSortEmptyRoomsByNumberOfStars() {
-
-        return roomManager.sorting(new RoomComparator().getBusyComparator(), new RoomComparator().getNumberStarsComparator());
+        roomManager.sorting(new RoomComparator().getBusyComparator(), new RoomComparator().getNumberStarsComparator());
+        return textWorker.CreateRoomList(roomManager.getRooms(), roomManager.getNumberEmptyRoomInHotel());
 
     }
 
     public String getSortGuestByDateOfDeparture() {
 
-        return guestManager.sorting(new GuestComparator().getDateComparator());
+        return textWorker.CreateGuestList(guestManager.sorting(new GuestComparator().getDateComparator()));
 
     }
 
     public String getSortListServiceGuestByPrice(Integer guestId, Integer numberRoom) {
-
-        return historyManager.sorting(guestManager.getGuestByID(guestId), new ServiceComparator().getServiceByPriceComparator(), roomManager.getRoom(numberRoom));
-
+        historyManager.sorting(guestManager.getGuestByID(guestId), new ServiceComparator().getServiceByPriceComparator(), roomManager.getRoom(numberRoom));
+        return textWorker.CreateServiceList(historyManager.getGuestServices(guestManager.getGuestByID(guestId), roomManager.getRoom(numberRoom)));
     }
 
     public String getSortListServiceGuestByCategory(Integer guestId, Integer numberRoom) {
 
-        return historyManager.sorting(guestManager.getGuestByID(guestId), new ServiceComparator().getServiceByCategoryComparator(), roomManager.getRoom(numberRoom));
-
+        historyManager.sorting(guestManager.getGuestByID(guestId), new ServiceComparator().getServiceByCategoryComparator(), roomManager.getRoom(numberRoom));
+        return textWorker.CreateServiceList(historyManager.getGuestServices(guestManager.getGuestByID(guestId), roomManager.getRoom(numberRoom)));
     }
 
     public String getSortGuestByName() {
-
-        return guestManager.sorting(new GuestComparator().getNameComparator());
-
+        return textWorker.CreateGuestList(guestManager.sorting(new GuestComparator().getNameComparator()));
     }
 }

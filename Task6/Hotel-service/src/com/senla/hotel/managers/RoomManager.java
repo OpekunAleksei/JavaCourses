@@ -15,88 +15,84 @@ import java.util.List;
 
 public class RoomManager {
 
-    private final RoomStorage roomStorage;
-
     public RoomManager(String path) {
-        roomStorage = new RoomStorage(path);
+        RoomStorage.getInstance().setPath(path);
     }
 
     public void importRooms(String path) throws IOException {
-        roomStorage.importRooms(path);
+        RoomStorage.getInstance().importRooms(path);
     }
 
     public void exportRooms(String path) throws IOException {
-        roomStorage.exportRooms(path);
+        RoomStorage.getInstance().exportRooms(path);
     }
 
     public List<Room> getRooms() {
-        return roomStorage.getRooms();
+        return RoomStorage.getInstance().getRooms();
     }
 
     public Integer getIdByNumberOnList(Integer number) {
-        return roomStorage.getIdByNumberOnList(number);
+        return RoomStorage.getInstance().getIdByNumberOnList(number);
     }
 
     public void deserializeData() {
-        roomStorage.deserializeData();
+        RoomStorage.getInstance().deserializeData();
     }
 
     public void serializeData() {
-        roomStorage.serializeData();
+        RoomStorage.getInstance().serializeData();
     }
 
     public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, Integer id, RoomStatus status) {
-        roomStorage.createRoom(number, price, capacity, numberOfStars, id, status);
+        RoomStorage.getInstance().createRoom(number, price, capacity, numberOfStars, id, status);
     }
 
     public void changeRoomPrice(Integer numberOfRoom, Integer price) {
-        roomStorage.changeRoomPrice(numberOfRoom, price);
+        RoomStorage.getInstance().changeRoomPrice(numberOfRoom, price);
     }
 
     public void changeRoomStatus(Integer numberOfRoom, RoomStatus status) {
-        roomStorage.changeRoomStatus(numberOfRoom, status);
+        RoomStorage.getInstance().changeRoomStatus(numberOfRoom, status);
     }
 
     public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars) {
-        roomStorage.changeNumberOfStars(numberOfRoom, numberOfStars);
+        RoomStorage.getInstance().changeNumberOfStars(numberOfRoom, numberOfStars);
     }
 
     public void changeCapacity(Integer numberOfRoom, Integer capacity) {
-        roomStorage.changeNumberOfStars(numberOfRoom, capacity);
+        RoomStorage.getInstance().changeNumberOfStars(numberOfRoom, capacity);
     }
 
     public void changeRoomBusy(Integer numberOfRoom, Boolean busy) {
 
-        roomStorage.changeRoomBusy(numberOfRoom, busy);
+        RoomStorage.getInstance().changeRoomBusy(numberOfRoom, busy);
     }
 
     public void copyRoom(Integer numberOfRoom, Integer newId, Integer newNumber) throws CloneNotSupportedException {
-        roomStorage.copyRoom(numberOfRoom, newId, newNumber);
+        RoomStorage.getInstance().copyRoom(numberOfRoom, newId, newNumber);
     }
 
     public Integer getNumberEmptyRoomInHotel() {
-        return roomStorage.getNumberEmptyRoom();
+        return RoomStorage.getInstance().getNumberEmptyRoom();
     }
 
     public Room getRoom(Integer numberOfRoom) {
 
-        return roomStorage.getRoom(numberOfRoom);
+        return RoomStorage.getInstance().getRoom(numberOfRoom);
     }
 
-    public String getDetailsOfRoom(Integer numberOfRoom) {
-        return roomStorage.getDetailsOfRoom(numberOfRoom);
+    public List<Room> getDetailsOfRoom(Integer numberOfRoom) {
+        return RoomStorage.getInstance().getDetailsOfRoom(numberOfRoom);
     }
 
-    public String sorting(Comparator comparator1, Comparator comparator2) {
-        List aList = roomStorage.getRooms();
+    public void sorting(Comparator comparator1, Comparator comparator2) {
+        List aList = RoomStorage.getInstance().getRooms();
         Collections.sort(aList, comparator1.thenComparing(comparator2));
-        return roomStorage.getLisOfEmptyRooms();
     }
 
-    public String sorting(Comparator comparator) {
-        List aList = roomStorage.getRooms();
+    public void sorting(Comparator comparator) {
+        List aList = RoomStorage.getInstance().getRooms();
         Collections.sort(aList, comparator);
-        return roomStorage.getLisOfRooms();
     }
 
 }

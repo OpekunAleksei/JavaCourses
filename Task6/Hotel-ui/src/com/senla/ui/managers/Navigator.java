@@ -47,7 +47,7 @@ public class Navigator implements IObserver {
         if (curentMenu != null) {
             this.curentMenu = curentMenu;
             update();
-        }else{
+        } else {
             this.curentMenu = null;
         }
 

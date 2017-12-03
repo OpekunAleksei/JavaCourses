@@ -21,7 +21,7 @@ public class Transfer {
     private Scanner scanner = null;
     private final List<String> list = new ArrayList();
 
-    public List importData(String path) throws FileNotFoundException, IOException {
+    public List<String> importData(String path) throws FileNotFoundException, IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(
                 path))) {
             while ((line = reader.readLine()) != null) {

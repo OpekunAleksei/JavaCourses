@@ -18,9 +18,10 @@ public class Service extends Entity {
     }
 
     public Service(String line) {
-        this.id = Integer.parseInt(line.split(";")[0]);
-        this.category = line.split(";")[1];
-        this.price = Integer.parseInt(line.split(";")[2]);
+        String[] arr = line.split(";");
+        this.id = Integer.parseInt(arr[0]);
+        this.category = arr[1];
+        this.price = Integer.parseInt(arr[2]);
     }
 
     public void setPrice(Integer price) {
@@ -28,7 +29,7 @@ public class Service extends Entity {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

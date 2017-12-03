@@ -5,30 +5,27 @@
  */
 package com.senla.hotel.utils;
 
-import com.danco.training.TextFileWorker;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.logging.Level;
 
 public class Logger {
-    
-    private final ArrayList err;
-    private final TextFileWorker textFileWorker;
-    
-    public Logger() {
-        textFileWorker = new TextFileWorker("D:\\err.txt");
-        this.err = new ArrayList<>();
-    }
-    
+
     public void writeErrToFile(String exception, Exception e) {
         System.err.println(exception);
-        err.add(exception);
-        err.add(e.toString());
-        for (StackTraceElement stackTrace : e.getStackTrace()) {
-            err.add(stackTrace.toString());
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\err.txt"))) {
+            bw.write(exception);
+            bw.newLine();
+            bw.write(e.toString());
+            bw.newLine();
+            for (StackTraceElement stackTrace : e.getStackTrace()) {
+                bw.write(stackTrace.toString());
+                bw.newLine();
+            }
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String[] stringArray;
-        stringArray = Arrays.copyOf(err.toArray(), err.size(), String[].class);        
-        textFileWorker.writeToFile(stringArray);
-        
     }
 }
