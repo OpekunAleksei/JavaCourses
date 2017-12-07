@@ -1,0 +1,10 @@
+Wrong mewnu item
+java.lang.NullPointerException
+com.senla.hotel.facade.HotelAdministrator.readData(HotelAdministrator.java:222)
+com.senla.hotel.facade.HotelAdministrator.<init>(HotelAdministrator.java:56)
+com.senla.hotel.facade.HotelAdministrator.getInstance(HotelAdministrator.java:61)
+com.senla.ui.action.rooms.GetSortEmptyRoomByNumberOfStars.execute(GetSortEmptyRoomByNumberOfStars.java:19)
+com.senla.ui.menu.MenuItem.doAction(MenuItem.java:48)
+com.senla.ui.managers.Navigator.navigate(Navigator.java:33)
+com.senla.ui.facade.MenuController.run(MenuController.java:24)
+com.senla.ui.runner.Runner.main(Runner.java:16)
