@@ -7,21 +7,27 @@ package com.senla.hotel.factory;
 
 import com.senla.hotel.utils.Logger;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+
 
 public class ManagerFactory {
 
     private final Logger logger;
+    private final Map<String, String> injectProperties;
 
-    public ManagerFactory() {
+    public ManagerFactory(Map<String, String> injectProperties) {
+        this.injectProperties = injectProperties;
         logger = new Logger();
     }
 
     public Object getObject(Class managerClass, String path) {
-
-        try {
-            return managerClass.getConstructor(String.class).newInstance(path);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
+      
+        try {      
+            Class someObject = Class.forName(injectProperties.get(managerClass.getName()));      
+            return someObject.getConstructor(String.class).newInstance(path);
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException ex) {
             logger.writeErrToFile("Manager factory broblem", ex);
+
             return null;
         }
     }

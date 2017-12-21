@@ -28,7 +28,7 @@ public class ServiceStorage implements IServiceStorage {
         this.service = new ArrayList<>();
     }
 
-    public static ServiceStorage getInstance() {
+    public static IServiceStorage getInstance() {
         if (serviceStorage == null) {
             serviceStorage = new ServiceStorage() {};
         }

@@ -31,7 +31,7 @@ public class HistoryStorage implements IHistoryStorage{
 
     }
 
-    public static HistoryStorage getInstance() {
+    public static IHistoryStorage getInstance() {
         if (historyStorage == null) {
             historyStorage = new HistoryStorage();
         }

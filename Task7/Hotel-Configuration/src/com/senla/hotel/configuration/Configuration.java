@@ -8,21 +8,33 @@ package com.senla.hotel.configuration;
 import com.senla.hotel.utils.Logger;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 public class Configuration {
 
     private Properties properties;
+    private Properties injectProperties;
     private final Logger logger;
 
     public Configuration() {
         logger = new Logger();
         properties = new Properties();
+        injectProperties = new Properties();
+        try (InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("resources/injectProperties.properties")) {
+            injectProperties.load(is);
+        } catch (IOException ex) {
+            logger.writeErrToFile("Problem with properies file", ex);
+        }
         try (InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("resources/properties.properties")) {
             properties.load(is);
         } catch (IOException ex) {
             logger.writeErrToFile("Problem with properies file", ex);
         }
+    }
+
+    public Map<String, String> getInjectProperties() {
+        return (Map<String, String>) injectProperties.clone();
     }
 
     public Integer getNumberRecordsGuests() {

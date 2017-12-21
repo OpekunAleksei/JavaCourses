@@ -28,7 +28,7 @@ public class GuestStorage implements IGuestStorage {
         this.guest = new ArrayList<>();
     }
 
-    public static GuestStorage getInstance() {
+    public static IGuestStorage getInstance() {
         if (guestStorage == null) {
             guestStorage = new GuestStorage();
         }

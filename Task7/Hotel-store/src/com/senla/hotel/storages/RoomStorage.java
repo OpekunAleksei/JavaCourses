@@ -32,7 +32,7 @@ public class RoomStorage implements IRoomStorage {
 
     }
 
-    public static RoomStorage getInstance() {
+    public static IRoomStorage getInstance() {
         if (roomStorage == null) {
             roomStorage = new RoomStorage();
         }

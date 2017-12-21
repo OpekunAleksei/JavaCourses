@@ -14,13 +14,17 @@ import com.senla.hotel.comparators.GuestComparator;
 import com.senla.hotel.comparators.RoomComparator;
 import com.senla.hotel.comparators.ServiceComparator;
 import com.senla.hotel.configuration.Configuration;
+import com.senla.hotel.entity.Guest;
+import com.senla.hotel.entity.Room;
+import com.senla.hotel.entity.Service;
 import com.senla.hotel.managers.ServiceManager;
 import com.senla.hotel.managers.RoomManager;
 import com.senla.hotel.managers.HistoryManager;
 import com.senla.hotel.managers.GuestManager;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.factory.ManagerFactory;
-import com.senla.hotel.reflection.Reflection;
+import com.senla.hotel.csv.CsvWorker;
+
 import com.senla.hotel.utils.DateConverter;
 import com.senla.hotel.utils.Logger;
 import com.senla.hotel.utils.TextWorker;
@@ -39,24 +43,24 @@ public class HotelAdministrator implements IHotelAdministrator {
     private final DateConverter dateConverter;
     private static HotelAdministrator hotelAdministrator;
     private static Configuration configuration;
-    private final Reflection reflection;
+    private final CsvWorker csvWorker;
     private final ManagerFactory managerFactory;
 
     private HotelAdministrator() {
-        managerFactory = new ManagerFactory();
         configuration = new Configuration();
+        managerFactory = new ManagerFactory(configuration.getInjectProperties());
         textWorker = new TextWorker();
         dateConverter = new DateConverter();
         logger = new Logger();
-        roomManager =  (IRoomManager)managerFactory.getObject(RoomManager.class,(configuration.getRoomPath()));
-        guestManager = (IGuestManager)managerFactory.getObject(GuestManager.class,(configuration.getGuestPath()));
-        serviceManager = (IServiceManager)managerFactory.getObject(ServiceManager.class,(configuration.getServicePath()));
-        historyManager = (IHistoryManager)managerFactory.getObject(HistoryManager.class,(configuration.getHistoryPath()));
-        reflection = new Reflection(configuration.getCsvPath());
+        roomManager = (IRoomManager) managerFactory.getObject(IRoomManager.class, (configuration.getRoomPath()));
+        guestManager = (IGuestManager) managerFactory.getObject(IGuestManager.class, (configuration.getGuestPath()));
+        serviceManager = (IServiceManager) managerFactory.getObject(IServiceManager.class, (configuration.getServicePath()));
+        historyManager = (IHistoryManager) managerFactory.getObject(IHistoryManager.class, (configuration.getHistoryPath()));
+        csvWorker = new CsvWorker(configuration.getCsvPath());
         readData();
     }
 
-    public static HotelAdministrator getInstance() {
+    public static IHotelAdministrator getInstance() {
         if (hotelAdministrator == null) {
             hotelAdministrator = new HotelAdministrator();
         }
@@ -120,7 +124,7 @@ public class HotelAdministrator implements IHotelAdministrator {
     @Override
     public void importRooms() {
         try {
-            roomManager.setImportRooms(reflection.importRoom());
+            roomManager.setImportRooms(csvWorker.importData(Room.class));
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ParseException e) {
             logger.writeErrToFile("Problem with reflection ", e);
@@ -130,7 +134,7 @@ public class HotelAdministrator implements IHotelAdministrator {
     @Override
     public void exportRooms() {
         try {
-            reflection.exportData(roomManager.getRooms());
+            csvWorker.exportData(roomManager.getRooms());
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | IOException ex) {
             logger.writeErrToFile("Problem with reflection", ex);
         }
@@ -140,7 +144,7 @@ public class HotelAdministrator implements IHotelAdministrator {
     @Override
     public void importServices() {
         try {
-            serviceManager.setImportServices(reflection.importService());
+            serviceManager.setImportServices(csvWorker.importData(Service.class));
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ParseException e) {
             logger.writeErrToFile("Problem with reflection ", e);
@@ -151,7 +155,7 @@ public class HotelAdministrator implements IHotelAdministrator {
     @Override
     public void exportServices() {
         try {
-            reflection.exportData(serviceManager.getServices());
+            csvWorker.exportData(serviceManager.getServices());
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | IOException ex) {
             logger.writeErrToFile("Problem with reflection", ex);
         }
@@ -160,7 +164,7 @@ public class HotelAdministrator implements IHotelAdministrator {
     @Override
     public void importGuests() {
         try {
-            guestManager.setImpotrGuests(reflection.importGuest());
+            guestManager.setImpotrGuests(csvWorker.importData(Guest.class));
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ParseException e) {
             logger.writeErrToFile("Problem with reflection ", e);
@@ -171,7 +175,7 @@ public class HotelAdministrator implements IHotelAdministrator {
     @Override
     public void exportGuests() {
         try {
-            reflection.exportData(guestManager.getGuests());
+            csvWorker.exportData(guestManager.getGuests());
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | IOException ex) {
             logger.writeErrToFile("Problem with reflection", ex);
         }
