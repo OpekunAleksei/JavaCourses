@@ -22,7 +22,7 @@ public class Request {
 
     private Request() throws IOException {
 
-        this.socket = new Socket("Алексей-ПК", 8071);
+        this.socket = new Socket("user-ПК", 8071);
         this.br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.ps = new PrintStream(socket.getOutputStream());
     }

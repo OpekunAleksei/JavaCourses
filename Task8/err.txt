@@ -1,9 +1,5 @@
-Wrong input data
-java.util.InputMismatchException
-java.util.Scanner.throwFor(Scanner.java:864)
-java.util.Scanner.next(Scanner.java:1485)
-java.util.Scanner.nextInt(Scanner.java:2117)
-java.util.Scanner.nextInt(Scanner.java:2076)
-com.senla.ui.utils.TextWorker.getIntegerInput(TextWorker.java:66)
-com.senla.ui.facade.MenuController.run(MenuController.java:22)
+Wrong mewnu item
+java.lang.NullPointerException
+com.senla.ui.managers.Navigator.navigate(Navigator.java:33)
+com.senla.ui.facade.MenuController.run(MenuController.java:30)
 com.senla.ui.runner.Runner.main(Runner.java:17)

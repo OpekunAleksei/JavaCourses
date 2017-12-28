@@ -28,6 +28,7 @@ public class Server {
                 Socket sock = serv.accept();
                 ServerThread server = new ServerThread(sock, hotelAdministrator);
                 server.start();
+                
             }
         } catch (IOException e) {
 

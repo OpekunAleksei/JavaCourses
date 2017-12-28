@@ -31,11 +31,11 @@ public class ServerThread extends Thread {
         String str;
         try {
             while ((str = is.readLine()) != null) {
-
                 os.println(dataParser.setInputData(str));
 
             }
         } catch (IOException e) {
+
         } finally {
             disconnect();
         }

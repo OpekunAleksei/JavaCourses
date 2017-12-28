@@ -21,64 +21,66 @@ public class Serialization {
     private final Logger logger = new Logger();
 
     public void serializeGuest(String path, List<Guest> guest) {
-
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(guest);
-            objectOutputStream.flush();
-        } catch (IOException ex) {
-            logger.writeErrToFile("Dont find file", ex);
+        synchronized (Serialization.class) {
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(path);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(guest);
+                objectOutputStream.flush();
+            } catch (IOException ex) {
+                logger.writeErrToFile("Dont find file", ex);
+            }
         }
-
     }
 
     public void serializeRoom(String path, List<Room> room) {
-
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(room);
-            objectOutputStream.flush();
-        } catch (IOException ex) {
-            logger.writeErrToFile("Dont find file", ex);
+        synchronized (Serialization.class) {
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(path);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(room);
+                objectOutputStream.flush();
+            } catch (IOException ex) {
+                logger.writeErrToFile("Dont find file", ex);
+            }
         }
-
     }
 
     public void serializeService(String path, List<Service> service) {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-                objectOutputStream.writeObject(service);
-                objectOutputStream.flush();
+        synchronized (Serialization.class) {
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(path);
+                try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+                    objectOutputStream.writeObject(service);
+                    objectOutputStream.flush();
+                }
+            } catch (IOException ex) {
+                logger.writeErrToFile("Dont find file", ex);
             }
-        } catch (IOException ex) {
-            logger.writeErrToFile("Dont find file", ex);
         }
-
     }
 
     public void serializeHistory(String path, List<History> history) {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-                objectOutputStream.writeObject(history);
-                objectOutputStream.flush();
+        synchronized (Serialization.class) {
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(path);
+                try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+                    objectOutputStream.writeObject(history);
+                    objectOutputStream.flush();
+                }
+            } catch (IOException ex) {
+                logger.writeErrToFile("Dont find file", ex);
             }
-        } catch (IOException ex) {
-            logger.writeErrToFile("Dont find file", ex);
         }
-
     }
 
     public Object deSerialize(String path) {
-
-           
-            try ( FileInputStream fis = new FileInputStream(path);ObjectInputStream oin = new ObjectInputStream(fis)) {
+        synchronized (Serialization.class) {
+            try (FileInputStream fis = new FileInputStream(path); ObjectInputStream oin = new ObjectInputStream(fis)) {
                 return oin.readObject();
             } catch (IOException | ClassNotFoundException ex) {
-                        return null;
+                return null;
             }
+        }
     }
 }
