@@ -1,5 +1,0 @@
-Wrong mewnu item
-java.lang.NullPointerException
-com.senla.ui.managers.Navigator.navigate(Navigator.java:33)
-com.senla.ui.facade.MenuController.run(MenuController.java:30)
-com.senla.ui.runner.Runner.main(Runner.java:17)

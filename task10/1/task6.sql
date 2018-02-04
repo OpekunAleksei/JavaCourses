@@ -1,0 +1,1 @@
+SELECT product.marker,speed FROM laptop ,product  where laptop.model=product.model and ram>=20;

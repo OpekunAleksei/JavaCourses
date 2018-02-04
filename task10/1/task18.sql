@@ -1,0 +1,1 @@
+SELECT DISTINCT product.marker, price FROM product,printer where product.model=printer.model and printer.color ='y' and printer.price=(select min(price)from  printer);

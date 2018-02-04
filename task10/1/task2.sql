@@ -1,0 +1,1 @@
+select distinct marker from product WHERE type='printer';
