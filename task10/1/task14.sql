@@ -1,1 +1,0 @@
-select speed ,Avg(price) from pc group by speed;

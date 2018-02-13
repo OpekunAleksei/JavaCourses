@@ -1,1 +1,0 @@
-select marker ,price from pc,product where product.model=pc.model and product.type='pc' group by marker having max(price);
