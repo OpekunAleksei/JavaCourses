@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface IGenericDao<T extends Entity> {
 
-    public List<T> getAll();
+    public List<T> getAll(String sotName);
 
-    public T getByID(Integer id);
+    public T getById(Integer id);
 
     public void update(T entity);
 

@@ -5,6 +5,7 @@
  */
 package com.senla.ui.action.rooms;
 
+import com.senla.hotel.enums.SortName;
 import com.senla.ui.utils.TextWorker;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
@@ -15,8 +16,8 @@ public class GetSortRoomByPrice implements IAction {
 
     @Override
     public void execute() {
-
-        TextWorker.getInstance().println(Request.getInstance().pull("getSortRoomsByPrice"));
+TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListOfRooms", TextWorker.getInstance().createData(SortName.price.toString(),Boolean.TRUE.toString()))));
+        
 
     }
 }

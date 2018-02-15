@@ -13,8 +13,6 @@ public interface IHotelAdministrator {
 
     public void changeCapacity(String numberOfRoom, String capacity);
 
-  
-
     public void createRoom(String number, String price, String capacity, String numberOfStars, String status);
 
     public void copyRoom(String numberOfRoom, String newNumber);
@@ -65,25 +63,11 @@ public interface IHotelAdministrator {
 
     public String getDetailsOfRoom(String numberOfRoom);
 
-    public String getSortRoomsByCapacity();
-
-    public String getSortRoomsByPrice();
-
-    public String getSortRoomsByNumberOfStars();
-
-    public String getSortEmptyRoomsByCapacity();
-
-    public String getSortEmptyRoomsByPrice();
-
-    public String getSortEmptyRoomsByNumberOfStars();
-
-    public String getSortGuestByDateOfDeparture();
-
-    public String getSortListServiceGuestByPrice(String guestId, String numberRoom);
-
-    public String getSortListServiceGuestByCategory(String guestId, String numberRoom);
-
-    public String getSortGuestByName();
+    public String getListServiceOfGuest(String guestId, String numberRoom, String name);
 
     public String getRoomAbility();
-}
+
+    public String getListGuest(String name);
+
+    public  String getListOfRooms(String name, String busy) ;
+    }

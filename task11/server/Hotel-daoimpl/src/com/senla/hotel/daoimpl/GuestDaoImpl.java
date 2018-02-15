@@ -8,6 +8,7 @@ package com.senla.hotel.daoimpl;
 import com.senla.hotel.api.dao.IGuestDao;
 import com.senla.hotel.dbconnection.DbConnection;
 import com.senla.hotel.entity.Guest;
+import com.senla.hotel.enums.SortName;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,33 +18,54 @@ import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-
 public class GuestDaoImpl implements IGuestDao {
 
     private final DbConnection dbConnection = DbConnection.getInstance();
-    private static Logger logger = Logger.getLogger(GuestDaoImpl.class);
+    private static final Logger logger = Logger.getLogger(GuestDaoImpl.class);
+
     public GuestDaoImpl() {
 
     }
 
     @Override
-    public List<Guest> getAll() {
+    public Guest createMiracleGuest(String name, Date arrivalDate, Date dateOfDeparture) {
+        Guest miracleGuest = new Guest(name, arrivalDate, dateOfDeparture, null);
+
+        return miracleGuest;
+    }
+    @Override
+    public List<Guest> getById(List<Integer> id) {
+        List<Guest> guests = new ArrayList();
+        for (Integer id1 : id) {
+            guests.add(getById(id1));
+        }
+        return guests;
+    }
+    @Override
+    public List<Guest> getAll(String sortName) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
             List<Guest> list = new ArrayList<>();
+            ResultSet rs;
+            if ("zero".equals(sortName)) {
+                rs = statement.executeQuery(
+                        "SELECT * FROM guest");
+            } else {
+                rs = statement.executeQuery(
+                        "SELECT * FROM guest order by " + sortName);
+            }
 
-            ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM guest");
             while (rs.next()) {
                 Guest guest = new Guest(rs.getString("name"), rs.getDate("arrivalDate"), rs.getDate("departureDate"), rs.getInt("idguest"));
                 list.add(guest);
             }
             return list;
         } catch (SQLException ex) {
-                 logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
             return null;
         }
     }
-@Override
+
+    @Override
     public void setImportGuests(List<Guest> list) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
 
@@ -57,16 +79,17 @@ public class GuestDaoImpl implements IGuestDao {
                 }
             }
         } catch (SQLException ex) {
-         logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
-    }
-@Override
-    public Integer getIdByNumberOnlist(Integer number) {
-        return getAll().get(number).getId();
     }
 
     @Override
-    public Guest getByID(Integer id) {
+    public Integer getIdByNumberOnlist(Integer number) {
+        return getAll(SortName.zero.toString()).get(number).getId();
+    }
+
+    @Override
+    public Guest getById(Integer id) {
         try (Statement statement = dbConnection.getConnection().createStatement();) {
             Guest guest = null;
             ResultSet rs = statement.executeQuery(
@@ -76,7 +99,7 @@ public class GuestDaoImpl implements IGuestDao {
             }
             return guest;
         } catch (SQLException ex) {
-                logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
             return null;
         }
     }
@@ -92,7 +115,7 @@ public class GuestDaoImpl implements IGuestDao {
                 ps.executeUpdate();
             }
         } catch (SQLException ex) {
-        logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
     }
 
@@ -107,25 +130,8 @@ public class GuestDaoImpl implements IGuestDao {
                 ps.executeUpdate();
             }
         } catch (SQLException ex) {
-                 logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
     }
-@Override
-    public List<Guest> getSortingList(String name) {
-        try (Statement statement = dbConnection.getConnection().createStatement();) {
-            List<Guest> list = new ArrayList<>();
-            ResultSet result1 = statement.executeQuery(
-                    "SELECT * FROM guest order by " + name);
-            while (result1.next()) {
-                Guest guest = new Guest(result1.getString("name"), result1.getDate("arrivalDate"), result1.getDate("departureDate"), result1.getInt("idguest"));
-                list.add(guest);
-            }
-            return list;
-        } catch (SQLException ex) {
-                logger.error(new Date() + " " + ex.getMessage());
-            return null;
-        }
-    }
-
 
 }

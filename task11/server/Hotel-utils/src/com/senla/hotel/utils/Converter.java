@@ -7,10 +7,7 @@ package com.senla.hotel.utils;
 
 import com.senla.hotel.enums.RoomStatus;
 
-/**
- *
- * @author user
- */
+
 public class Converter {
 
     public RoomStatus getStatus(String name) {
@@ -20,12 +17,10 @@ public class Converter {
             return RoomStatus.serviced;
         }
     }
-
+ public Boolean booleanConverter(String name) {
+        return "true".equals(name);
+    }
     public Boolean booleanConverter(Integer busy) {
-        if (busy == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return busy == 0;
     }
 }

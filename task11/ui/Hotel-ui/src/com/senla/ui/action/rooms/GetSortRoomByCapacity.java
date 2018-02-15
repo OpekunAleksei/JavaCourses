@@ -5,6 +5,7 @@
  */
 package com.senla.ui.action.rooms;
 
+import com.senla.hotel.enums.SortName;
 import com.senla.ui.utils.TextWorker;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
@@ -16,7 +17,7 @@ public class GetSortRoomByCapacity implements IAction {
     @Override
     public void execute() {
 
-        TextWorker.getInstance().println(Request.getInstance().pull("getSortRoomsByCapacity"));
+ TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListOfRooms", TextWorker.getInstance().createData(SortName.capacity.toString(),Boolean.TRUE.toString()))));
 
     }
 }

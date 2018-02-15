@@ -23,14 +23,60 @@ public class RoomDaoImpl implements IRoomDao {
 
     private final DbConnection dbConnection = DbConnection.getInstance();
     private final Converter sc = new Converter();
-    private static Logger logger = Logger.getLogger(GuestDaoImpl.class);
+    private static Logger logger = Logger.getLogger(RoomDaoImpl.class);
+    private Boolean empty;
+
+    public RoomDaoImpl() {
+
+        this.empty = false;
+    }
 
     @Override
-    public List<Room> getAll() {
+    public void setEmpty(Boolean empty) {
+        this.empty = empty;
+    }
+
+    @Override
+    public List<Room> getMiracleRoomList(Integer id) {
+        List<Room> miracleList = new ArrayList();
+        miracleList.add(getById(id));
+        return miracleList;
+    }
+
+    @Override
+    public Room createMiracleRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status) {
+        Room miracleRoom = new Room(number, price, capacity, numberOfStars, null, status, false);
+        return miracleRoom;
+    }
+
+    @Override
+    public List<Room> getById(List<Integer> id) {
+        List<Room> rooms = new ArrayList();
+        for (Integer id1 : id) {
+            rooms.add(getById(id1));
+        }
+        return rooms;
+    }
+
+    @Override
+    public List<Room> getAll(String sortName) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
             List<Room> list = new ArrayList<>();
-            ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM room");
+            ResultSet rs;
+            String condition;
+            if (empty == false) {
+                condition = "where busy=1 ";
+            } else {
+                condition = "";
+            }
+            if ("zero".equals(sortName)) {
+                rs = statement.executeQuery(
+                        "SELECT * FROM room " + condition);
+            } else {
+                rs = statement.executeQuery(
+                        "SELECT * FROM room " + condition + "order by " + sortName);
+            }
+
             while (rs.next()) {
                 Room room = new Room(rs.getInt("number"), rs.getInt("price"), rs.getInt("capacity"), rs.getInt("numberofstars"), rs.getInt("idroom"), sc.getStatus(rs.getString("status")), sc.booleanConverter(rs.getInt("busy")));
                 list.add(room);
@@ -41,7 +87,8 @@ public class RoomDaoImpl implements IRoomDao {
             return null;
         }
     }
- @Override
+
+    @Override
     public Integer getNumberEmptyRoom() {
 
         try (Statement statement = dbConnection.getConnection().createStatement()) {
@@ -56,11 +103,12 @@ public class RoomDaoImpl implements IRoomDao {
             return null;
         }
     }
- @Override
+
+    @Override
     public void copyRoom(Integer numberOfRoom, Integer newNumber) {
         Room copyRoom;
         try {
-            copyRoom = (Room) (getByID(numberOfRoom)).clone();
+            copyRoom = (Room) (getById(numberOfRoom)).clone();
             copyRoom.setNumber(newNumber);
             copyRoom.setBusy(Boolean.FALSE);
             create(copyRoom);
@@ -68,7 +116,8 @@ public class RoomDaoImpl implements IRoomDao {
             logger.error(new Date() + " " + ex.getMessage());
         }
     }
-@Override
+
+    @Override
     public void changePartOfRoom(Integer id, Object changeVariable, String name) {
         try {
 
@@ -91,7 +140,8 @@ public class RoomDaoImpl implements IRoomDao {
             logger.error(new Date() + " " + ex.getMessage());
         }
     }
- @Override
+
+    @Override
     public List<Room> getSortingListOfRooms(String name, Boolean empty) {
 
         try (Statement statement = dbConnection.getConnection().createStatement()) {
@@ -116,7 +166,8 @@ public class RoomDaoImpl implements IRoomDao {
             return null;
         }
     }
- @Override
+
+    @Override
     public void setImportRooms(List<Room> list) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
 
@@ -135,14 +186,15 @@ public class RoomDaoImpl implements IRoomDao {
         }
 
     }
- @Override
+
+    @Override
     public Integer getIdByNumberOnlist(Integer number) {
 
-        return getAll().get(number).getNumber();
+        return getAll(null).get(number).getNumber();
     }
 
     @Override
-    public Room getByID(Integer id) {
+    public Room getById(Integer id) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
             Room room = null;
             ResultSet rs = statement.executeQuery(

@@ -12,10 +12,7 @@ import com.senla.hotel.entity.Service;
 import java.util.Date;
 import java.util.List;
 
-
-
-
-public interface IHistoryDao  {
+public interface IHistoryDao {
 
     public void create(History history);
 
@@ -29,10 +26,12 @@ public interface IHistoryDao  {
 
     public Boolean checForPresense(Room room);
 
-    public List<Guest> getListLeftGuest(Room room, Integer count);
+    public List<Integer> getListLeftGuest(Room room, Integer count);
 
-    public List<Room> getRoomsAvalableByDate(Date date);
+    public List<Integer> getIdRoomsAvalableByDate(Date date);
 
-    public List<Service> getSortingServices(Room room, Guest guest, String sort);
-    
+    public List<Integer> getIdSortingServices(Room room, Guest guest, String sort);
+
+    public History getMiracleHistory(Guest guest, Room room);
+
 }

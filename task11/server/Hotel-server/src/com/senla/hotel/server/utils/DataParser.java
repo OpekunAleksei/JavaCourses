@@ -7,9 +7,9 @@ package com.senla.hotel.server.utils;
 
 import com.senla.hotel.api.facade.IHotelAdministrator;
 
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 public class DataParser {
 
     private final IHotelAdministrator hotelAdministrator;
-    private final Logger logger =  Logger.getLogger(DataParser.class);
+    private final Logger logger = Logger.getLogger(DataParser.class);
 
     public DataParser(IHotelAdministrator hotelAdministrator) {
         this.hotelAdministrator = hotelAdministrator;
@@ -27,6 +27,7 @@ public class DataParser {
     private String[] parseData = null;
 
     public String setInputData(String data) {
+
         try {
             String result = null;
             String[] arr = data.split("/");
@@ -38,7 +39,7 @@ public class DataParser {
             }
             return result;
         } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
-              logger.error(new Date() + " " + e.getMessage());
+            logger.error(new Date() + " " + e.getMessage());
             return null;
         }
     }

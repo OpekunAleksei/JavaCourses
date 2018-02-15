@@ -13,9 +13,10 @@ import com.senla.hotel.daoimpl.ServiceDaoImpl;
 
 public class ServiceManager implements IServiceManager {
 
-    public final IServiceDao serviceDao = new ServiceDaoImpl();
+    private final IServiceDao serviceDao;
 
     public ServiceManager() {
+        this.serviceDao = new ServiceDaoImpl();
 
     }
 
@@ -33,19 +34,18 @@ public class ServiceManager implements IServiceManager {
     @Override
     public List<Service> getServices() {
 
-        return serviceDao.getAll();
+        return serviceDao.getAll(null);
     }
 
     @Override
     public void createService(Integer price, String category) {
-        Service service = new Service(price, category, null);
-        serviceDao.create(service);
+        serviceDao.create(serviceDao.getMiracleService(price, category));
 
     }
 
     @Override
     public Service getService(Integer serviceId) {
-        return serviceDao.getByID(serviceId);
+        return serviceDao.getById(serviceId);
     }
 
     @Override

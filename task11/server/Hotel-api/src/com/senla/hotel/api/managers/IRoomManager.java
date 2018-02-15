@@ -17,7 +17,6 @@ public interface IRoomManager {
 
     public Integer getIdByNumberOnList(Integer number);
 
-
     public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status);
 
     public void changeRoomPrice(Integer numberOfRoom, Integer price);
@@ -38,6 +37,8 @@ public interface IRoomManager {
 
     public List<Room> getDetailsOfRoom(Integer numberOfRoom);
 
-    public List<Room> sorting(String name,Boolean busy);
+    public List<Room> getListRooms(String name, String busy);
+
+
 
 }

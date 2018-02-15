@@ -20,7 +20,6 @@ public interface IGuestManager {
 
     public Guest getGuestByID(Integer id);
 
-    public List<Guest> sorting(String name);
+    public List<Guest> getListOfGuest(String name);
 
-    public List<Guest> getGuests();
 }

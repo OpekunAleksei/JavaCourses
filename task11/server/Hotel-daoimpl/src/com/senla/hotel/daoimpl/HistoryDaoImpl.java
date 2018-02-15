@@ -23,19 +23,17 @@ import org.apache.log4j.Logger;
 public class HistoryDaoImpl implements IHistoryDao {
 
     private final DbConnection dbConnection = DbConnection.getInstance();
-    private static Logger logger = Logger.getLogger(GuestDaoImpl.class);
+    private static Logger logger = Logger.getLogger(HistoryDaoImpl.class);
 
     @Override
-    public List<Service> getSortingServices(Room room, Guest guest, String sort) {
+    public List<Integer> getIdSortingServices(Room room, Guest guest, String sort) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
-            List<Service> list = new ArrayList();
-            ServiceDaoImpl serviceDao = new ServiceDaoImpl();
+            List<Integer> list = new ArrayList();
 
             ResultSet rs = statement.executeQuery(
                     "SELECT service.idservice from service,services where idhistory =(SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0) and service.idService=services.idService order by " + sort);
             while (rs.next()) {
-
-                list.add(serviceDao.getByID(rs.getInt("idservice")));
+                list.add(rs.getInt("idservice"));
             }
             return list;
         } catch (SQLException ex) {
@@ -48,7 +46,7 @@ public class HistoryDaoImpl implements IHistoryDao {
     public void create(History entity) {
         try {
             try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("insert into history(idRoom,idGuest,enable) values (?,?,?)")) {
-                dbConnection.getConnection().setAutoCommit(false);
+
                 ps.setInt(1, entity.getRoom().getId());
                 ps.setInt(2, entity.getGuest().getId());
                 ps.setBoolean(3, false);
@@ -57,12 +55,7 @@ public class HistoryDaoImpl implements IHistoryDao {
             }
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
-        } finally {
-            try {
-                dbConnection.getConnection().rollback();
-            } catch (SQLException ex) {
-                logger.error(new Date() + " " + ex.getMessage());
-            }
+
         }
     }
 
@@ -139,14 +132,14 @@ public class HistoryDaoImpl implements IHistoryDao {
     }
 
     @Override
-    public List<Guest> getListLeftGuest(Room room, Integer count) {
-        GuestDaoImpl guestDao = new GuestDaoImpl();
-        List<Guest> list = new ArrayList();
+    public List<Integer> getListLeftGuest(Room room, Integer count) {
+        List<Integer> list = new ArrayList();
         try (Statement statement = dbConnection.getConnection().createStatement()) {
             ResultSet rs = statement.executeQuery(
-                    "SELECT idguest FROM history where enable =1 and idroom=" + room.getId() + " limit" + count);
+                    "SELECT idguest FROM history where enable =1 and idroom =" + room.getId() + " limit " + count);
             while (rs.next()) {
-                list.add(guestDao.getByID(rs.getInt("idguest")));
+
+                list.add(rs.getInt("idguest"));
             }
             return list;
         } catch (SQLException ex) {
@@ -156,14 +149,14 @@ public class HistoryDaoImpl implements IHistoryDao {
     }
 
     @Override
-    public List<Room> getRoomsAvalableByDate(Date date) {
-        RoomDaoImpl roomDao = new RoomDaoImpl();
-        List<Room> list = new ArrayList();
+    public List<Integer> getIdRoomsAvalableByDate(Date date) {
+
+        List<Integer> list = new ArrayList();
         try (Statement statement = dbConnection.getConnection().createStatement()) {
             ResultSet rs = statement.executeQuery(
                     "SELECT idroom FROM history,guest where enable = 0 and " + new java.sql.Date(date.getTime()) + "  between (guest.departuredate and guest.arrivaldate) and guest.idGuest=history.idguest ");
             while (rs.next()) {
-                list.add(roomDao.getByID(rs.getInt("idroom")));
+                list.add(rs.getInt("idroom"));
             }
             return list;
         } catch (SQLException ex) {
@@ -188,6 +181,14 @@ public class HistoryDaoImpl implements IHistoryDao {
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
+    }
+
+    @Override
+    public History getMiracleHistory(Guest guest, Room room) {
+        History miracleHistory = new History();
+        miracleHistory.setGuest(guest);
+        miracleHistory.setRoom(room);
+        return miracleHistory;
     }
 
 }

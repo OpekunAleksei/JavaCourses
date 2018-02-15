@@ -20,9 +20,10 @@ import org.apache.log4j.Logger;
 public class ServiceDaoImpl implements IServiceDao {
 
     private final DbConnection dbConnection = DbConnection.getInstance();
-    private static Logger logger = Logger.getLogger(GuestDaoImpl.class);
+    private static Logger logger = Logger.getLogger(ServiceDaoImpl.class);
+
     @Override
-    public List<Service> getAll() {
+    public List<Service> getAll(String sad) {
         try (Statement statement = dbConnection.getConnection().createStatement()) {
             List<Service> list = new ArrayList<>();
             ResultSet rs = statement.executeQuery(
@@ -33,12 +34,13 @@ public class ServiceDaoImpl implements IServiceDao {
             }
             return list;
         } catch (SQLException ex) {
-               logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
             return null;
         }
 
     }
-@Override
+
+    @Override
     public void changePrice(Integer id, Integer price) {
         try {
 
@@ -49,12 +51,13 @@ public class ServiceDaoImpl implements IServiceDao {
             }
         } catch (SQLException ex) {
 
-           logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
     }
-@Override
+
+    @Override
     public void setImportServices(List<Service> list) {
-        try(Statement statement = dbConnection.getConnection().createStatement()) {
+        try (Statement statement = dbConnection.getConnection().createStatement()) {
             for (int i = 0; i < list.size(); i++) {
                 ResultSet rs = statement.executeQuery(
                         "SELECT category FROM service where idservice =" + list.get(i).getId());
@@ -66,18 +69,19 @@ public class ServiceDaoImpl implements IServiceDao {
 
             }
         } catch (SQLException ex) {
-      logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
 
     }
-@Override
+
+    @Override
     public Integer getIdByNumberOnlist(Integer number) {
-        return getAll().get(number).getId();
+        return getAll(null).get(number).getId();
     }
 
     @Override
-    public Service getByID(Integer id) {
-        try (  Statement statement = dbConnection.getConnection().createStatement()){
+    public Service getById(Integer id) {
+        try (Statement statement = dbConnection.getConnection().createStatement()) {
             Service service = null;
             ResultSet rs = statement.executeQuery(
                     "SELECT * FROM service where idservice =" + id);
@@ -86,7 +90,7 @@ public class ServiceDaoImpl implements IServiceDao {
             }
             return service;
         } catch (SQLException ex) {
-      logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
             return null;
         }
     }
@@ -101,7 +105,7 @@ public class ServiceDaoImpl implements IServiceDao {
                 ps.executeUpdate();
             }
         } catch (SQLException ex) {
-                 logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
     }
 
@@ -116,6 +120,21 @@ public class ServiceDaoImpl implements IServiceDao {
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
+    }
+
+    @Override
+    public List<Service> getById(List<Integer> id) {
+        List<Service> services = new ArrayList();
+        for (Integer id1 : id) {
+            services.add(getById(id1));
+        }
+        return services;
+    }
+
+    @Override
+    public Service getMiracleService(Integer price, String category) {
+        Service miracleService = new Service(price, category, null);
+        return miracleService;
     }
 
 }

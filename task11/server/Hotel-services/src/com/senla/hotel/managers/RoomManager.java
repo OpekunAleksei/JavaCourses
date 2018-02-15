@@ -11,13 +11,17 @@ import com.senla.hotel.enums.RoomStatus;
 import java.util.List;
 import com.senla.hotel.api.managers.IRoomManager;
 import com.senla.hotel.daoimpl.RoomDaoImpl;
-import java.util.ArrayList;
+import com.senla.hotel.utils.Converter;
+
 
 public class RoomManager implements IRoomManager {
 
-    public IRoomDao roomDao = new RoomDaoImpl();
+    private final IRoomDao roomDao;
+    private final Converter converter;
 
     public RoomManager() {
+        this.converter = new Converter();
+        this.roomDao = new RoomDaoImpl();
 
     }
 
@@ -29,7 +33,8 @@ public class RoomManager implements IRoomManager {
 
     @Override
     public List<Room> getRooms() {
-        return roomDao.getAll();
+        roomDao.setEmpty(Boolean.TRUE);
+        return roomDao.getAll(null);
 
     }
 
@@ -42,12 +47,12 @@ public class RoomManager implements IRoomManager {
 
     @Override
     public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status) {
-        Room room = new Room(number, price, capacity, numberOfStars, null, status, false);
-        roomDao.create(room);
+      roomDao.create(roomDao.createMiracleRoom(number, price, capacity, numberOfStars, status));
     }
 
     @Override
     public void changeRoomPrice(Integer numberOfRoom, Integer price) {
+            
         roomDao.changePartOfRoom(numberOfRoom, price, "price");
 
     }
@@ -78,7 +83,7 @@ public class RoomManager implements IRoomManager {
     }
 
     @Override
-    public void copyRoom(Integer numberOfRoom,  Integer newNumber) {
+    public void copyRoom(Integer numberOfRoom, Integer newNumber) {
         roomDao.copyRoom(numberOfRoom, newNumber);
 
     }
@@ -91,22 +96,22 @@ public class RoomManager implements IRoomManager {
 
     @Override
     public Room getRoom(Integer numberOfRoom) {
-        return roomDao.getByID(numberOfRoom);
+        return roomDao.getById(numberOfRoom);
 
     }
 
     @Override
-    public List<Room> getDetailsOfRoom(Integer id) {
-        List<Room> room = new ArrayList();
-        room.add(roomDao.getByID(id));
-        return room;
+    public List<Room> getDetailsOfRoom(Integer id) {      
+        return roomDao.getMiracleRoomList(id);
 
     }
 
     @Override
-    public List<Room> sorting(String name, Boolean busy) {
-
-        return roomDao.getSortingListOfRooms(name, busy);
+    public List<Room> getListRooms(String name, String busy) {
+        roomDao.setEmpty(converter.booleanConverter(busy));
+        return roomDao.getAll(name);
     }
+
+
 
 }

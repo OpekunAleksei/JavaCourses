@@ -5,6 +5,7 @@
  */
 package com.senla.ui.action.guest;
 
+import com.senla.hotel.enums.SortName;
 import com.senla.ui.utils.TextWorker;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
@@ -16,6 +17,6 @@ public class GetSortGuestByDateOfDeparture implements IAction {
     @Override
     public void execute() {
 
-        TextWorker.getInstance().println(Request.getInstance().pull("getSortGuestByDateOfDeparture"));
+        TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListGuest", TextWorker.getInstance().createData(SortName.departuredate.toString()))));
     }
 }

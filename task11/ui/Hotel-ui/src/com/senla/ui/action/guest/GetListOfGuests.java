@@ -5,16 +5,17 @@
  */
 package com.senla.ui.action.guest;
 
+import com.senla.hotel.enums.SortName;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
 import com.senla.ui.utils.TextWorker;
 
+public class GetListOfGuests implements IAction {
 
-public class GetListOfGuests implements IAction{
-        @Override
+    @Override
     public void execute() {
 
-        TextWorker.getInstance().println(Request.getInstance().pull("getListOfGuests"));
+        TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListGuest", TextWorker.getInstance().createData(SortName.zero.toString()))));
 
     }
 }

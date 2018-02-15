@@ -14,9 +14,10 @@ import com.senla.hotel.daoimpl.GuestDaoImpl;
 
 public class GuestManager implements IGuestManager {
 
-    public IGuestDao guestDao = new GuestDaoImpl();
+    private final IGuestDao guestDao;
 
     public GuestManager() {
+        this.guestDao = new GuestDaoImpl();
 
     }
 
@@ -33,25 +34,20 @@ public class GuestManager implements IGuestManager {
     @Override
     public void createGuest(String name, Date arrivalDate, Date dateOfDeparture) {
 
-        Guest guest = new Guest(name, arrivalDate, dateOfDeparture, null);
-        guestDao.create(guest);
+        guestDao.create(guestDao.createMiracleGuest(name, arrivalDate, dateOfDeparture));
 
     }
 
     @Override
     public Guest getGuestByID(Integer id) {
-        return guestDao.getByID(id);
+        return guestDao.getById(id);
 
     }
 
     @Override
-    public List<Guest> sorting(String name) {
-
-        return guestDao.getSortingList(name);
+    public List<Guest> getListOfGuest(String name) {
+        return guestDao.getAll(name);
     }
 
-    @Override
-    public List<Guest> getGuests() {
-        return guestDao.getAll();
-    }
+ 
 }

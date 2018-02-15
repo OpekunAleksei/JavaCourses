@@ -8,6 +8,7 @@ package com.senla.hotel.api.managers;
 import com.senla.hotel.entity.Guest;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
+import java.sql.SQLException;
 
 import java.util.Date;
 import java.util.List;
@@ -15,9 +16,9 @@ import java.util.List;
 public interface IHistoryManager {
 
 
-    public void settleInRoom(Guest guest, Room room);
+    public void settleInRoom(Guest guest, Room room,IRoomManager roomManager)throws SQLException;
 
-    public void evictedFromRoom(Guest guest, Room room);
+    public void evictedFromRoom(Guest guest, Room room,IRoomManager roomManager)throws SQLException;
 
     public void addServiceToGuest(Service service, Guest guest, Room room);
 
