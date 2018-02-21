@@ -5,7 +5,6 @@
  */
 package com.senla.hotel.enums;
 
-
 public enum SortName {
-    name,category,price,departuredate,numberofstars,capacity,zero
+    name, category, price, departuredate, numberofstars, capacity, zero
 }

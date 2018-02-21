@@ -11,8 +11,8 @@ import com.senla.ui.utils.Request;
 
 public class ChangeServicePrice implements IAction {
 
- 
-        private final GetListOfServices getListOfServices = new GetListOfServices();
+    private final GetListOfServices getListOfServices = new GetListOfServices();
+
     @Override
     public void execute() {
 

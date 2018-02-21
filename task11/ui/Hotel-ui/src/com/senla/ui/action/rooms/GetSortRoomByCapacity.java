@@ -12,12 +12,10 @@ import com.senla.ui.utils.Request;
 
 public class GetSortRoomByCapacity implements IAction {
 
- 
-
     @Override
     public void execute() {
 
- TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListOfRooms", TextWorker.getInstance().createData(SortName.capacity.toString(),Boolean.TRUE.toString()))));
+        TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListOfRooms", TextWorker.getInstance().createData(SortName.capacity.toString(), Boolean.TRUE.toString()))));
 
     }
 }

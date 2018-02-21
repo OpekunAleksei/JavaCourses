@@ -20,13 +20,13 @@ public class ServerThread extends Thread {
     private final DataParser dataParser;
     private final ObjectOutputStream os;
     private final ObjectInputStream is;
- private static Logger logger =  Logger.getLogger(ServerThread.class);
+    private static Logger logger = Logger.getLogger(ServerThread.class);
 
     public ServerThread(Socket s, IHotelAdministrator hotelAdministrator) throws IOException {
         dataParser = new DataParser(hotelAdministrator);
         os = new ObjectOutputStream(s.getOutputStream());
         is = new ObjectInputStream(s.getInputStream());
-    
+
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ServerThread extends Thread {
                 os.writeObject(dataParser.setInputData(str));
             }
         } catch (IOException | ClassNotFoundException e) {
-           logger.error(new Date() + " " + e.getMessage());
+            logger.error(new Date() + " " + e.getMessage());
         } finally {
             disconnect();
         }
@@ -48,7 +48,7 @@ public class ServerThread extends Thread {
             os.close();
             is.close();
         } catch (IOException e) {
-              logger.error(new Date() + " " + e.getMessage());
+            logger.error(new Date() + " " + e.getMessage());
         } finally {
             this.interrupt();
         }

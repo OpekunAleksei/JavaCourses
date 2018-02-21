@@ -11,8 +11,6 @@ import com.senla.ui.utils.Request;
 
 public class GetListOfRoomsAvailableByDate implements IAction {
 
- 
-
     @Override
     public void execute() {
         TextWorker.getInstance().println("enter the date(like 13.09.2017)");

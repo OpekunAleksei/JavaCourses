@@ -5,7 +5,6 @@
  */
 package com.senla.ui.utils;
 
-
 import com.senla.hotel.utils.Printer;
 import java.util.Date;
 import java.util.Scanner;
@@ -14,15 +13,12 @@ import org.apache.log4j.Logger;
 public class TextWorker {
 
     private final Scanner scanner = new Scanner(System.in);
-    private static Logger logger =  Logger.getLogger(TextWorker.class);
+    private static Logger logger = Logger.getLogger(TextWorker.class);
     private final Printer printer = new Printer();
     private Integer newNumberOfRoom = null;
-    public static TextWorker textWorker ;
+    public static TextWorker textWorker;
 
- 
-  
-
-   public static TextWorker getInstance() {
+    public static TextWorker getInstance() {
         if (textWorker == null) {
             textWorker = new TextWorker();
         }
@@ -30,12 +26,12 @@ public class TextWorker {
     }
 
     public void setNewNumberOfRoom(Integer newNumberOfRoom) {
-        
+
         this.newNumberOfRoom = newNumberOfRoom;
     }
 
     public Integer getNewNumberOfRoom() {
-     
+
         return newNumberOfRoom;
     }
 
@@ -43,13 +39,13 @@ public class TextWorker {
         try {
             return scanner.next();
         } catch (Exception e) {
-                   logger.error(new Date() + " " + e.getMessage());
+            logger.error(new Date() + " " + e.getMessage());
             return null;
         }
     }
 
     public void setLog(String line, Exception e) {
-               logger.error(new Date() + " " + e.getMessage());
+        logger.error(new Date() + " " + e.getMessage());
     }
 
     public void println(String line) {
@@ -77,7 +73,7 @@ public class TextWorker {
         try {
             return scanner.nextInt();
         } catch (Exception e) {
-                   logger.error(new Date() + " " + e.getMessage());
+            logger.error(new Date() + " " + e.getMessage());
             return null;
         }
     }

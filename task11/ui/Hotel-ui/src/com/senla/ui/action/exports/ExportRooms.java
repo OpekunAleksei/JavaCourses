@@ -12,7 +12,7 @@ public class ExportRooms implements IAction {
 
     @Override
     public void execute() {
-      
-             Request.getInstance().pull("exportRooms");
+
+        Request.getInstance().pull("exportRooms");
     }
 }

@@ -9,7 +9,6 @@ import com.senla.hotel.api.dao.IGenericDao;
 import com.senla.hotel.entity.Entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -26,6 +25,8 @@ public abstract class AbstractDao<T extends Entity> implements IGenericDao<T> {
 
     protected abstract String getAllQuery();
 
+    protected abstract String getDeleteQuery();
+
     protected abstract String getSortingAllQuery();
 
     protected abstract List<T> parseQueryGetById(PreparedStatement ps, int id) throws SQLException;
@@ -36,7 +37,18 @@ public abstract class AbstractDao<T extends Entity> implements IGenericDao<T> {
 
     protected abstract List<T> parseQueryGetAllEntity(PreparedStatement ps) throws SQLException;
 
+    protected abstract void parseQueryDeleteEntity(PreparedStatement ps, T object) throws SQLException;
+
     protected abstract void parseQueryUpdateEntity(PreparedStatement ps, T object) throws SQLException;
+
+    @Override
+    public void delete(Connection connection, T object) throws SQLException {
+        String query = getDeleteQuery();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            parseQueryDeleteEntity(ps, object);
+            ps.executeUpdate();
+        }
+    }
 
     @Override
     public T getById(Connection connection, int id) throws SQLException {

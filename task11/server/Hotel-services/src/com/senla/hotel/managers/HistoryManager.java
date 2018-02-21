@@ -22,7 +22,6 @@ import com.senla.hotel.daoimpl.ServiceDaoImpl;
 
 import com.senla.hotel.dbconnector.DbConnector;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
@@ -47,7 +46,7 @@ public class HistoryManager implements IHistoryManager {
     public void settleInRoom(Guest guest, Room room) throws SQLException {
         System.out.println("1");
         try {
-           
+
             dbConnector.getConnection().setAutoCommit(false);
             roomDao.changePartOfRoom(dbConnector.getConnection(), room.getNumber(), Boolean.TRUE, "busy");
             historyDao.create(dbConnector.getConnection(), historyDao.getMiracleHistory(guest, room));
@@ -63,14 +62,13 @@ public class HistoryManager implements IHistoryManager {
     @Override
     public void evictedFromRoom(Guest guest, Room room) throws SQLException {
 
-        
         try {
-            
+
             dbConnector.getConnection().setAutoCommit(false);
             if (checkForPresenceGuestsInRoom(room) == true) {
                 roomDao.changePartOfRoom(dbConnector.getConnection(), room.getNumber(), Boolean.FALSE, "busy");
             }
-            historyDao.evictedFromRoom(dbConnector.getConnection(), historyDao.getMiracleHistory(guest, room));
+            historyDao.update(dbConnector.getConnection(), historyDao.getMiracleHistory(guest, room));
             dbConnector.getConnection().commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

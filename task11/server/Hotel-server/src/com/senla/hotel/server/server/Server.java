@@ -9,7 +9,6 @@ import com.senla.hotel.server.servertheard.ServerThread;
 import com.senla.hotel.api.facade.IHotelAdministrator;
 import com.senla.hotel.facade.HotelAdministrator;
 
-
 import java.io.IOException;
 
 import java.net.ServerSocket;
@@ -20,7 +19,7 @@ import org.apache.log4j.Logger;
 public class Server {
 
     private final static IHotelAdministrator hotelAdministrator = HotelAdministrator.getInstance();
-    private static Logger logger =  Logger.getLogger(Server.class);
+    private static Logger logger = Logger.getLogger(Server.class);
 
     public void start() {
 
@@ -32,7 +31,7 @@ public class Server {
                 server.start();
             }
         } catch (IOException e) {
-        logger.error(new Date() + " " + e.getMessage());
+            logger.error(new Date() + " " + e.getMessage());
         }
     }
 }

@@ -27,7 +27,7 @@ public class Room extends Entity implements Cloneable {
     @CsvProperty(colomnNumber = 2, propertyType = PropertyType.SimpleProperty)
     private Integer id;
 
-    public Room(Integer number, Integer price, Integer capacity, Integer numberOfStars, Integer id, RoomStatus status,Boolean busy) {
+    public Room(Integer number, Integer price, Integer capacity, Integer numberOfStars, Integer id, RoomStatus status, Boolean busy) {
         this.busy = busy;
         this.number = number;
         this.capacity = capacity;
@@ -47,15 +47,13 @@ public class Room extends Entity implements Cloneable {
         this.status = null;
     }
 
- 
-
     public Integer getNumber() {
         return number;
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-   
+
         Room room = (Room) super.clone();
         room.setId(null);
         room.setNumber(null);

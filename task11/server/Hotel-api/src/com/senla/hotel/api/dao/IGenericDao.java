@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface IGenericDao<T> {
 
+    public void delete(Connection connection, T object) throws SQLException;
+
     public List<T> getAll(Connection connection, String sotName) throws SQLException;
 
     public T getById(Connection connection, int id) throws SQLException;

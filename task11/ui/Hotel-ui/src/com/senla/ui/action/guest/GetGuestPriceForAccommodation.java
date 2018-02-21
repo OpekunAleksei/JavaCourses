@@ -12,13 +12,12 @@ import com.senla.ui.utils.TextWorker;
 
 public class GetGuestPriceForAccommodation implements IAction {
 
-
     private final GetListOfGuests getListOfGuests = new GetListOfGuests();
     private final GetListOfRooms getListOfRooms = new GetListOfRooms();
-    
+
     @Override
     public void execute() {
-         getListOfGuests.execute();
+        getListOfGuests.execute();
         TextWorker.getInstance().println("Enter the line number where the guest(starting from 1)");
         Integer id = TextWorker.getInstance().getIntegerInput() - 1;
         getListOfRooms.execute();

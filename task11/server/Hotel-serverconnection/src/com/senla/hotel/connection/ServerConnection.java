@@ -5,8 +5,6 @@
  */
 package com.senla.hotel.connection;
 
-
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,7 +18,7 @@ public class ServerConnection {
     private final Socket socket;
     private final ObjectOutputStream outputStream;
     private final ObjectInputStream inputStream;
-    private static  Logger logger =  Logger.getLogger(ServerConnection.class);
+    private static Logger logger = Logger.getLogger(ServerConnection.class);
 
     private ServerConnection() throws IOException {
 
@@ -54,7 +52,7 @@ public class ServerConnection {
             this.inputStream.close();
             this.outputStream.close();
         } catch (IOException ex) {
-             logger.error(new Date() + " " + ex.getMessage());
+            logger.error(new Date() + " " + ex.getMessage());
         }
     }
 }

@@ -15,7 +15,7 @@ public class ChangeRoomPrice implements IAction {
 
     @Override
     public void execute() {
-         getListOfRooms.execute();
+        getListOfRooms.execute();
         TextWorker.getInstance().println("Enter the line number where there is a  room (starting from 1)");
         Integer number = TextWorker.getInstance().getIntegerInput() - 1;
         TextWorker.getInstance().println("Enter new price");

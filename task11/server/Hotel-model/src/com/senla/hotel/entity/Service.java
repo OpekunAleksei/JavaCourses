@@ -31,8 +31,6 @@ public class Service extends Entity {
         this.id = null;
     }
 
- 
-
     public void setPrice(Integer price) {
         this.price = price;
     }

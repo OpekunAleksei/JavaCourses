@@ -11,15 +11,14 @@ import java.io.IOException;
 import java.util.Date;
 import org.apache.log4j.Logger;
 
-
 public class Request {
 
-    private static Logger logger =Logger.getLogger(Request.class);
+    private static Logger logger = Logger.getLogger(Request.class);
     public static Request request;
     private ServerConnection serverConnection;
 
     private Request() {
-       
+
     }
 
     public static Request getInstance() {

@@ -8,8 +8,6 @@ package com.senla.ui.action.imports;
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
 
-
-
 public class ImportServices implements IAction {
 
     @Override

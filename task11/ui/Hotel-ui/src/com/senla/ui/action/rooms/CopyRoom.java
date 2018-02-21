@@ -11,9 +11,8 @@ import com.senla.ui.utils.TextWorker;
 
 public class CopyRoom implements IAction {
 
-   
     private final GetListOfRooms getListOfRooms = new GetListOfRooms();
-    
+
     @Override
     public void execute() {
         getListOfRooms.execute();

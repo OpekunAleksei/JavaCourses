@@ -14,11 +14,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-public interface IHistoryDao {
-
-    public void create(Connection connection, History history) throws SQLException;
-
-    public void evictedFromRoom(Connection connection, History history) throws SQLException;
+public interface IHistoryDao extends IGenericDao<History> {
 
     public void setService(Connection connection, Guest guest, Room room, Service service) throws SQLException;
 

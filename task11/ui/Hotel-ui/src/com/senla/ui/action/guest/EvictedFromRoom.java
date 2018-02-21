@@ -12,7 +12,6 @@ import com.senla.ui.utils.TextWorker;
 
 public class EvictedFromRoom implements IAction {
 
-  
     private final GetListOfGuests getListOfGuests = new GetListOfGuests();
     private final GetListOfRooms getListOfRooms = new GetListOfRooms();
 
@@ -25,7 +24,7 @@ public class EvictedFromRoom implements IAction {
         getListOfRooms.execute();
         TextWorker.getInstance().println("Enter the line number where there is a room(starting from 1)");
         Integer numberRoom = TextWorker.getInstance().getIntegerInput() - 1;
-           Request.getInstance().pull(TextWorker.getInstance().createLine("evictedFromRoom", TextWorker.getInstance().createData(guestId.toString(), numberRoom.toString())));
+        Request.getInstance().pull(TextWorker.getInstance().createLine("evictedFromRoom", TextWorker.getInstance().createData(guestId.toString(), numberRoom.toString())));
 
     }
 }

@@ -5,7 +5,6 @@
  */
 package com.senla.hotel.csv;
 
-
 import com.senla.hotel.annotation.enums.PropertyType;
 import com.senla.hotel.annotations.CsvEntity;
 import com.senla.hotel.annotations.CsvProperty;

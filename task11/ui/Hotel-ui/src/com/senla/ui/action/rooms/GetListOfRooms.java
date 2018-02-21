@@ -10,15 +10,13 @@ import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
 import com.senla.ui.utils.TextWorker;
 
-
-public class GetListOfRooms implements IAction{
-      
+public class GetListOfRooms implements IAction {
 
     @Override
     public void execute() {
 
-     TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListOfRooms", TextWorker.getInstance().createData(SortName.zero.toString(),Boolean.TRUE.toString()))));
+        TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListOfRooms", TextWorker.getInstance().createData(SortName.zero.toString(), Boolean.TRUE.toString()))));
 
     }
-    
+
 }

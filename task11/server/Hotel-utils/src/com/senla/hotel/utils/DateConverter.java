@@ -17,8 +17,9 @@ public class DateConverter {
 
     public String parseDate(Date date) {
         return format.format(date);
-    
-        }
+
+    }
+
     public Date parseDate(String date) throws ParseException {
         return format.parse(date);
     }

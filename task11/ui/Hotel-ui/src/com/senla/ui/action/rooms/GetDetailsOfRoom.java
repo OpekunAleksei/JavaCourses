@@ -10,12 +10,12 @@ import com.senla.ui.utils.Request;
 import com.senla.ui.utils.TextWorker;
 
 public class GetDetailsOfRoom implements IAction {
-    private final GetListOfRooms getListOfRooms = new GetListOfRooms();
 
+    private final GetListOfRooms getListOfRooms = new GetListOfRooms();
 
     @Override
     public void execute() {
-      getListOfRooms.execute();
+        getListOfRooms.execute();
         TextWorker.getInstance().println("Enter the line number where there is a room(starting from 1)");
         Integer number = TextWorker.getInstance().getIntegerInput() - 1;
 

@@ -24,6 +24,7 @@ public class ServiceDaoImpl extends AbstractDao<Service> implements IServiceDao 
     private final static String INSERT_SERVICE = "insert into service(category,price) values (?,?)";
     private final static String UPDATE_SERVICE = "update service set price= ?,category= ? where idservice= ?";
     private final static String GET_BY_ID = "SELECT * FROM service where idservice = ?";
+    private final static String DELETE_SERVICE = "DELETE from service where idservice=?";
 
     @Override
     public void changePrice(Connection connection, Integer id, Integer price) throws SQLException {
@@ -135,6 +136,16 @@ public class ServiceDaoImpl extends AbstractDao<Service> implements IServiceDao 
         ps.setInt(1, object.getPrice());
         ps.setString(2, object.getCategory());
         ps.setInt(3, object.getId());
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_SERVICE;
+    }
+
+    @Override
+    protected void parseQueryDeleteEntity(PreparedStatement ps, Service object) throws SQLException {
+        ps.setInt(1, object.getId());
     }
 
 }

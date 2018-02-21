@@ -11,8 +11,6 @@ import com.senla.ui.utils.TextWorker;
 
 public class ChangeNumberOfStars implements IAction {
 
-
-
     @Override
     public void execute() {
         TextWorker.getInstance().println("Enter new number of stars");

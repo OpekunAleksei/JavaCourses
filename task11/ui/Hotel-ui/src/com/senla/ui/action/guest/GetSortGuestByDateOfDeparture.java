@@ -12,8 +12,6 @@ import com.senla.ui.utils.Request;
 
 public class GetSortGuestByDateOfDeparture implements IAction {
 
-
-
     @Override
     public void execute() {
 

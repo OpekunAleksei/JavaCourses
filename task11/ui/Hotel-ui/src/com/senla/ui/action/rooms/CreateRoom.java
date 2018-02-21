@@ -11,7 +11,6 @@ import com.senla.ui.utils.TextWorker;
 
 public class CreateRoom implements IAction {
 
-
     private String status;
 
     @Override

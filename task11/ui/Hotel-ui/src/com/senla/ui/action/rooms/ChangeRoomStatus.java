@@ -5,14 +5,11 @@
  */
 package com.senla.ui.action.rooms;
 
-
 import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
 import com.senla.ui.utils.TextWorker;
 
 public class ChangeRoomStatus implements IAction {
-
-  
 
     private String status;
     private Boolean roomAbility = false;

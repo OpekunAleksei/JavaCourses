@@ -12,12 +12,10 @@ import com.senla.ui.utils.TextWorker;
 
 public class GetSortGuestByName implements IAction {
 
-
-
     @Override
     public void execute() {
-          
+
         TextWorker.getInstance().println(Request.getInstance().pull(TextWorker.getInstance().createLine("getListGuest", TextWorker.getInstance().createData(SortName.name.toString()))));
-   
+
     }
 }

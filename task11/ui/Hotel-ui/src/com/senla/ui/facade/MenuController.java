@@ -16,9 +16,9 @@ public class MenuController {
     private final TextWorker textWorker = new TextWorker();
 
     public void run() {
-   do {
+        do {
             textWorker.println("Press 0 to connect");
-           
+
         } while (textWorker.getIntegerInput() != 0);
         Request.getInstance().getServerConnection();
         Builder builder = new Builder();

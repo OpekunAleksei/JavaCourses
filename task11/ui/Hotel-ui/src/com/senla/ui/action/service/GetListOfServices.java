@@ -11,8 +11,6 @@ import com.senla.ui.utils.TextWorker;
 
 public class GetListOfServices implements IAction {
 
-     
-
     @Override
     public void execute() {
         TextWorker.getInstance().println(Request.getInstance().pull("getListOfServices"));

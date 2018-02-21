@@ -27,6 +27,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
     private final static String INSERT_ROOM = "insert into room(number,price,busy,capacity,numberofstars,status) values (?,?,?,?,?,?)";
     private final static String UPDATE_ROOM = "update room set price=?,number=?,busy=?,capacity=?,numberofstars=?,status=? where idroom=?";
     private final static String GET_BY_ID = "SELECT * FROM room where number =?";
+    private final static String DELETE_ROOM = "DELETE from room where idroom=?";
 
     public RoomDaoImpl() {
 
@@ -82,8 +83,8 @@ public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
                 changeVariable = false;
             } else if ("false".equals(changeVariable.toString())) {
                 changeVariable = true;
-            } 
-            ps.setObject(1, changeVariable);   
+            }
+            ps.setObject(1, changeVariable);
             ps.setInt(2, id);
             ps.executeUpdate();
         }
@@ -201,6 +202,16 @@ public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
 
         ResultSet rs = ps.executeQuery();
         return parseQueryGetList(rs);
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_ROOM;
+    }
+
+    @Override
+    protected void parseQueryDeleteEntity(PreparedStatement ps, Room object) throws SQLException {
+        ps.setInt(1, object.getId());
     }
 
 }

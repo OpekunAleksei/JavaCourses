@@ -11,7 +11,6 @@ import com.senla.ui.utils.TextWorker;
 
 public class CreateGuest implements IAction {
 
-
     @Override
     public void execute() {
         TextWorker.getInstance().println("Enter name");
@@ -20,7 +19,7 @@ public class CreateGuest implements IAction {
         String arrivalDate = TextWorker.getInstance().getStringInput();
         TextWorker.getInstance().println("Enter date of departure like 13.13.1666");
         String dateOfDeparture = TextWorker.getInstance().getStringInput();
-           Request.getInstance().pull(TextWorker.getInstance().createLine("createGuest", TextWorker.getInstance().createData(name, arrivalDate, dateOfDeparture)));
+        Request.getInstance().pull(TextWorker.getInstance().createLine("createGuest", TextWorker.getInstance().createData(name, arrivalDate, dateOfDeparture)));
 
     }
 

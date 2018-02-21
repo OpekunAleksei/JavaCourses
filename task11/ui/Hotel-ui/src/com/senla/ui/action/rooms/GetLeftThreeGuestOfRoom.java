@@ -10,13 +10,12 @@ import com.senla.ui.api.IAction;
 import com.senla.ui.utils.Request;
 
 public class GetLeftThreeGuestOfRoom implements IAction {
- 
 
     private final GetListOfRooms getListOfRooms = new GetListOfRooms();
 
     @Override
     public void execute() {
-      getListOfRooms.execute();
+        getListOfRooms.execute();
         TextWorker.getInstance().println("Enter the line number where there is a room(starting from 1)");
         Integer number = TextWorker.getInstance().getIntegerInput() - 1;
 

@@ -20,8 +20,14 @@ import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-public class HistoryDaoImpl implements IHistoryDao {
+public class HistoryDaoImpl extends AbstractDao<History> implements IHistoryDao {
 
+    private final static String GET_ALL = "SELECT * FROM history";
+
+    private final static String INSERT_HISTORY = "insert into history(idRoom,idGuest,enable) values (?,?,?)";
+    private final static String UPDATE_HISTORY = "update history set enable=1 where idguest=? and idroom=?";
+    private final static String GET_BY_ID = "SELECT * FROM history where ihistory = ?";
+    private final static String DELETE_HISTORY = "DELETE from history where idhistory=?";
     private static Logger logger = Logger.getLogger(HistoryDaoImpl.class);
 
     @Override
@@ -35,27 +41,6 @@ public class HistoryDaoImpl implements IHistoryDao {
                 list.add(rs.getInt("idservice"));
             }
             return list;
-        }
-    }
-
-    @Override
-    public void create(Connection connection, History entity) throws SQLException {
-        String SQLQuery = "insert into history(idRoom,idGuest,enable) values (?,?,?)";
-        try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
-            ps.setInt(1, entity.getRoom().getId());
-            ps.setInt(2, entity.getGuest().getId());
-            ps.setBoolean(3, false);
-            ps.executeUpdate();
-        }
-    }
-
-    @Override
-    public void evictedFromRoom(Connection connection, History entity) throws SQLException {
-        String SQLQuery = "update history set enable=1 where idguest=? and idroom=?";
-        try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
-            ps.setInt(2, entity.getRoom().getId());
-            ps.setInt(1, entity.getGuest().getId());
-            ps.executeUpdate();
         }
     }
 
@@ -143,6 +128,82 @@ public class HistoryDaoImpl implements IHistoryDao {
         miracleHistory.setGuest(guest);
         miracleHistory.setRoom(room);
         return miracleHistory;
+    }
+
+    @Override
+    protected String getByIdQuery() {
+        return GET_BY_ID;
+    }
+
+    @Override
+    protected String getUpdateQuery() {
+        return UPDATE_HISTORY;
+    }
+
+    @Override
+    protected String getCreateQuery() {
+        return INSERT_HISTORY;
+    }
+
+    @Override
+    protected String getAllQuery() {
+        return GET_ALL;
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_HISTORY;
+    }
+
+    @Override
+    protected String getSortingAllQuery() {
+        return GET_ALL;
+    }
+
+    @Override
+    protected List<History> parseQueryGetById(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    private List<History> parseQueryGetList(ResultSet rs) throws SQLException {
+        List<History> historys = new ArrayList();
+        while (rs.next()) {
+            History history = new History();
+            historys.add(history);
+        }
+        return historys;
+    }
+
+    @Override
+    protected void parseQueryCreateEntity(PreparedStatement ps, History object) throws SQLException {
+        ps.setInt(1, object.getRoom().getId());
+        ps.setInt(2, object.getGuest().getId());
+        ps.setBoolean(3, false);
+    }
+
+    @Override
+    protected List<History> parseQueryGetSortingAllEntity(PreparedStatement ps, String condition) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    @Override
+    protected List<History> parseQueryGetAllEntity(PreparedStatement ps) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    @Override
+    protected void parseQueryDeleteEntity(PreparedStatement ps, History object) throws SQLException {
+        ps.setInt(1, object.getId());
+    }
+
+    @Override
+    protected void parseQueryUpdateEntity(PreparedStatement ps, History object) throws SQLException {
+        ps.setInt(2, object.getRoom().getId());
+        ps.setInt(1, object.getGuest().getId());
     }
 
 }

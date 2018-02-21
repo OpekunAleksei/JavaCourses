@@ -11,8 +11,6 @@ import com.senla.ui.utils.Request;
 
 public class GetNumberEmptyRoom implements IAction {
 
- 
-
     @Override
     public void execute() {
 

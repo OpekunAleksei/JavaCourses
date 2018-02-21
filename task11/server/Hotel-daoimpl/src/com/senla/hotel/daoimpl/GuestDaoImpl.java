@@ -26,6 +26,7 @@ public class GuestDaoImpl extends AbstractDao<Guest> implements IGuestDao {
     private final static String INSERT_GUEST = "insert into guest(name,arrivaldate,departuredate) values (?,?,?)";
     private final static String UPDATE_GUEST = "update guest set name=?,arrivaldate=?,departuredate=? where idguest=?";
     private final static String GET_BY_ID = "SELECT * FROM guest where idguest = ?";
+    private final static String DELETE_GUEST = "DELETE from guest where idguest=?";
 
     public GuestDaoImpl() {
 
@@ -126,6 +127,16 @@ public class GuestDaoImpl extends AbstractDao<Guest> implements IGuestDao {
     protected List<Guest> parseQueryGetAllEntity(PreparedStatement ps) throws SQLException {
         ResultSet rs = ps.executeQuery();
         return parseQueryGetList(rs);
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_GUEST;
+    }
+
+    @Override
+    protected void parseQueryDeleteEntity(PreparedStatement ps, Guest object) throws SQLException {
+        ps.setInt(1, object.getId());
     }
 
 }
