@@ -45,10 +45,9 @@ public class HistoryManager implements IHistoryManager {
 
     @Override
     public void settleInRoom(Guest guest, Room room) throws SQLException {
-
-        Savepoint savepointOne = null;
+        System.out.println("1");
         try {
-            savepointOne = dbConnector.getConnection().setSavepoint("SavepointOne");
+           
             dbConnector.getConnection().setAutoCommit(false);
             roomDao.changePartOfRoom(dbConnector.getConnection(), room.getNumber(), Boolean.TRUE, "busy");
             historyDao.create(dbConnector.getConnection(), historyDao.getMiracleHistory(guest, room));
@@ -56,7 +55,6 @@ public class HistoryManager implements IHistoryManager {
 
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
-            dbConnector.getConnection().rollback(savepointOne);
             throw new SQLException();
         }
 
@@ -65,9 +63,9 @@ public class HistoryManager implements IHistoryManager {
     @Override
     public void evictedFromRoom(Guest guest, Room room) throws SQLException {
 
-        Savepoint savepointOne = null;
+        
         try {
-            savepointOne = dbConnector.getConnection().setSavepoint("SavepointOne");
+            
             dbConnector.getConnection().setAutoCommit(false);
             if (checkForPresenceGuestsInRoom(room) == true) {
                 roomDao.changePartOfRoom(dbConnector.getConnection(), room.getNumber(), Boolean.FALSE, "busy");
@@ -76,7 +74,7 @@ public class HistoryManager implements IHistoryManager {
             dbConnector.getConnection().commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
-            dbConnector.getConnection().rollback(savepointOne);
+            dbConnector.getConnection().rollback();
             throw new SQLException();
         }
 

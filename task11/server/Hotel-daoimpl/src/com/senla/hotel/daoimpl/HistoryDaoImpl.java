@@ -130,7 +130,7 @@ public class HistoryDaoImpl implements IHistoryDao {
 
     @Override
     public void setService(Connection connection, Guest guest, Room room, Service service) throws SQLException {
-        String SQLQuery = "insert into services(idhistory,idservice) values ((SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0),?))";
+        String SQLQuery = "insert into services(idhistory,idservice) values ((SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0),?)";
         try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
             ps.setInt(1, service.getId());
             ps.executeUpdate();

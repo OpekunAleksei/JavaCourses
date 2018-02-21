@@ -82,9 +82,8 @@ public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
                 changeVariable = false;
             } else if ("false".equals(changeVariable.toString())) {
                 changeVariable = true;
-            } else {
-                ps.setObject(1, changeVariable);
-            }
+            } 
+            ps.setObject(1, changeVariable);   
             ps.setInt(2, id);
             ps.executeUpdate();
         }
