@@ -9,28 +9,30 @@ import com.senla.hotel.entity.Guest;
 import com.senla.hotel.entity.History;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 public interface IHistoryDao {
 
-    public void create(History history);
+    public void create(Connection connection, History history) throws SQLException;
 
-    public void evictedFromRoom(History history);
+    public void evictedFromRoom(Connection connection, History history) throws SQLException;
 
-    public void setService(Guest guest, Room room, Service service);
+    public void setService(Connection connection, Guest guest, Room room, Service service) throws SQLException;
 
-    public Integer getPriceForAccommodation(Guest guest, Room room);
+    public Integer getPriceForAccommodation(Connection connection, Guest guest, Room room) throws SQLException;
 
-    public Integer getNumberOfGuestInHotel();
+    public Integer getNumberOfGuestInHotel(Connection connection) throws SQLException;
 
-    public Boolean checForPresense(Room room);
+    public Boolean checForPresense(Connection connection, Room room) throws SQLException;
 
-    public List<Integer> getListLeftGuest(Room room, Integer count);
+    public List<Integer> getListLeftGuest(Connection connection, Room room, Integer count) throws SQLException;
 
-    public List<Integer> getIdRoomsAvalableByDate(Date date);
+    public List<Integer> getIdRoomsAvalableByDate(Connection connection, Date date) throws SQLException;
 
-    public List<Integer> getIdSortingServices(Room room, Guest guest, String sort);
+    public List<Integer> getIdSortingServices(Connection connection, Room room, Guest guest, String sort) throws SQLException;
 
     public History getMiracleHistory(Guest guest, Room room);
 

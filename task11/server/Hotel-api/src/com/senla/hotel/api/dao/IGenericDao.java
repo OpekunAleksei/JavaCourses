@@ -5,20 +5,18 @@
  */
 package com.senla.hotel.api.dao;
 
-import com.senla.hotel.entity.Entity;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
+public interface IGenericDao<T> {
 
-public interface IGenericDao<T extends Entity> {
+    public List<T> getAll(Connection connection, String sotName) throws SQLException;
 
-    public List<T> getAll(String sotName);
+    public T getById(Connection connection, int id) throws SQLException;
 
-    public T getById(Integer id);
+    public void update(Connection connection, T entity) throws SQLException;
 
-    public void update(T entity);
-
-    public void create(T entity);
-
-
+    public void create(Connection connection, T entity) throws SQLException;
 
 }

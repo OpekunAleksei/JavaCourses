@@ -15,20 +15,20 @@ import com.senla.hotel.entity.Guest;
 import java.util.Date;
 import java.util.List;
 import com.senla.hotel.api.managers.IHistoryManager;
-import com.senla.hotel.api.managers.IRoomManager;
 import com.senla.hotel.daoimpl.GuestDaoImpl;
 import com.senla.hotel.daoimpl.HistoryDaoImpl;
 import com.senla.hotel.daoimpl.RoomDaoImpl;
 import com.senla.hotel.daoimpl.ServiceDaoImpl;
-import com.senla.hotel.dbconnection.DbConnection;
-import java.sql.Connection;
+
+import com.senla.hotel.dbconnector.DbConnector;
 import java.sql.SQLException;
 import java.sql.Savepoint;
-import java.util.logging.Level;
+import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 public class HistoryManager implements IHistoryManager {
 
+    private final DbConnector dbConnector = new DbConnector();
     private final IServiceDao serviceDao;
     private final IGuestDao guestDao;
     private final IRoomDao roomDao;
@@ -44,93 +44,92 @@ public class HistoryManager implements IHistoryManager {
     }
 
     @Override
-    public void settleInRoom(Guest guest, Room room, IRoomManager roomManager) throws SQLException {
-        Connection connection = null;
+    public void settleInRoom(Guest guest, Room room) throws SQLException {
+
         Savepoint savepointOne = null;
         try {
-
-            connection = DbConnection.getInstance().getConnection();
-            savepointOne = connection.setSavepoint("SavepointOne");
-            connection.setAutoCommit(false);
-            roomManager.changeRoomBusy(room.getNumber(), Boolean.TRUE);
-            historyDao.create(historyDao.getMiracleHistory(guest, room));
-            connection.commit();
+            savepointOne = dbConnector.getConnection().setSavepoint("SavepointOne");
+            dbConnector.getConnection().setAutoCommit(false);
+            roomDao.changePartOfRoom(dbConnector.getConnection(), room.getNumber(), Boolean.TRUE, "busy");
+            historyDao.create(dbConnector.getConnection(), historyDao.getMiracleHistory(guest, room));
+            dbConnector.getConnection().commit();
 
         } catch (SQLException ex) {
-
             logger.error(new Date() + " " + ex.getMessage());
-            connection.rollback(savepointOne);
-
-        } finally {
-            connection.close();
+            dbConnector.getConnection().rollback(savepointOne);
+            throw new SQLException();
         }
 
     }
 
     @Override
-    public void evictedFromRoom(Guest guest, Room room, IRoomManager roomManager) throws SQLException {
-        Connection connection = null;
+    public void evictedFromRoom(Guest guest, Room room) throws SQLException {
+
         Savepoint savepointOne = null;
         try {
-
-            connection = DbConnection.getInstance().getConnection();
-            savepointOne = connection.setSavepoint("SavepointOne");
-            connection.setAutoCommit(false);
+            savepointOne = dbConnector.getConnection().setSavepoint("SavepointOne");
+            dbConnector.getConnection().setAutoCommit(false);
             if (checkForPresenceGuestsInRoom(room) == true) {
-                roomManager.changeRoomBusy((room.getNumber()), Boolean.FALSE);
+                roomDao.changePartOfRoom(dbConnector.getConnection(), room.getNumber(), Boolean.FALSE, "busy");
             }
-            historyDao.evictedFromRoom(historyDao.getMiracleHistory(guest, room));
-            connection.commit();
+            historyDao.evictedFromRoom(dbConnector.getConnection(), historyDao.getMiracleHistory(guest, room));
+            dbConnector.getConnection().commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
-            connection.rollback(savepointOne);
-        } finally {
-            connection.close();
+            dbConnector.getConnection().rollback(savepointOne);
+            throw new SQLException();
         }
 
     }
 
     @Override
-    public void addServiceToGuest(Service service, Guest guest, Room room) {
-        historyDao.setService(guest, room, service);
+    public void addServiceToGuest(Service service, Guest guest, Room room) throws SQLException {
+        historyDao.setService(dbConnector.getConnection(), guest, room, service);
+    }
+
+    @Override
+    public Integer getGuestPriceForAccommodation(Guest guest, Room room) throws SQLException {
+
+        return historyDao.getPriceForAccommodation(dbConnector.getConnection(), guest, room);
+    }
+
+    @Override
+    public Integer getNumberGuestInHotel() throws SQLException {
+        return historyDao.getNumberOfGuestInHotel(dbConnector.getConnection());
 
     }
 
     @Override
-    public Integer getGuestPriceForAccommodation(Guest guest, Room room) {
-
-        return historyDao.getPriceForAccommodation(guest, room);
-    }
-
-    @Override
-    public Integer getNumberGuestInHotel() {
-        return historyDao.getNumberOfGuestInHotel();
+    public Boolean checkForPresenceGuestsInRoom(Room room) throws SQLException {
+        return historyDao.checForPresense(dbConnector.getConnection(), room);
 
     }
 
     @Override
-    public Boolean checkForPresenceGuestsInRoom(Room room) {
-        return historyDao.checForPresense(room);
+    public List<Guest> getListLeftGuestThisRoom(Room room, Integer count) throws SQLException {
+        List<Integer> listId = historyDao.getListLeftGuest(dbConnector.getConnection(), room, count);
+        List<Guest> leftGuests = new ArrayList();
+        for (int i = 0; i < listId.size(); i++) {
+            leftGuests.add(guestDao.getById(dbConnector.getConnection(), listId.get(i)));
+        }
+        return leftGuests;
 
     }
 
     @Override
-    public List<Guest> getListLeftGuestThisRoom(Room room, Integer count) {
-        return guestDao.getById(historyDao.getListLeftGuest(room, count));
-
+    public List<Room> getListOfRoomsAvailableByDate(Date date, List<Room> list) throws SQLException {
+        List<Integer> listId = historyDao.getIdRoomsAvalableByDate(dbConnector.getConnection(), date);
+        List<Room> avaliableRooms = new ArrayList();
+        for (int i = 0; i < listId.size(); i++) {
+            avaliableRooms.add(roomDao.getById(dbConnector.getConnection(), listId.get(i)));
+        }
+        return avaliableRooms;
     }
 
     @Override
-    public List<Room> getListOfRoomsAvailableByDate(Date date, List<Room> list) {
+    public List<Service> getGuestServices(Guest guest, Room room, String sort) throws SQLException {
 
-        return roomDao.getById(historyDao.getIdRoomsAvalableByDate(date));
-
-    }
-
-    @Override
-    public List<Service> getGuestServices(Guest guest, Room room, String sort) {
-
-        return serviceDao.getById(historyDao.getIdSortingServices(room, guest, sort));
+        return serviceDao.getById(dbConnector.getConnection(), historyDao.getIdSortingServices(dbConnector.getConnection(), room, guest, sort));
 
     }
 

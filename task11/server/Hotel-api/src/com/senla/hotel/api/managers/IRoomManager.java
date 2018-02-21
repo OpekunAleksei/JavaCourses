@@ -7,38 +7,37 @@ package com.senla.hotel.api.managers;
 
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.enums.RoomStatus;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IRoomManager {
 
-    public void setImportRooms(List<Room> list);
+    public void setImportRooms(List<Room> list) throws SQLException;
 
-    public List<Room> getRooms();
+    public List<Room> getRooms() throws SQLException;
 
-    public Integer getIdByNumberOnList(Integer number);
+    public Integer getIdByNumberOnList(Integer number) throws SQLException;
 
-    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status);
+    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status) throws SQLException;
 
-    public void changeRoomPrice(Integer numberOfRoom, Integer price);
+    public void changeRoomPrice(Integer numberOfRoom, Integer price) throws SQLException;
 
-    public void changeRoomStatus(Integer numberOfRoom, RoomStatus status);
+    public void changeRoomStatus(Integer numberOfRoom, RoomStatus status) throws SQLException;
 
-    public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars);
+    public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars) throws SQLException;
 
-    public void changeCapacity(Integer numberOfRoom, Integer capacity);
+    public void changeCapacity(Integer numberOfRoom, Integer capacity) throws SQLException;
 
-    public void changeRoomBusy(Integer numberOfRoom, Boolean busy);
+    public void changeRoomBusy(Integer numberOfRoom, Boolean busy) throws SQLException;
 
-    public void copyRoom(Integer numberOfRoom, Integer newNumber);
+    public void copyRoom(Integer numberOfRoom, Integer newNumber) throws SQLException, CloneNotSupportedException;
 
-    public Integer getNumberEmptyRoomInHotel();
+    public Integer getNumberEmptyRoomInHotel() throws SQLException;
 
-    public Room getRoom(Integer numberOfRoom);
+    public Room getRoom(Integer numberOfRoom) throws SQLException;
 
-    public List<Room> getDetailsOfRoom(Integer numberOfRoom);
+    public List<Room> getDetailsOfRoom(Integer numberOfRoom) throws SQLException;
 
-    public List<Room> getListRooms(String name, String busy);
-
-
+    public List<Room> getListRooms(String name, String busy) throws SQLException;
 
 }

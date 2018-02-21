@@ -6,9 +6,9 @@
 package com.senla.hotel.daoimpl;
 
 import com.senla.hotel.api.dao.IGuestDao;
-import com.senla.hotel.dbconnection.DbConnection;
 import com.senla.hotel.entity.Guest;
 import com.senla.hotel.enums.SortName;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +18,14 @@ import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-public class GuestDaoImpl implements IGuestDao {
+public class GuestDaoImpl extends AbstractDao<Guest> implements IGuestDao {
 
-    private final DbConnection dbConnection = DbConnection.getInstance();
     private static final Logger logger = Logger.getLogger(GuestDaoImpl.class);
+    private final static String GET_ALL = "SELECT * FROM guest";
+    private final static String GET_SORTING_ALL = "SELECT * FROM guest order by  ?";
+    private final static String INSERT_GUEST = "insert into guest(name,arrivaldate,departuredate) values (?,?,?)";
+    private final static String UPDATE_GUEST = "update guest set name=?,arrivaldate=?,departuredate=? where idguest=?";
+    private final static String GET_BY_ID = "SELECT * FROM guest where idguest = ?";
 
     public GuestDaoImpl() {
 
@@ -33,105 +37,95 @@ public class GuestDaoImpl implements IGuestDao {
 
         return miracleGuest;
     }
-    @Override
-    public List<Guest> getById(List<Integer> id) {
-        List<Guest> guests = new ArrayList();
-        for (Integer id1 : id) {
-            guests.add(getById(id1));
-        }
-        return guests;
-    }
-    @Override
-    public List<Guest> getAll(String sortName) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-            List<Guest> list = new ArrayList<>();
-            ResultSet rs;
-            if ("zero".equals(sortName)) {
-                rs = statement.executeQuery(
-                        "SELECT * FROM guest");
-            } else {
-                rs = statement.executeQuery(
-                        "SELECT * FROM guest order by " + sortName);
-            }
-
-            while (rs.next()) {
-                Guest guest = new Guest(rs.getString("name"), rs.getDate("arrivalDate"), rs.getDate("departureDate"), rs.getInt("idguest"));
-                list.add(guest);
-            }
-            return list;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
-        }
-    }
 
     @Override
-    public void setImportGuests(List<Guest> list) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-
+    public void setImportGuests(Connection connection, List<Guest> list) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
             for (int i = 0; i < list.size(); i++) {
                 ResultSet result1 = statement.executeQuery(
                         "SELECT name FROM guest where idguest =" + list.get(i).getId());
                 if (result1.next()) {
-                    update(list.get(i));
+                    update(connection, list.get(i));
                 } else {
-                    create(list.get(i));
+                    create(connection, list.get(i));
                 }
             }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
         }
     }
 
     @Override
-    public Integer getIdByNumberOnlist(Integer number) {
-        return getAll(SortName.zero.toString()).get(number).getId();
+    public Integer getIdByNumberOnlist(Connection connection, Integer number) throws SQLException {
+        return getAll(connection, SortName.zero.toString()).get(number).getId();
     }
 
     @Override
-    public Guest getById(Integer id) {
-        try (Statement statement = dbConnection.getConnection().createStatement();) {
-            Guest guest = null;
-            ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM guest where idguest =" + id);
-            while (rs.next()) {
-                guest = new Guest(rs.getString("name"), rs.getDate("arrivalDate"), rs.getDate("departureDate"), rs.getInt("idguest"));
-            }
-            return guest;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
-        }
+    protected String getByIdQuery() {
+        return GET_BY_ID;
     }
 
     @Override
-    public void update(Guest entity) {
-        try {
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("update guest set name=?,arrivaldate=?,departuredate=? where idguest=?")) {
-                ps.setString(1, entity.getName());
-                ps.setDate(2, new java.sql.Date(entity.getArrivalDate().getTime()));
-                ps.setDate(3, new java.sql.Date(entity.getDateOfDeparture().getTime()));
-                ps.setInt(4, entity.getId());
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-        }
+    protected String getUpdateQuery() {
+        return UPDATE_GUEST;
     }
 
     @Override
-    public void create(Guest entity) {
-        try {
+    protected String getCreateQuery() {
+        return INSERT_GUEST;
+    }
 
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("insert into guest(name,arrivaldate,departuredate) values (?,?,?)")) {
-                ps.setString(1, entity.getName());
-                ps.setDate(2, new java.sql.Date(entity.getArrivalDate().getTime()));
-                ps.setDate(3, new java.sql.Date(entity.getDateOfDeparture().getTime()));
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
+    @Override
+    protected String getAllQuery() {
+        return GET_ALL;
+    }
+
+    @Override
+    protected List<Guest> parseQueryGetById(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    @Override
+    protected List<Guest> parseQueryGetSortingAllEntity(PreparedStatement ps, String condition) throws SQLException {
+        ps.setString(1, condition);
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    private List<Guest> parseQueryGetList(ResultSet rs) throws SQLException {
+        List<Guest> guests = new ArrayList();
+        while (rs.next()) {
+            Guest guest = new Guest(rs.getString("name"), rs.getDate("arrivalDate"), rs.getDate("departureDate"), rs.getInt("idguest"));
+            guests.add(guest);
         }
+        return guests;
+    }
+
+    @Override
+    protected void parseQueryCreateEntity(PreparedStatement ps, Guest object) throws SQLException {
+        ps.setString(1, object.getName());
+        ps.setDate(2, new java.sql.Date(object.getArrivalDate().getTime()));
+        ps.setDate(3, new java.sql.Date(object.getDateOfDeparture().getTime()));
+
+    }
+
+    @Override
+    protected void parseQueryUpdateEntity(PreparedStatement ps, Guest object) throws SQLException {
+        ps.setString(1, object.getName());
+        ps.setDate(2, new java.sql.Date(object.getArrivalDate().getTime()));
+        ps.setDate(3, new java.sql.Date(object.getDateOfDeparture().getTime()));
+        ps.setInt(4, object.getId());
+    }
+
+    @Override
+    protected String getSortingAllQuery() {
+        return GET_SORTING_ALL;
+    }
+
+    @Override
+    protected List<Guest> parseQueryGetAllEntity(PreparedStatement ps) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
     }
 
 }

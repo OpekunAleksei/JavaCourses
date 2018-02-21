@@ -11,11 +11,13 @@ import com.senla.hotel.enums.RoomStatus;
 import java.util.List;
 import com.senla.hotel.api.managers.IRoomManager;
 import com.senla.hotel.daoimpl.RoomDaoImpl;
+import com.senla.hotel.dbconnector.DbConnector;
 import com.senla.hotel.utils.Converter;
-
+import java.sql.SQLException;
 
 public class RoomManager implements IRoomManager {
 
+    private final DbConnector dbConnector = new DbConnector();
     private final IRoomDao roomDao;
     private final Converter converter;
 
@@ -26,92 +28,102 @@ public class RoomManager implements IRoomManager {
     }
 
     @Override
-    public void setImportRooms(List<Room> list) {
-        roomDao.setImportRooms(list);
+    public void setImportRooms(List<Room> list) throws SQLException {
+
+        roomDao.setImportRooms(dbConnector.getConnection(), list);
 
     }
 
     @Override
-    public List<Room> getRooms() {
+    public List<Room> getRooms() throws SQLException {
         roomDao.setEmpty(Boolean.TRUE);
-        return roomDao.getAll(null);
+
+        return roomDao.getAll(dbConnector.getConnection(), "zero");
 
     }
 
     @Override
-    public Integer getIdByNumberOnList(Integer number) {
+    public Integer getIdByNumberOnList(Integer number) throws SQLException {
 
-        return roomDao.getIdByNumberOnlist(number);
-
-    }
-
-    @Override
-    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status) {
-      roomDao.create(roomDao.createMiracleRoom(number, price, capacity, numberOfStars, status));
-    }
-
-    @Override
-    public void changeRoomPrice(Integer numberOfRoom, Integer price) {
-            
-        roomDao.changePartOfRoom(numberOfRoom, price, "price");
+        return roomDao.getIdByNumberOnlist(dbConnector.getConnection(), number);
 
     }
 
     @Override
-    public void changeRoomStatus(Integer numberOfRoom, RoomStatus status) {
-        roomDao.changePartOfRoom(numberOfRoom, status, "status");
+    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, RoomStatus status) throws SQLException {
+
+        roomDao.create(dbConnector.getConnection(), roomDao.createMiracleRoom(number, price, capacity, numberOfStars, status));
 
     }
 
     @Override
-    public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars) {
-        roomDao.changePartOfRoom(numberOfRoom, numberOfStars, "numberOfStars");
+    public void changeRoomPrice(Integer numberOfRoom, Integer price) throws SQLException {
+
+        roomDao.changePartOfRoom(dbConnector.getConnection(), numberOfRoom, price, "price");
 
     }
 
     @Override
-    public void changeCapacity(Integer numberOfRoom, Integer capacity) {
+    public void changeRoomStatus(Integer numberOfRoom, RoomStatus status) throws SQLException {
 
-        roomDao.changePartOfRoom(numberOfRoom, capacity, "capacity");
-
-    }
-
-    @Override
-    public void changeRoomBusy(Integer numberOfRoom, Boolean busy) {
-        roomDao.changePartOfRoom(numberOfRoom, busy, "busy");
+        roomDao.changePartOfRoom(dbConnector.getConnection(), numberOfRoom, status, "status");
 
     }
 
     @Override
-    public void copyRoom(Integer numberOfRoom, Integer newNumber) {
-        roomDao.copyRoom(numberOfRoom, newNumber);
+    public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars) throws SQLException {
+
+        roomDao.changePartOfRoom(dbConnector.getConnection(), numberOfRoom, numberOfStars, "numberOfStars");
 
     }
 
     @Override
-    public Integer getNumberEmptyRoomInHotel() {
-        return roomDao.getNumberEmptyRoom();
+    public void changeCapacity(Integer numberOfRoom, Integer capacity) throws SQLException {
+
+        roomDao.changePartOfRoom(dbConnector.getConnection(), numberOfRoom, capacity, "capacity");
 
     }
 
     @Override
-    public Room getRoom(Integer numberOfRoom) {
-        return roomDao.getById(numberOfRoom);
+    public void changeRoomBusy(Integer numberOfRoom, Boolean busy) throws SQLException {
+
+        roomDao.changePartOfRoom(dbConnector.getConnection(), numberOfRoom, busy, "busy");
 
     }
 
     @Override
-    public List<Room> getDetailsOfRoom(Integer id) {      
-        return roomDao.getMiracleRoomList(id);
+    public void copyRoom(Integer numberOfRoom, Integer newNumber) throws SQLException, CloneNotSupportedException {
+
+        roomDao.copyRoom(dbConnector.getConnection(), numberOfRoom, newNumber);
 
     }
 
     @Override
-    public List<Room> getListRooms(String name, String busy) {
+    public Integer getNumberEmptyRoomInHotel() throws SQLException {
+
+        return roomDao.getNumberEmptyRoom(dbConnector.getConnection());
+
+    }
+
+    @Override
+    public Room getRoom(Integer numberOfRoom) throws SQLException {
+
+        return roomDao.getById(dbConnector.getConnection(), numberOfRoom);
+
+    }
+
+    @Override
+    public List<Room> getDetailsOfRoom(Integer id) throws SQLException {
+
+        return roomDao.getMiracleRoomList(dbConnector.getConnection(), id);
+
+    }
+
+    @Override
+    public List<Room> getListRooms(String name, String busy) throws SQLException {
         roomDao.setEmpty(converter.booleanConverter(busy));
-        return roomDao.getAll(name);
+
+        return roomDao.getAll(dbConnector.getConnection(), name);
+
     }
-
-
-
 }

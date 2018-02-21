@@ -69,5 +69,5 @@ public interface IHotelAdministrator {
 
     public String getListGuest(String name);
 
-    public  String getListOfRooms(String name, String busy) ;
-    }
+    public String getListOfRooms(String name, String busy);
+}

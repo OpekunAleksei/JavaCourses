@@ -15,23 +15,22 @@ import java.util.List;
 
 public interface IHistoryManager {
 
+    public void settleInRoom(Guest guest, Room room) throws SQLException;
 
-    public void settleInRoom(Guest guest, Room room,IRoomManager roomManager)throws SQLException;
+    public void evictedFromRoom(Guest guest, Room room) throws SQLException;
 
-    public void evictedFromRoom(Guest guest, Room room,IRoomManager roomManager)throws SQLException;
+    public void addServiceToGuest(Service service, Guest guest, Room room) throws SQLException;
 
-    public void addServiceToGuest(Service service, Guest guest, Room room);
+    public Integer getGuestPriceForAccommodation(Guest guest, Room room) throws SQLException;
 
-    public Integer getGuestPriceForAccommodation(Guest guest, Room room);
+    public Integer getNumberGuestInHotel() throws SQLException;
 
-    public Integer getNumberGuestInHotel();
+    public Boolean checkForPresenceGuestsInRoom(Room room) throws SQLException;
 
-    public Boolean checkForPresenceGuestsInRoom(Room room);
+    public List<Guest> getListLeftGuestThisRoom(Room room, Integer count) throws SQLException;
 
-    public List<Guest> getListLeftGuestThisRoom(Room room, Integer count);
+    public List<Room> getListOfRoomsAvailableByDate(Date date, List<Room> list) throws SQLException;
 
-    public List<Room> getListOfRoomsAvailableByDate(Date date, List<Room> list);
-
-    public List<Service> getGuestServices(Guest guest, Room room,String sort);
+    public List<Service> getGuestServices(Guest guest, Room room, String sort) throws SQLException;
 
 }

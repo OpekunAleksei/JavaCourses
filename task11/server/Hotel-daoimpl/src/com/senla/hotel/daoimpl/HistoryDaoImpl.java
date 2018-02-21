@@ -6,11 +6,11 @@
 package com.senla.hotel.daoimpl;
 
 import com.senla.hotel.api.dao.IHistoryDao;
-import com.senla.hotel.dbconnection.DbConnection;
 import com.senla.hotel.entity.Guest;
 import com.senla.hotel.entity.History;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,164 +22,118 @@ import org.apache.log4j.Logger;
 
 public class HistoryDaoImpl implements IHistoryDao {
 
-    private final DbConnection dbConnection = DbConnection.getInstance();
     private static Logger logger = Logger.getLogger(HistoryDaoImpl.class);
 
     @Override
-    public List<Integer> getIdSortingServices(Room room, Guest guest, String sort) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
+    public List<Integer> getIdSortingServices(Connection connection, Room room, Guest guest, String sort) throws SQLException {
+        String SQLQuery = "SELECT service.idservice from service,services where idhistory =(SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0) and service.idService=services.idService order by " + sort;
+        try (Statement statement = connection.createStatement()) {
             List<Integer> list = new ArrayList();
 
-            ResultSet rs = statement.executeQuery(
-                    "SELECT service.idservice from service,services where idhistory =(SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0) and service.idService=services.idService order by " + sort);
+            ResultSet rs = statement.executeQuery(SQLQuery);
             while (rs.next()) {
                 list.add(rs.getInt("idservice"));
             }
             return list;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public void create(History entity) {
-        try {
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("insert into history(idRoom,idGuest,enable) values (?,?,?)")) {
-
-                ps.setInt(1, entity.getRoom().getId());
-                ps.setInt(2, entity.getGuest().getId());
-                ps.setBoolean(3, false);
-                ps.executeUpdate();
-                dbConnection.getConnection().commit();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-
         }
     }
 
     @Override
-    public void evictedFromRoom(History entity) {
-        try {
-
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("update history set enable=1 where idguest=? and idroom=?")) {
-                ps.setInt(2, entity.getRoom().getId());
-                ps.setInt(1, entity.getGuest().getId());
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-
+    public void create(Connection connection, History entity) throws SQLException {
+        String SQLQuery = "insert into history(idRoom,idGuest,enable) values (?,?,?)";
+        try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
+            ps.setInt(1, entity.getRoom().getId());
+            ps.setInt(2, entity.getGuest().getId());
+            ps.setBoolean(3, false);
+            ps.executeUpdate();
         }
     }
 
     @Override
-    public Integer getPriceForAccommodation(Guest guest, Room room) {
+    public void evictedFromRoom(Connection connection, History entity) throws SQLException {
+        String SQLQuery = "update history set enable=1 where idguest=? and idroom=?";
+        try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
+            ps.setInt(2, entity.getRoom().getId());
+            ps.setInt(1, entity.getGuest().getId());
+            ps.executeUpdate();
+        }
+    }
 
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-
+    @Override
+    public Integer getPriceForAccommodation(Connection connection, Guest guest, Room room) throws SQLException {
+        String SQLQuery = "SELECT price from service,services where idhistory =(SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0) and service.idService=services.idService";
+        try (Statement statement = connection.createStatement()) {
             int amount = 0;
             Integer days = (int) (guest.getDateOfDeparture().getTime() - guest.getArrivalDate().getTime()) / (24 * 60 * 60 * 1000);
-            ResultSet rs = statement.executeQuery(
-                    "SELECT price from service,services where idhistory =(SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0) and service.idService=services.idService");
+            ResultSet rs = statement.executeQuery(SQLQuery);
             while (rs.next()) {
-
                 amount = amount + rs.getInt("price");
-
             }
-
             Integer guestAmountForAccommodation = amount + room.getPrice() * days;
             return guestAmountForAccommodation;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
         }
-        return null;
     }
 
     @Override
-    public Integer getNumberOfGuestInHotel() {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
+    public Integer getNumberOfGuestInHotel(Connection connection) throws SQLException {
+        String SQLQuery = "SELECT COUNT(*) as number FROM history where enable =0";
+        try (Statement statement = connection.createStatement()) {
 
-            ResultSet rs = statement.executeQuery(
-                    "SELECT COUNT(*) as number FROM history where enable =0");
-
+            ResultSet rs = statement.executeQuery(SQLQuery);
             while (rs.next()) {
                 return rs.getInt("number");
             }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-
         }
         return null;
     }
 
     @Override
-    public Boolean checForPresense(Room room) {
+    public Boolean checForPresense(Connection connection, Room room) throws SQLException {
         Boolean presence = false;
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
+        String SQLQuery = "SELECT idhistory FROM history where  idroom=" + room.getId() + " and enable=0";
+        try (Statement statement = connection.createStatement()) {
 
-            ResultSet rs = statement.executeQuery(
-                    "SELECT idhistory FROM history where  idroom=" + room.getId() + " and enable=0");
+            ResultSet rs = statement.executeQuery(SQLQuery);
             while (rs.next()) {
                 presence = true;
             }
             return presence;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
         }
-        return false;
     }
 
     @Override
-    public List<Integer> getListLeftGuest(Room room, Integer count) {
+    public List<Integer> getListLeftGuest(Connection connection, Room room, Integer count) throws SQLException {
+        String SQLQuery = "SELECT idguest FROM history where enable =1 and idroom =" + room.getId() + " limit " + count;
         List<Integer> list = new ArrayList();
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-            ResultSet rs = statement.executeQuery(
-                    "SELECT idguest FROM history where enable =1 and idroom =" + room.getId() + " limit " + count);
+        try (Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(SQLQuery);
             while (rs.next()) {
 
                 list.add(rs.getInt("idguest"));
             }
             return list;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
         }
     }
 
     @Override
-    public List<Integer> getIdRoomsAvalableByDate(Date date) {
-
+    public List<Integer> getIdRoomsAvalableByDate(Connection connection, Date date) throws SQLException {
+        String SQLQuery = "SELECT idroom FROM history,guest where enable = 0 and " + new java.sql.Date(date.getTime()) + "  between (guest.departuredate and guest.arrivaldate) and guest.idGuest=history.idguest ";
         List<Integer> list = new ArrayList();
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-            ResultSet rs = statement.executeQuery(
-                    "SELECT idroom FROM history,guest where enable = 0 and " + new java.sql.Date(date.getTime()) + "  between (guest.departuredate and guest.arrivaldate) and guest.idGuest=history.idguest ");
+        try (Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(SQLQuery);
             while (rs.next()) {
                 list.add(rs.getInt("idroom"));
             }
             return list;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
         }
     }
 
     @Override
-    public void setService(Guest guest, Room room, Service service) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-
-            ResultSet rs = statement.executeQuery(
-                    "SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0");
-
-            while (rs.next()) {
-                PreparedStatement ps = dbConnection.getConnection().prepareStatement("insert into services(idhistory,idservice) values (?,?)");
-                ps.setInt(1, rs.getInt("idhistory"));
-                ps.setInt(2, service.getId());
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
+    public void setService(Connection connection, Guest guest, Room room, Service service) throws SQLException {
+        String SQLQuery = "insert into services(idhistory,idservice) values ((SELECT idhistory FROM history where idguest=" + guest.getId() + " and idroom=" + room.getId() + " and enable=0),?))";
+        try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
+            ps.setInt(1, service.getId());
+            ps.executeUpdate();
         }
     }
 

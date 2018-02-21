@@ -6,25 +6,27 @@
 package com.senla.hotel.daoimpl;
 
 import com.senla.hotel.api.dao.IRoomDao;
-import com.senla.hotel.dbconnection.DbConnection;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.utils.Converter;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-public class RoomDaoImpl implements IRoomDao {
+public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
 
-    private final DbConnection dbConnection = DbConnection.getInstance();
     private final Converter sc = new Converter();
     private static Logger logger = Logger.getLogger(RoomDaoImpl.class);
     private Boolean empty;
+    private final static String GET_ALL = "SELECT * FROM room ";
+    private final static String INSERT_ROOM = "insert into room(number,price,busy,capacity,numberofstars,status) values (?,?,?,?,?,?)";
+    private final static String UPDATE_ROOM = "update room set price=?,number=?,busy=?,capacity=?,numberofstars=?,status=? where idroom=?";
+    private final static String GET_BY_ID = "SELECT * FROM room where number =?";
 
     public RoomDaoImpl() {
 
@@ -37,9 +39,9 @@ public class RoomDaoImpl implements IRoomDao {
     }
 
     @Override
-    public List<Room> getMiracleRoomList(Integer id) {
+    public List<Room> getMiracleRoomList(Connection connection, Integer id) throws SQLException {
         List<Room> miracleList = new ArrayList();
-        miracleList.add(getById(id));
+        miracleList.add(getById(connection, id));
         return miracleList;
     }
 
@@ -50,197 +52,156 @@ public class RoomDaoImpl implements IRoomDao {
     }
 
     @Override
-    public List<Room> getById(List<Integer> id) {
-        List<Room> rooms = new ArrayList();
-        for (Integer id1 : id) {
-            rooms.add(getById(id1));
-        }
-        return rooms;
-    }
+    public Integer getNumberEmptyRoom(Connection connection) throws SQLException {
+        String SQLQuery = "SELECT COUNT(*) as number FROM room where busy =1";
+        try (Statement statement = connection.createStatement()) {
 
-    @Override
-    public List<Room> getAll(String sortName) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-            List<Room> list = new ArrayList<>();
-            ResultSet rs;
-            String condition;
-            if (empty == false) {
-                condition = "where busy=1 ";
-            } else {
-                condition = "";
-            }
-            if ("zero".equals(sortName)) {
-                rs = statement.executeQuery(
-                        "SELECT * FROM room " + condition);
-            } else {
-                rs = statement.executeQuery(
-                        "SELECT * FROM room " + condition + "order by " + sortName);
-            }
-
-            while (rs.next()) {
-                Room room = new Room(rs.getInt("number"), rs.getInt("price"), rs.getInt("capacity"), rs.getInt("numberofstars"), rs.getInt("idroom"), sc.getStatus(rs.getString("status")), sc.booleanConverter(rs.getInt("busy")));
-                list.add(room);
-            }
-            return list;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Integer getNumberEmptyRoom() {
-
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-
-            ResultSet rs = statement.executeQuery(
-                    "SELECT COUNT(*) as number FROM room where busy =1");
+            ResultSet rs = statement.executeQuery(SQLQuery);
             rs.next();
             return rs.getInt("number");
 
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
         }
     }
 
     @Override
-    public void copyRoom(Integer numberOfRoom, Integer newNumber) {
+    public void copyRoom(Connection connection, Integer numberOfRoom, Integer newNumber) throws SQLException, CloneNotSupportedException {
         Room copyRoom;
-        try {
-            copyRoom = (Room) (getById(numberOfRoom)).clone();
-            copyRoom.setNumber(newNumber);
-            copyRoom.setBusy(Boolean.FALSE);
-            create(copyRoom);
-        } catch (CloneNotSupportedException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-        }
+        copyRoom = (Room) (getById(connection, numberOfRoom)).clone();
+        copyRoom.setNumber(newNumber);
+        copyRoom.setBusy(Boolean.FALSE);
+        create(connection, copyRoom);
     }
 
     @Override
-    public void changePartOfRoom(Integer id, Object changeVariable, String name) {
-        try {
-
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("update room set " + name + "=? where number=?")) {
-                if (changeVariable.getClass() == RoomStatus.class) {
-                    changeVariable = changeVariable.toString();
-                } else if ("true".equals(changeVariable.toString())) {
-                    changeVariable = false;
-                } else if ("false".equals(changeVariable.toString())) {
-                    changeVariable = true;
-                } else {
-                    ps.setObject(1, changeVariable);
-                }
-                ps.setInt(2, id);
-
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-
-            logger.error(new Date() + " " + ex.getMessage());
-        }
-    }
-
-    @Override
-    public List<Room> getSortingListOfRooms(String name, Boolean empty) {
-
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-            ResultSet rs;
-            List<Room> list = new ArrayList<>();
-            if (!empty) {
-                rs = statement.executeQuery(
-                        "SELECT * FROM room where busy=1  order by " + name);
+    public void changePartOfRoom(Connection connection, Integer id, Object changeVariable, String name) throws SQLException {
+        String SQLQuery = "update room set " + name + "=? where number=?";
+        try (PreparedStatement ps = connection.prepareStatement(SQLQuery)) {
+            if (changeVariable.getClass() == RoomStatus.class) {
+                changeVariable = changeVariable.toString();
+            } else if ("true".equals(changeVariable.toString())) {
+                changeVariable = false;
+            } else if ("false".equals(changeVariable.toString())) {
+                changeVariable = true;
             } else {
-                rs = statement.executeQuery(
-                        "SELECT * FROM room order by " + name);
+                ps.setObject(1, changeVariable);
             }
-            while (rs.next()) {
-
-                Room room = new Room(rs.getInt("number"), rs.getInt("price"), rs.getInt("capacity"), rs.getInt("numberofstars"), rs.getInt("idroom"), sc.getStatus(rs.getString("status")), sc.booleanConverter(rs.getInt("busy")));
-                list.add(room);
-            }
-            return list;
-
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
+            ps.setInt(2, id);
+            ps.executeUpdate();
         }
+
     }
 
     @Override
-    public void setImportRooms(List<Room> list) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
+    public void setImportRooms(Connection connection, List<Room> list) throws SQLException {
+
+        try (Statement statement = connection.createStatement()) {
 
             for (int i = 0; i < list.size(); i++) {
+
                 ResultSet rs = statement.executeQuery(
                         "SELECT number FROM room where idroom =" + list.get(i).getId());
                 if (rs.next()) {
-                    update(list.get(i));
+                    update(connection, list.get(i));
                 } else {
-                    create(list.get(i));
+                    create(connection, list.get(i));
                 }
-
             }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
         }
 
     }
 
     @Override
-    public Integer getIdByNumberOnlist(Integer number) {
+    public Integer getIdByNumberOnlist(Connection connection, Integer number) throws SQLException {
 
-        return getAll(null).get(number).getNumber();
+        return getAll(connection, "zero").get(number).getNumber();
     }
 
     @Override
-    public Room getById(Integer id) {
-        try (Statement statement = dbConnection.getConnection().createStatement()) {
-            Room room = null;
-            ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM room where number =" + id);
-            while (rs.next()) {
-                room = new Room(rs.getInt("number"), rs.getInt("price"), rs.getInt("capacity"), rs.getInt("numberofstars"), rs.getInt("idroom"), sc.getStatus(rs.getString("status")), sc.booleanConverter(rs.getInt("busy")));
-            }
-            return room;
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-            return null;
-        }
+    protected String getByIdQuery() {
+
+        return GET_BY_ID;
     }
 
     @Override
-    public void update(Room entity) {
-        try {
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("update room set price=?,number=?,busy=?,capacity=?,numberofstars=?,status=? where idroom=?")) {
-                ps.setInt(1, entity.getPrice());
-                ps.setInt(2, entity.getNumber());
-                ps.setBoolean(3, !entity.getBusy());
-                ps.setInt(4, entity.getCapacity());
-                ps.setInt(5, entity.getNumberOfStars());
-                ps.setString(6, entity.getStatus().toString());
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
-        }
+    protected String getUpdateQuery() {
+        return UPDATE_ROOM;
     }
 
     @Override
-    public void create(Room entity) {
-        try {
-            try (PreparedStatement ps = dbConnection.getConnection().prepareStatement("insert into room(number,price,busy,capacity,numberofstars,status) values (?,?,?,?,?,?)")) {
-                ps.setInt(2, entity.getPrice());
-                ps.setInt(1, entity.getNumber());
-                ps.setBoolean(3, !entity.getBusy());
-                ps.setInt(4, entity.getCapacity());
-                ps.setInt(5, entity.getNumberOfStars());
-                ps.setString(6, entity.getStatus().toString());
-                ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            logger.error(new Date() + " " + ex.getMessage());
+    protected String getCreateQuery() {
+        return INSERT_ROOM;
+    }
+
+    @Override
+    protected String getAllQuery() {
+        if (empty == false) {
+            return GET_ALL + "where busy=1";
+        } else {
+            return GET_ALL;
         }
+
+    }
+
+    @Override
+    protected String getSortingAllQuery() {
+        if (empty == false) {
+            return GET_ALL + " where busy=1 " + " order by ?";
+        } else {
+            return GET_ALL;
+        }
+
+    }
+
+    @Override
+    protected List<Room> parseQueryGetById(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    @Override
+    protected List<Room> parseQueryGetSortingAllEntity(PreparedStatement ps, String condition) throws SQLException {
+        ps.setString(1, condition);
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
+    }
+
+    private List<Room> parseQueryGetList(ResultSet rs) throws SQLException {
+
+        List<Room> list = new ArrayList();
+        while (rs.next()) {
+            Room room = new Room(rs.getInt("number"), rs.getInt("price"), rs.getInt("capacity"), rs.getInt("numberofstars"), rs.getInt("idroom"), sc.getStatus(rs.getString("status")), sc.booleanConverter(rs.getInt("busy")));
+            list.add(room);
+        }
+        return list;
+    }
+
+    @Override
+    protected void parseQueryCreateEntity(PreparedStatement ps, Room object) throws SQLException {
+        ps.setInt(1, object.getPrice());
+        ps.setInt(2, object.getNumber());
+        ps.setBoolean(3, !object.getBusy());
+        ps.setInt(4, object.getCapacity());
+        ps.setInt(5, object.getNumberOfStars());
+        ps.setString(6, object.getStatus().toString());
+    }
+
+    @Override
+    protected void parseQueryUpdateEntity(PreparedStatement ps, Room object) throws SQLException {
+        ps.setInt(1, object.getPrice());
+        ps.setInt(2, object.getNumber());
+        ps.setBoolean(3, !object.getBusy());
+        ps.setInt(4, object.getCapacity());
+        ps.setInt(5, object.getNumberOfStars());
+        ps.setString(6, object.getStatus().toString());
+        ps.setInt(6, object.getId());
+    }
+
+    @Override
+    protected List<Room> parseQueryGetAllEntity(PreparedStatement ps) throws SQLException {
+
+        ResultSet rs = ps.executeQuery();
+        return parseQueryGetList(rs);
     }
 
 }

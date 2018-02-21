@@ -11,9 +11,12 @@ import java.util.Date;
 import java.util.List;
 import com.senla.hotel.api.managers.IGuestManager;
 import com.senla.hotel.daoimpl.GuestDaoImpl;
+import com.senla.hotel.dbconnector.DbConnector;
+import java.sql.SQLException;
 
 public class GuestManager implements IGuestManager {
 
+    private final DbConnector dbConnector = new DbConnector();
     private final IGuestDao guestDao;
 
     public GuestManager() {
@@ -22,32 +25,32 @@ public class GuestManager implements IGuestManager {
     }
 
     @Override
-    public void setImpotrGuests(List<Guest> list) {
-        guestDao.setImportGuests(list);
+    public void setImpotrGuests(List<Guest> list) throws SQLException {
+        guestDao.setImportGuests(dbConnector.getConnection(), list);
     }
 
     @Override
-    public Integer getIdByNumberOnList(Integer number) {
-        return guestDao.getIdByNumberOnlist(number);
+    public Integer getIdByNumberOnList(Integer number) throws SQLException {
+        return guestDao.getIdByNumberOnlist(dbConnector.getConnection(), number);
     }
 
     @Override
-    public void createGuest(String name, Date arrivalDate, Date dateOfDeparture) {
+    public void createGuest(String name, Date arrivalDate, Date dateOfDeparture) throws SQLException {
 
-        guestDao.create(guestDao.createMiracleGuest(name, arrivalDate, dateOfDeparture));
-
-    }
-
-    @Override
-    public Guest getGuestByID(Integer id) {
-        return guestDao.getById(id);
+        guestDao.create(dbConnector.getConnection(), guestDao.createMiracleGuest(name, arrivalDate, dateOfDeparture));
 
     }
 
     @Override
-    public List<Guest> getListOfGuest(String name) {
-        return guestDao.getAll(name);
+    public Guest getGuestByID(Integer id) throws SQLException {
+
+        return guestDao.getById(dbConnector.getConnection(), id);
+
     }
 
- 
+    @Override
+    public List<Guest> getListOfGuest(String name) throws SQLException {
+        return guestDao.getAll(dbConnector.getConnection(), name);
+    }
+
 }

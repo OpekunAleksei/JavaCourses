@@ -10,10 +10,13 @@ import com.senla.hotel.entity.Service;
 import java.util.List;
 import com.senla.hotel.api.managers.IServiceManager;
 import com.senla.hotel.daoimpl.ServiceDaoImpl;
+import com.senla.hotel.dbconnector.DbConnector;
+import java.sql.SQLException;
 
 public class ServiceManager implements IServiceManager {
 
     private final IServiceDao serviceDao;
+    private final DbConnector dbConnector = new DbConnector();
 
     public ServiceManager() {
         this.serviceDao = new ServiceDaoImpl();
@@ -21,36 +24,44 @@ public class ServiceManager implements IServiceManager {
     }
 
     @Override
-    public Integer getIdByNumberOnList(Integer number) {
-        return serviceDao.getIdByNumberOnlist(number);
-    }
+    public Integer getIdByNumberOnList(Integer number) throws SQLException {
 
-    @Override
-    public void setImportServices(List<Service> list) {
-        serviceDao.setImportServices(list);
+        return serviceDao.getIdByNumberOnlist(dbConnector.getConnection(), number);
 
     }
 
     @Override
-    public List<Service> getServices() {
+    public void setImportServices(List<Service> list) throws SQLException {
 
-        return serviceDao.getAll(null);
-    }
-
-    @Override
-    public void createService(Integer price, String category) {
-        serviceDao.create(serviceDao.getMiracleService(price, category));
+        serviceDao.setImportServices(dbConnector.getConnection(), list);
 
     }
 
     @Override
-    public Service getService(Integer serviceId) {
-        return serviceDao.getById(serviceId);
+    public List<Service> getServices() throws SQLException {
+
+        return serviceDao.getAll(dbConnector.getConnection(), "zero");
+
     }
 
     @Override
-    public void changeServicePrice(Integer id, Integer price) {
-        serviceDao.changePrice(id, price);
+    public void createService(Integer price, String category) throws SQLException {
+
+        serviceDao.create(dbConnector.getConnection(), serviceDao.getMiracleService(price, category));
+
+    }
+
+    @Override
+    public Service getService(Integer serviceId) throws SQLException {
+
+        return serviceDao.getById(dbConnector.getConnection(), serviceId);
+
+    }
+
+    @Override
+    public void changeServicePrice(Integer id, Integer price) throws SQLException {
+
+        serviceDao.changePrice(dbConnector.getConnection(), id, price);
 
     }
 }

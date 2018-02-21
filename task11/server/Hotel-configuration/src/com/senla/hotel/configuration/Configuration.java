@@ -63,7 +63,7 @@ public class Configuration {
         return String.valueOf(properties.getProperty("DB_NAME"));
     }
 
-    public String getpassword() {
+    public String getPassword() {
         return String.valueOf(properties.getProperty("DB_PASSWORD"));
     }
 

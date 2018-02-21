@@ -6,20 +6,20 @@
 package com.senla.hotel.api.managers;
 
 import com.senla.hotel.entity.Service;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IServiceManager {
 
+    public Integer getIdByNumberOnList(Integer number) throws SQLException;
 
-    public Integer getIdByNumberOnList(Integer number);
+    public void setImportServices(List<Service> list) throws SQLException;
 
-    public void setImportServices(List<Service> list);
+    public List<Service> getServices() throws SQLException;
 
-    public List<Service> getServices();
+    public void createService(Integer price, String category) throws SQLException;
 
-    public void createService(Integer price, String category);
+    public Service getService(Integer serviceId) throws SQLException;
 
-    public Service getService(Integer serviceId);
-
-    public void changeServicePrice(Integer id, Integer price);
+    public void changeServicePrice(Integer id, Integer price) throws SQLException;
 }

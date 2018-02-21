@@ -6,16 +6,17 @@
 package com.senla.hotel.api.dao;
 
 import com.senla.hotel.entity.Guest;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 public interface IGuestDao extends IGenericDao<Guest> {
 
-    public void setImportGuests(List<Guest> list);
+    public void setImportGuests(Connection connection, List<Guest> list) throws SQLException;
 
-    public Integer getIdByNumberOnlist(Integer number);
+    public Integer getIdByNumberOnlist(Connection connection, Integer number) throws SQLException;
 
     public Guest createMiracleGuest(String name, Date arrivalDate, Date dateOfDeparture);
 
-    public List<Guest> getById(List<Integer> id);
 }
