@@ -15,18 +15,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 
 public class ServiceDaoImpl extends AbstractDao<Service> implements IServiceDao {
 
 
-=======
-import org.apache.log4j.Logger;
-
-public class ServiceDaoImpl extends AbstractDao<Service> implements IServiceDao {
-
-    private static Logger logger = Logger.getLogger(ServiceDaoImpl.class);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     private final static String GET_ALL = "SELECT * FROM service";
     private final static String INSERT_SERVICE = "insert into service(category,price) values (?,?)";
     private final static String UPDATE_SERVICE = "update service set price= ?,category= ? where idservice= ?";

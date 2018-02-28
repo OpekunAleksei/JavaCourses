@@ -11,17 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-<<<<<<< HEAD
 
 public abstract class AbstractDao<T extends Entity> implements IGenericDao<T> {
 
-=======
-import org.apache.log4j.Logger;
-
-public abstract class AbstractDao<T extends Entity> implements IGenericDao<T> {
-
-    private static final Logger logger = Logger.getLogger(AbstractDao.class);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 
     protected abstract String getByIdQuery();
 

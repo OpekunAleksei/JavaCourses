@@ -9,10 +9,6 @@ import com.senla.hotel.api.facade.IHotelAdministrator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
-import java.util.Arrays;
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;

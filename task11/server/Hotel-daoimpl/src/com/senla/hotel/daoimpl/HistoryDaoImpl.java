@@ -18,10 +18,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-<<<<<<< HEAD
-=======
-import org.apache.log4j.Logger;
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 
 public class HistoryDaoImpl extends AbstractDao<History> implements IHistoryDao {
 
@@ -31,11 +27,7 @@ public class HistoryDaoImpl extends AbstractDao<History> implements IHistoryDao 
     private final static String UPDATE_HISTORY = "update history set enable=1 where idguest=? and idroom=?";
     private final static String GET_BY_ID = "SELECT * FROM history where ihistory = ?";
     private final static String DELETE_HISTORY = "DELETE from history where idhistory=?";
-<<<<<<< HEAD
 
-=======
-    private static Logger logger = Logger.getLogger(HistoryDaoImpl.class);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 
     @Override
     public List<Integer> getIdSortingServices(Connection connection, Room room, Guest guest, String sort) throws SQLException {

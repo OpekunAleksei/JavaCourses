@@ -16,19 +16,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
-=======
-import org.apache.log4j.Logger;
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 
 public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
 
     private final Converter sc = new Converter();
-<<<<<<< HEAD
 
-=======
-    private static Logger logger = Logger.getLogger(RoomDaoImpl.class);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     private Boolean empty;
     private final static String GET_ALL = "SELECT * FROM room ";
     private final static String INSERT_ROOM = "insert into room(number,price,busy,capacity,numberofstars,status) values (?,?,?,?,?,?)";

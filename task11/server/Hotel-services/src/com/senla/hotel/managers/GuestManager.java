@@ -16,11 +16,7 @@ import java.sql.SQLException;
 
 public class GuestManager implements IGuestManager {
 
-<<<<<<< HEAD
 
-=======
-    private final DbConnector dbConnector = new DbConnector();
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     private final IGuestDao guestDao;
 
     public GuestManager() {
@@ -30,51 +26,31 @@ public class GuestManager implements IGuestManager {
 
     @Override
     public void setImpotrGuests(List<Guest> list) throws SQLException {
-<<<<<<< HEAD
         guestDao.setImportGuests(DbConnector.getIstance().getConnection(), list);
-=======
-        guestDao.setImportGuests(dbConnector.getConnection(), list);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     }
 
     @Override
     public Integer getIdByNumberOnList(Integer number) throws SQLException {
-<<<<<<< HEAD
         return guestDao.getIdByNumberOnlist(DbConnector.getIstance().getConnection(), number);
-=======
-        return guestDao.getIdByNumberOnlist(dbConnector.getConnection(), number);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     }
 
     @Override
     public void createGuest(String name, Date arrivalDate, Date dateOfDeparture) throws SQLException {
 
-<<<<<<< HEAD
         guestDao.create(DbConnector.getIstance().getConnection(), guestDao.createMiracleGuest(name, arrivalDate, dateOfDeparture));
-=======
-        guestDao.create(dbConnector.getConnection(), guestDao.createMiracleGuest(name, arrivalDate, dateOfDeparture));
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 
     }
 
     @Override
     public Guest getGuestByID(Integer id) throws SQLException {
 
-<<<<<<< HEAD
         return guestDao.getById(DbConnector.getIstance().getConnection(), id);
-=======
-        return guestDao.getById(dbConnector.getConnection(), id);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
 
     }
 
     @Override
     public List<Guest> getListOfGuest(String name) throws SQLException {
-<<<<<<< HEAD
         return guestDao.getAll(DbConnector.getIstance().getConnection(), name);
-=======
-        return guestDao.getAll(dbConnector.getConnection(), name);
->>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     }
 
 }
