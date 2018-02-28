@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+<<<<<<< HEAD:task11/server/Hotel-server/src/com/senla/hotel/server/servertheard/ServerThread.java
 import java.util.Arrays;
+=======
+>>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a:task11/server/Hotel-server/src/com/senla/hotel/server/servertheard/ServerThread.java
 import java.util.Date;
 import org.apache.log4j.Logger;
 
@@ -34,6 +37,7 @@ public class ServerThread extends Thread {
     public void run() {
         String str = null;
         try {
+<<<<<<< HEAD:task11/server/Hotel-server/src/com/senla/hotel/server/servertheard/ServerThread.java
             while (!"-1".equals(str = (String) is.readObject())) {
                 if (str != null) {
                     os.writeObject(dataParser.setInputData(str));
@@ -41,6 +45,13 @@ public class ServerThread extends Thread {
             }
         } catch (IOException | ClassNotFoundException e) {
             logger.error(new Date() + " " + Arrays.toString(e.getStackTrace()));
+=======
+            while ((str = (String) is.readObject()) != null) {
+                os.writeObject(dataParser.setInputData(str));
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            logger.error(new Date() + " " + e.getMessage());
+>>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a:task11/server/Hotel-server/src/com/senla/hotel/server/servertheard/ServerThread.java
         } finally {
             disconnect();
         }

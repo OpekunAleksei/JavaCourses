@@ -16,6 +16,11 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 public class Server {
+<<<<<<< HEAD:task11/server/Hotel-server/src/com/senla/hotel/server/server/Server.java
+=======
+
+    private final static IHotelAdministrator hotelAdministrator = HotelAdministrator.getInstance();
+>>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a:task11/server/Hotel-server/src/com/senla/hotel/server/server/Server.java
     private static Logger logger = Logger.getLogger(Server.class);
 
     public void start() {

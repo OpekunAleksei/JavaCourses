@@ -16,10 +16,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+<<<<<<< HEAD
 
 public class GuestDaoImpl extends AbstractDao<Guest> implements IGuestDao {
 
 
+=======
+import org.apache.log4j.Logger;
+
+public class GuestDaoImpl extends AbstractDao<Guest> implements IGuestDao {
+
+    private static final Logger logger = Logger.getLogger(GuestDaoImpl.class);
+>>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
     private final static String GET_ALL = "SELECT * FROM guest";
     private final static String GET_SORTING_ALL = "SELECT * FROM guest order by  ?";
     private final static String INSERT_GUEST = "insert into guest(name,arrivaldate,departuredate) values (?,?,?)";

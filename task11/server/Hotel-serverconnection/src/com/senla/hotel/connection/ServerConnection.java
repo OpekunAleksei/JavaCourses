@@ -22,7 +22,11 @@ public class ServerConnection {
 
     private ServerConnection() throws IOException {
 
+<<<<<<< HEAD
         this.socket = new Socket("Алексей-ПК", 8071);
+=======
+        this.socket = new Socket("user-ПК", 8071);
+>>>>>>> 0d19949fa24f2775f732adfff25b8cc4e211023a
         this.inputStream = new ObjectInputStream(socket.getInputStream());
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
