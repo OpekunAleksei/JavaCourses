@@ -10,6 +10,7 @@ import com.senla.hotel.annotations.CsvEntity;
 import com.senla.hotel.annotations.CsvProperty;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,7 @@ public class Service extends AEntity {
     @CsvProperty(colomnNumber = 0, propertyType = PropertyType.SimpleProperty)
     @Id
     private Integer id;
-    @ManyToMany(mappedBy = "service",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "service",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<History> history = new HashSet<History>();
 
     public Set<History> getHistory() {

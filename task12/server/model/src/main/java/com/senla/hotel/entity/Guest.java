@@ -11,6 +11,7 @@ import com.senla.hotel.annotations.CsvProperty;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,7 +45,7 @@ public class Guest extends AEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
-    @OneToMany(mappedBy = "guest",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "guest",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<History> history = new HashSet<History>();
 
     public Guest(String name, Date arrivalDate, Date dateOfDeparture, Integer id) {

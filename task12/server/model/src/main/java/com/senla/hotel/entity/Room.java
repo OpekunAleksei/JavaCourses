@@ -10,6 +10,7 @@ import com.senla.hotel.annotations.CsvEntity;
 import com.senla.hotel.annotations.CsvProperty;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,7 +47,7 @@ public class Room extends AEntity implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
-    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<History> history = new HashSet<History>();
 
     public Room(Integer number, Integer price, Integer capacity, Integer numberOfStars, Integer id, String status, Boolean busy) {
