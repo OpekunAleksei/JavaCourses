@@ -28,8 +28,8 @@ public class ServletDataParser {
         return json.get(name);
     }
 
-    public String getInformation(HttpServletRequest request) {
-        return request.getMethod() + " " + request.getServletPath();
+    public String getInformation(HttpServletRequest request, String userName) {
+        return request.getMethod() + " " + request.getServletPath() + " " + userName;
     }
 
     public String createWebToken(String name, String password) {

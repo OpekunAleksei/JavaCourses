@@ -1,19 +1,17 @@
-Sun Mar 18 19:26:37 EET 2018 GET /GuestServlet
-Sun Mar 18 19:26:40 EET 2018 GET /GuestServlet
-Sun Mar 18 19:43:03 EET 2018 GET /GuestServlet
-Sun Mar 18 19:43:08 EET 2018 GET /GuestServlet
-Mon Mar 19 12:02:46 MSK 2018 PUT /UserServlet
-Mon Mar 19 12:07:23 MSK 2018 PUT /UserServlet
-Mon Mar 19 12:13:12 MSK 2018 GET /UserServlet
-Mon Mar 19 12:13:29 MSK 2018 GET /GuestServlet
-Mon Mar 19 12:13:44 MSK 2018 POST /UserServlet
-Tue Mar 20 12:00:27 MSK 2018 GET /UserServlet
-Tue Mar 20 12:00:43 MSK 2018 GET /GuestServlet
-Tue Mar 20 12:00:48 MSK 2018 GET /GuestServlet
-Tue Mar 20 12:04:32 MSK 2018 GET /GuestServlet
-Tue Mar 20 12:05:52 MSK 2018 GET /GuestServlet
-Tue Mar 20 12:30:06 MSK 2018 GET /GuestServlet
-Tue Mar 20 12:30:24 MSK 2018 POST /UserServlet
-Tue Mar 20 18:35:16 MSK 2018 PUT /UserServlet
-Tue Mar 20 18:36:39 MSK 2018 GET /UserServlet
-Tue Mar 20 18:36:46 MSK 2018 GET /GuestServlet
+
+Tue Mar 20 22:20:39 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:24:23 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:26:07 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:26:17 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:28:09 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:28:16 MSK 2018 GET /GuestServlet beta1
+Tue Mar 20 22:28:28 MSK 2018 GET /RoomServlet beta1
+Tue Mar 20 22:31:12 MSK 2018 POST /UserServlet beta1
+Tue Mar 20 22:31:25 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:31:30 MSK 2018 POST /UserServlet beta1
+Tue Mar 20 22:35:56 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:36:08 MSK 2018 GET /GuestServlet beta1
+Tue Mar 20 22:36:24 MSK 2018 POST /UserServlet beta1
+Tue Mar 20 22:39:33 MSK 2018 GET /UserServlet beta1
+Tue Mar 20 22:39:37 MSK 2018 GET /GuestServlet beta1
+Tue Mar 20 22:39:53 MSK 2018 POST /UserServlet beta1

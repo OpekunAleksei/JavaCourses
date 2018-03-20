@@ -1,4 +1,3 @@
-
 package com.senla.hotel.web;
 
 import com.senla.hotel.api.facade.IHotelAdministrator;
@@ -18,24 +17,26 @@ public class ServiceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
-        servletDataParser.createResponse(response, hotelAdministrator.getListOfServices(servletDataParser.getInformation(request)));
+        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
+        servletDataParser.createResponse(response, hotelAdministrator.getListOfServices(information));
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) req.getSession().getAttribute("administrator");
         servletDataParser.getJsonObjectFromReques(req);
+        String information = servletDataParser.getInformation(req, (String) req.getSession().getAttribute("login"));
         Integer serviceId = (Integer) servletDataParser.getDataFronJson("serviceId");
         Integer price = (Integer) servletDataParser.getDataFronJson("price");
-        hotelAdministrator.changeServicePrice(serviceId, price, servletDataParser.getInformation(req));
+        hotelAdministrator.changeServicePrice(serviceId, price, information);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String information = servletDataParser.getInformation(req, (String) req.getSession().getAttribute("login"));
         servletDataParser.getJsonObjectFromReques(req);
         String category = (String) servletDataParser.getDataFronJson("category");
         Integer price = (Integer) servletDataParser.getDataFronJson("price");
-        hotelAdministrator.createService(price, category, servletDataParser.getInformation(req));
+        hotelAdministrator.createService(price, category, information);
     }
 }

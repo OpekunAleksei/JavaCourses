@@ -1,4 +1,3 @@
-
 package com.senla.hotel.web.filters;
 
 import com.senla.hotel.api.facade.IHotelAdministrator;
@@ -34,12 +33,12 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String name = req.getHeader("login");
-        String password = req.getHeader("password");
-        String token = servletDataParser.createWebToken(name, password);
-        if (token.equals(hotelAdministrator.getToken(name, password))) {
-            req.getSession().setAttribute("administrator", hotelAdministrator);
-            chain.doFilter(request, response);
+        Boolean access = (Boolean) req.getSession().getAttribute("access");
+        if (access != null) {
+            if (access == true) {
+                req.getSession().setAttribute("administrator", hotelAdministrator);
+                chain.doFilter(request, response);
+            }
         } else {
             res.getOutputStream().print("Login or passsword uncorrect");
         }

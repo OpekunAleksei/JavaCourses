@@ -1,4 +1,3 @@
-
 package com.senla.hotel.web;
 
 import com.senla.hotel.api.facade.IHotelAdministrator;
@@ -20,7 +19,14 @@ public class UserServlet extends HttpServlet {
         String name = req.getHeader("login");
         String password = req.getHeader("password");
         String token = servletDataParser.createWebToken(name, password);
-        hotelAdministrator.signIn(name, password, token, servletDataParser.getInformation(req));
+        hotelAdministrator.signIn(name, password, token, servletDataParser.getInformation(req, name));
+        if (token.equals(hotelAdministrator.getToken(name, password))) {
+            req.getSession().setAttribute("access", true);
+            req.getSession().setAttribute("login", name);
+        } else {
+            req.setAttribute("access", false);
+        }
+
     }
 
     @Override
@@ -28,7 +34,7 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
         String name = req.getHeader("login");
         String password = req.getHeader("password");
-        hotelAdministrator.signOut(name, password, servletDataParser.getInformation(req));
+        hotelAdministrator.signOut(name, password, servletDataParser.getInformation(req, name));
         req.getSession().invalidate();
     }
 
@@ -36,6 +42,6 @@ public class UserServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getHeader("login");
         String password = req.getHeader("password");
-        hotelAdministrator.registerUser(name, password, servletDataParser.getInformation(req));
+        hotelAdministrator.registerUser(name, password, servletDataParser.getInformation(req, name));
     }
 }

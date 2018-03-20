@@ -1,4 +1,3 @@
-
 package com.senla.hotel.web;
 
 import com.senla.hotel.api.facade.IHotelAdministrator;
@@ -19,17 +18,19 @@ public class GuestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
-        servletDataParser.createResponse(response, hotelAdministrator.getListGuest("zero", servletDataParser.getInformation(request)));
+        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
+        servletDataParser.createResponse(response, hotelAdministrator.getListGuest("zero", information));
     }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
         servletDataParser.getJsonObjectFromReques(request);
+        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
         String name = (String) servletDataParser.getDataFronJson("name");
         String arrivalDate = (String) servletDataParser.getDataFronJson("arrivalDate");
         String departurreDate = (String) servletDataParser.getDataFronJson("departurreDate");
-        hotelAdministrator.createGuest(name, arrivalDate, departurreDate, servletDataParser.getInformation(request));
+        hotelAdministrator.createGuest(name, arrivalDate, departurreDate, information);
     }
 
 }
