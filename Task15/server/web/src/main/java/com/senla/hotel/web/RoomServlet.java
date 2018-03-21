@@ -17,7 +17,7 @@ public class RoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
-        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(request);
         servletDataParser.createResponse(response, hotelAdministrator.getListOfRooms("zero", false, information));
     }
 
@@ -25,7 +25,7 @@ public class RoomServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) req.getSession().getAttribute("administrator");
         servletDataParser.getJsonObjectFromReques(req);
-        String information = servletDataParser.getInformation(req, (String) req.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(req);
         Integer numberOfRoom = (Integer) servletDataParser.getDataFronJson("numberOfRoom");
         Integer price = (Integer) servletDataParser.getDataFronJson("price");
         hotelAdministrator.changeRoomPrice(numberOfRoom, price, information);

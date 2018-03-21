@@ -1,6 +1,7 @@
 package com.senla.hotel.web;
 
 import com.senla.hotel.api.facade.IHotelAdministrator;
+import com.senla.hotel.entity.Client;
 import com.senla.hotel.facade.HotelAdministrator;
 import com.senla.hotel.utils.ServletDataParser;
 import java.io.IOException;
@@ -19,22 +20,21 @@ public class UserServlet extends HttpServlet {
         String name = req.getHeader("login");
         String password = req.getHeader("password");
         String token = servletDataParser.createWebToken(name, password);
-        hotelAdministrator.signIn(name, password, token, servletDataParser.getInformation(req, name));
-        if (token.equals(hotelAdministrator.getToken(name, password))) {
-            req.getSession().setAttribute("access", true);
+        hotelAdministrator.signIn(name, password, token, servletDataParser.getInformation(req));
+        Client client = hotelAdministrator.getClient(name, password);
+        if (client != null) {
+            req.getSession().setAttribute("user", client);
             req.getSession().setAttribute("login", name);
+            servletDataParser.createResponse(resp, client.getToken());
         } else {
-            req.setAttribute("access", false);
+            servletDataParser.createResponse(resp, "Wrong login or password");
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = req.getHeader("login");
-        String password = req.getHeader("password");
-        hotelAdministrator.signOut(name, password, servletDataParser.getInformation(req, name));
+        hotelAdministrator.signOut((Client) req.getSession().getAttribute("user"), servletDataParser.getInformation(req));
         req.getSession().invalidate();
     }
 
@@ -42,6 +42,6 @@ public class UserServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getHeader("login");
         String password = req.getHeader("password");
-        hotelAdministrator.registerUser(name, password, servletDataParser.getInformation(req, name));
+        hotelAdministrator.registerUser(name, password, servletDataParser.getInformation(req));
     }
 }

@@ -17,7 +17,7 @@ public class ServiceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
-        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(request);
         servletDataParser.createResponse(response, hotelAdministrator.getListOfServices(information));
     }
 
@@ -25,7 +25,7 @@ public class ServiceServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) req.getSession().getAttribute("administrator");
         servletDataParser.getJsonObjectFromReques(req);
-        String information = servletDataParser.getInformation(req, (String) req.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(req);
         Integer serviceId = (Integer) servletDataParser.getDataFronJson("serviceId");
         Integer price = (Integer) servletDataParser.getDataFronJson("price");
         hotelAdministrator.changeServicePrice(serviceId, price, information);
@@ -33,7 +33,7 @@ public class ServiceServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String information = servletDataParser.getInformation(req, (String) req.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(req);
         servletDataParser.getJsonObjectFromReques(req);
         String category = (String) servletDataParser.getDataFronJson("category");
         Integer price = (Integer) servletDataParser.getDataFronJson("price");

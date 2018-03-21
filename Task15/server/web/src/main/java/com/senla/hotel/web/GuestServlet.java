@@ -18,7 +18,7 @@ public class GuestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
-        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(request);
         servletDataParser.createResponse(response, hotelAdministrator.getListGuest("zero", information));
     }
 
@@ -26,7 +26,7 @@ public class GuestServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         hotelAdministrator = (IHotelAdministrator) request.getSession().getAttribute("administrator");
         servletDataParser.getJsonObjectFromReques(request);
-        String information = servletDataParser.getInformation(request, (String) request.getSession().getAttribute("login"));
+        String information = servletDataParser.getInformation(request);
         String name = (String) servletDataParser.getDataFronJson("name");
         String arrivalDate = (String) servletDataParser.getDataFronJson("arrivalDate");
         String departurreDate = (String) servletDataParser.getDataFronJson("departurreDate");
