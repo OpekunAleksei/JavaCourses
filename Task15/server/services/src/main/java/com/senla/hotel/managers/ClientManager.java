@@ -8,6 +8,7 @@ package com.senla.hotel.managers;
 import com.senla.hotel.api.dao.IClientDao;
 import com.senla.hotel.api.managers.IClientManager;
 import com.senla.hotel.daoimpl.ClientDaoImpl;
+import com.senla.hotel.entity.Client;
 import com.senla.hotel.hibernateutil.HibernateUtil;
 import java.sql.SQLException;
 import java.util.Date;
@@ -25,14 +26,14 @@ public class ClientManager implements IClientManager {
     }
 
     @Override
-    public String getToken(String login, String password) throws Exception {
+    public Client getCLient(String login, String password) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            String result = clientDao.getClient(session, login, password).getToken();
+            Client client = clientDao.getClient(session, login, password);
             transaction.commit();
-            return result;
+            return client;
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
             if (transaction != null) {
@@ -77,12 +78,12 @@ public class ClientManager implements IClientManager {
     }
 
     @Override
-    public void signOut(String login, String password) throws Exception {
+    public void signOut(Client client) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            clientDao.signInOut(session, clientDao.getClient(session, login, password), null);
+            clientDao.signInOut(session, client, null);
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

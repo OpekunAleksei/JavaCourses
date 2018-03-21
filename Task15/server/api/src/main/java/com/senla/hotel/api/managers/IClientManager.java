@@ -5,13 +5,15 @@
  */
 package com.senla.hotel.api.managers;
 
+import com.senla.hotel.entity.Client;
+
 public interface IClientManager {
 
     public void registerUser(String login, String password) throws Exception;
 
-    public void signOut(String login, String password) throws Exception;
+    public void signOut(Client client) throws Exception;
 
     public void signIn(String login, String password, String token) throws Exception;
 
-    public String getToken(String login, String password) throws Exception;
+    public Client getCLient(String login, String password) throws Exception;
 }

@@ -36,7 +36,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         Client client = (Client) req.getSession().getAttribute("user");
         String token = req.getHeader("token");
-        if ( client.getToken().equals(token)) {
+        if (client != null && client.getToken().equals(token)) {
             req.getSession().setAttribute("administrator", hotelAdministrator);
             chain.doFilter(request, response);
         } else {

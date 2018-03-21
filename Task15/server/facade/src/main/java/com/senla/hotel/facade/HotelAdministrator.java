@@ -17,6 +17,7 @@ import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
 import com.senla.hotel.factory.ManagerFactory;
 import com.senla.hotel.csv.CsvWorker;
+import com.senla.hotel.entity.Client;
 import com.senla.hotel.enums.SortName;
 import com.senla.hotel.utils.DateConverter;
 import com.senla.hotel.utils.DataParser;
@@ -76,19 +77,20 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void signOut(String login, String password, String information) {
+    public synchronized void signOut(Client client, String information) {
         try {
-            clientManager.signOut(login, password);
+            clientManager.signOut(client);
             transfer.auditUserAction(information);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
     }
 
+
     @Override
-    public synchronized String getToken(String login, String password) {
+    public synchronized Client getClient(String login, String password) {
         try {
-            return clientManager.getToken(login, password);
+            return clientManager.getCLient(login, password);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }

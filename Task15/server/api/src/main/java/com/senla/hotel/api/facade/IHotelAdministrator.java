@@ -5,15 +5,17 @@
  */
 package com.senla.hotel.api.facade;
 
+import com.senla.hotel.entity.Client;
+
 public interface IHotelAdministrator {
 
-    public void signOut(String login, String password, String information);
+    public Client getClient(String login, String password);
+
+    public void signOut(Client client, String information);
 
     public void signIn(String login, String password, String token, String information);
 
     public void registerUser(String login, String password, String information);
-
-    public String getToken(String login, String password);
 
     public String getGuestPriceForAccommodation(Integer guestId, Integer numberRoom, String information);
 
