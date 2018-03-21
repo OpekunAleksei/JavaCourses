@@ -11,9 +11,9 @@ import org.hibernate.Session;
 
 public interface IClientDao extends IGenericDao<Client> {
 
-    public Client createMiracleClient(String login, String password);
+    public Client createMiracleClient(String login, Integer password);
 
-    public Client getClient(Session session, String login, String password);
+    public Client getClient(Session session, String login);
 
     public void signInOut(Session session, Client client, String token) throws SQLException;
 

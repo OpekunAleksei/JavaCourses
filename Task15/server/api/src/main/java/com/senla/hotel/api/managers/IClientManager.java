@@ -13,7 +13,7 @@ public interface IClientManager {
 
     public void signOut(Client client) throws Exception;
 
-    public void signIn(String login, String password, String token) throws Exception;
+    public void signIn(Client client, String token) throws Exception;
 
-    public Client getCLient(String login, String password) throws Exception;
+    public Client getClient(String login, String password) throws Exception;
 }

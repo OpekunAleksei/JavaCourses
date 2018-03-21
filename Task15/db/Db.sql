@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
   `iduser` int(11) NOT NULL,
   `login` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `password` int(11) DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`iduser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -37,6 +37,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (360448,'beta1',1310455714,'eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyUGFzc3dvcmQiOiJiZXRhMSIsInVzZXJuYW1lIjoiYmVhYXRyNDUifQ.O79xVYOosX8AlfsDtjiTChAhAuS7Od_aktEMAFEM2PWrMNZP2scubtzh0C6NHsReTGmyjlcyezwTVhXZMoXpEg');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +87,7 @@ CREATE TABLE `hibernate_sequences` (
 
 LOCK TABLES `hibernate_sequences` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequences` DISABLE KEYS */;
-INSERT INTO `hibernate_sequences` VALUES ('room',38),('guest',10),('history',4),('service',1),('client',10);
+INSERT INTO `hibernate_sequences` VALUES ('room',38),('guest',10),('history',4),('service',1),('client',12);
 /*!40000 ALTER TABLE `hibernate_sequences` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,4 +217,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-20 18:40:17
+-- Dump completed on 2018-03-21 19:32:59

@@ -13,7 +13,7 @@ public interface IHotelAdministrator {
 
     public void signOut(Client client, String information);
 
-    public void signIn(String login, String password, String token, String information);
+    public void signIn(Client client, String token, String information);
 
     public void registerUser(String login, String password, String information);
 

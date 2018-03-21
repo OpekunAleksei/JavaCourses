@@ -18,16 +18,14 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getHeader("login");
-        String password = req.getHeader("password");
+        String password = req.getHeader("password");       
         String token = servletDataParser.createWebToken(name, password);
-        hotelAdministrator.signIn(name, password, token, servletDataParser.getInformation(req));
         Client client = hotelAdministrator.getClient(name, password);
         if (client != null) {
+            hotelAdministrator.signIn(client, token, servletDataParser.getInformation(req));
             req.getSession().setAttribute("user", client);
             req.getSession().setAttribute("login", name);
-            servletDataParser.createResponse(resp, client.getToken());
-        } else {
-            servletDataParser.createResponse(resp, "Wrong login or password");
+            servletDataParser.createResponse(resp, token);
         }
     }
 

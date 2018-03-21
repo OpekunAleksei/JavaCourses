@@ -26,14 +26,17 @@ public class ClientManager implements IClientManager {
     }
 
     @Override
-    public Client getCLient(String login, String password) throws Exception {
+    public Client getClient(String login, String password) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            Client client = clientDao.getClient(session, login, password);
-            transaction.commit();
-            return client;
+            Client client = clientDao.getClient(session, login);
+            if (client != null && client.getPassword().hashCode() == password.hashCode()) {
+                transaction.commit();
+                return client;
+            }
+            return null;
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
             if (transaction != null) {
@@ -49,7 +52,7 @@ public class ClientManager implements IClientManager {
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            clientDao.create(session, clientDao.createMiracleClient(login, password));
+            clientDao.create(session, clientDao.createMiracleClient(login, password.hashCode()));
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());
@@ -61,12 +64,12 @@ public class ClientManager implements IClientManager {
     }
 
     @Override
-    public void signIn(String login, String password, String token) throws Exception {
+    public void signIn(Client client, String token) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            clientDao.signInOut(session, clientDao.getClient(session, login, password), token);
+            clientDao.signInOut(session, client, token);
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

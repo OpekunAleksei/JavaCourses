@@ -86,11 +86,10 @@ public class HotelAdministrator implements IHotelAdministrator {
         }
     }
 
-
     @Override
     public synchronized Client getClient(String login, String password) {
         try {
-            return clientManager.getCLient(login, password);
+            return clientManager.getClient(login, password);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -98,9 +97,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void signIn(String login, String password, String token, String information) {
+    public synchronized void signIn(Client client, String token, String information) {
         try {
-            clientManager.signIn(login, password, token);
+            clientManager.signIn(client, token);
             transfer.auditUserAction(information);
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());

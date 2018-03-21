@@ -19,7 +19,7 @@ public class Client extends AEntity {
     @Column(name = "token")
     private String token;
     @Column(name = "password")
-    private String password;
+    private Integer password;
     @Column(name = "login")
     private String login;
     @Column(name = "iduser")
@@ -27,7 +27,7 @@ public class Client extends AEntity {
     @Id
     private Integer id;
 
-    public Client(String password, String login, Integer id, String token) {
+    public Client(Integer password, String login, Integer id, String token) {
         this.password = password;
         this.login = login;
         this.id = id;
@@ -49,11 +49,11 @@ public class Client extends AEntity {
         this.login = login;
     }
 
-    public String getPassword() {
+    public Integer getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(Integer password) {
         this.password = password;
     }
 
