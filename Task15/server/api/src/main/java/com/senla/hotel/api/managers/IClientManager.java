@@ -9,7 +9,7 @@ import com.senla.hotel.entity.Client;
 
 public interface IClientManager {
 
-    public void registerUser(String login, String password) throws Exception;
+    public void registerUser(Client client) throws Exception;
 
     public void signOut(Client client) throws Exception;
 

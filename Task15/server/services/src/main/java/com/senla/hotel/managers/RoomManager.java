@@ -84,12 +84,12 @@ public class RoomManager implements IRoomManager {
     }
 
     @Override
-    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status) throws Exception {
+    public void createRoom(Room room) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            roomDao.create(session, roomDao.createMiracleRoom(number, price, capacity, numberOfStars, status));
+            roomDao.create(session, room);
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

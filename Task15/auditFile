@@ -1,17 +1,3 @@
-
-Tue Mar 20 22:20:39 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:24:23 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:26:07 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:26:17 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:28:09 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:28:16 MSK 2018 GET /GuestServlet beta1
-Tue Mar 20 22:28:28 MSK 2018 GET /RoomServlet beta1
-Tue Mar 20 22:31:12 MSK 2018 POST /UserServlet beta1
-Tue Mar 20 22:31:25 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:31:30 MSK 2018 POST /UserServlet beta1
-Tue Mar 20 22:35:56 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:36:08 MSK 2018 GET /GuestServlet beta1
-Tue Mar 20 22:36:24 MSK 2018 POST /UserServlet beta1
-Tue Mar 20 22:39:33 MSK 2018 GET /UserServlet beta1
-Tue Mar 20 22:39:37 MSK 2018 GET /GuestServlet beta1
-Tue Mar 20 22:39:53 MSK 2018 POST /UserServlet beta1
+Sat Mar 24 17:40:46 MSK 2018 login the system alex
+Sat Mar 24 17:41:13 MSK 2018 Get resource  alex
+Sat Mar 24 17:41:19 MSK 2018 Get resource  alex

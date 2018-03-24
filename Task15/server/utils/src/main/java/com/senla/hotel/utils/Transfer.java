@@ -5,6 +5,7 @@
  */
 package com.senla.hotel.utils;
 
+import com.senla.hotel.entity.Client;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -47,9 +48,9 @@ public class Transfer {
         return list;
     }
 
-    public void auditUserAction(String data) throws IOException {
+    public void auditUserAction(Client user, String data) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(this.auditPath, true))) {
-            bw.write(new Date() + " " + data + "\n");
+            bw.write(new Date() + " " + data + " " + user.getLogin() + "\n");
         }
     }
 

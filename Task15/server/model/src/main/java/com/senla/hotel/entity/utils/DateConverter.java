@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.senla.hotel.utils;
+package com.senla.hotel.entity.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

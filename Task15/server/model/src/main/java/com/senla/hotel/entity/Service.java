@@ -47,10 +47,10 @@ public class Service extends AEntity {
         this.history = history;
     }
 
-    public Service(Integer price, String category, Integer id) {
+    public Service(Integer price, String category) {
         this.price = price;
         this.category = category;
-        this.id = id;
+        this.id = null;
     }
 
     public Service() {
@@ -83,5 +83,17 @@ public class Service extends AEntity {
 
     public String getCategory() {
         return category;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(id);
+        builder.append(";");
+        builder.append(category);
+        builder.append(";");
+        builder.append(price);
+        builder.append("\n");
+        return builder.toString();
     }
 }

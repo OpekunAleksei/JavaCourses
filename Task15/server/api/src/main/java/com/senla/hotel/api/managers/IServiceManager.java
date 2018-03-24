@@ -16,7 +16,7 @@ public interface IServiceManager {
 
     public List<Service> getServices() throws Exception;
 
-    public void createService(Integer price, String category) throws Exception;
+    public void createService(Service service) throws Exception;
 
     public Service getService(Integer serviceId) throws Exception;
 

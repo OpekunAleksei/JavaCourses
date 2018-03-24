@@ -55,8 +55,8 @@ public class History extends AEntity {
         this.service = service;
     }
 
-    public History(Integer id, Room room, Guest guest, Boolean enable, List<Service> services) {
-        this.id = id;
+    public History(Room room, Guest guest, Boolean enable, List<Service> services) {
+        this.id = null;
         this.room = room;
         this.guest = guest;
         this.enable = enable;

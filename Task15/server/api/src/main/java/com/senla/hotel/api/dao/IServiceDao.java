@@ -18,6 +18,5 @@ public interface IServiceDao extends IGenericDao<Service> {
 
     public void changePrice(Session session, Integer id, Integer price) throws SQLException;
 
-    public Service getMiracleService(Integer price, String category) throws SQLException;
 
 }

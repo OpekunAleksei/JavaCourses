@@ -19,12 +19,6 @@ public class ClientDaoImpl extends AbstractDao<Client> implements IClientDao {
     }
 
     @Override
-    public Client createMiracleClient(String login, Integer password) {
-        Client client = new Client(password, login, null, null);
-        return client;
-    }
-
-    @Override
     public Client getClient(Session session, String login) {
         Criteria criteria = session.createCriteria(Client.class).add(Restrictions.eq("login", login));
         return (Client) criteria.list().get(0);

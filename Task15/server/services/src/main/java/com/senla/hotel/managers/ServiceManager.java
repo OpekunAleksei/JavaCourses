@@ -82,12 +82,12 @@ public class ServiceManager implements IServiceManager {
     }
 
     @Override
-    public void createService(Integer price, String category) throws Exception {
+    public void createService(Service service) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            serviceDao.create(session, serviceDao.getMiracleService(price, category));
+            serviceDao.create(session, service);
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

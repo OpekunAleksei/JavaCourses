@@ -28,11 +28,7 @@ public interface IHistoryDao extends IGenericDao<History> {
 
     public List<Room> getIdRoomsAvalableByDate(Session session, Date date) throws SQLException;
 
-    public History getMiracleHistory(Guest guest, Room room, Boolean enable);
-
     public History getHistory(Session session, Guest guest, Room room);
-
-    public History getMiracleHistory(Session session, Guest guest, Room room, Boolean enable);
 
     public List<Service> getGuestService(Session session, Guest guest, Room room, String sortName);
 }

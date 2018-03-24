@@ -10,7 +10,7 @@ import com.senla.hotel.annotations.CsvEntity;
 import com.senla.hotel.annotations.CsvProperty;
 import com.senla.hotel.entity.AEntity;
 import com.senla.hotel.enums.RoomStatus;
-import com.senla.hotel.utils.DateConverter;
+import com.senla.hotel.entity.utils.DateConverter;
 import com.senla.hotel.utils.DataParser;
 import com.senla.hotel.utils.Transfer;
 import java.io.IOException;

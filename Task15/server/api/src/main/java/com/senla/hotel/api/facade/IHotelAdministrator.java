@@ -6,40 +6,41 @@
 package com.senla.hotel.api.facade;
 
 import com.senla.hotel.entity.Client;
+import java.util.List;
 
 public interface IHotelAdministrator {
 
-    public Client getClient(String login, String password);
+    public Client getClient(String login, String password) ;
 
-    public void signOut(Client client, String information);
+    public void signOut(Client client);
 
-    public void signIn(Client client, String token, String information);
+    public void signIn(Client client, String token);
 
-    public void registerUser(String login, String password, String information);
+    public void registerUser(String login, String password);
 
-    public String getGuestPriceForAccommodation(Integer guestId, Integer numberRoom, String information);
+    public Long getGuestPriceForAccommodation(Integer guestId, Integer numberRoom);
 
-    public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars, String information);
+    public void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars);
 
-    public void changeCapacity(Integer numberOfRoom, Integer capacity, String information);
+    public void changeCapacity(Integer numberOfRoom, Integer capacity);
 
-    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status, String information);
+    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status);
 
-    public void copyRoom(Integer numberOfRoom, Integer newNumber, String information);
+    public void copyRoom(Integer numberOfRoom, Integer newNumber);
 
-    public void createGuest(String name, String arrivalDate, String dateOfDeparture, String information);
+    public void createGuest(String name, String arrivalDate, String dateOfDeparture);
 
-    public void importRooms(String information);
+    public void importRooms();
 
-    public void exportRooms(String information);
+    public void exportRooms();
 
-    public void importServices(String information);
+    public void importServices();
 
-    public void exportServices(String information);
+    public void exportServices();
 
-    public void importGuests(String information);
+    public void importGuests();
 
-    public void exportGuests(String information);
+    public void exportGuests();
 
     public Integer getGuestIdByNumberOnList(Integer number);
 
@@ -47,35 +48,37 @@ public interface IHotelAdministrator {
 
     public Integer getServiceIdByNumberOnList(Integer number);
 
-    public void createService(Integer price, String category, String information);
+    public void createService(Integer price, String category);
 
-    public void changeRoomPrice(Integer numberOfRoom, Integer price, String information);
+    public void changeRoomPrice(Integer numberOfRoom, Integer price);
 
-    public void changeServicePrice(Integer serviceId, Integer price, String information);
+    public void changeServicePrice(Integer serviceId, Integer price);
 
-    public String getListOfRoomsAvailableByDate(String date, String information);
+    public List getListOfRoomsAvailableByDate(String date);
 
-    public void changeRoomStatus(Integer numberOfRoom, String status, String information);
+    public void changeRoomStatus(Integer numberOfRoom, String status);
 
-    public void addServiceToGuest(Integer serviceId, Integer guestId, Integer numberRoom, String information);
+    public void addServiceToGuest(Integer serviceId, Integer guestId, Integer numberRoom);
 
-    public void settleInRoom(Integer guestId, Integer numberOfRoom, String information);
+    public void settleInRoom(Integer guestId, Integer numberOfRoom);
 
-    public void evictedFromRoom(Integer guestId, Integer numberOfRoom, String information);
+    public void evictedFromRoom(Integer guestId, Integer numberOfRoom);
 
-    public String getNumberGuestInHotel(String information);
+    public Integer getNumberGuestInHotel();
 
-    public String getNumberEmptyRoomInHotel(String information);
+    public Integer getNumberEmptyRoomInHotel();
 
-    public String getListOfServices(String information);
+    public List getListOfServices();
 
-    public String getListLeftGuestThisRoom(Integer numberOfRoom, String information);
+    public List getListLeftGuestThisRoom(Integer numberOfRoom);
 
-    public String getDetailsOfRoom(Integer numberOfRoom, String information);
+    public List getDetailsOfRoom(Integer numberOfRoom);
 
-    public String getListServiceOfGuest(Integer guestId, Integer numberRoom, String name, String information);
+    public List getListServiceOfGuest(Integer guestId, Integer numberRoom, String name);
 
-    public String getListGuest(String name, String information);
+    public List getListGuest(String name);
 
-    public String getListOfRooms(String name, Boolean busy, String information);
+    public List getListOfRooms(String name, Boolean busy);
+
+    public void auditData(Client user, String data);
 }

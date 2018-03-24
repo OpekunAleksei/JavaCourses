@@ -7,7 +7,6 @@ package com.senla.hotel.api.dao;
 
 import com.senla.hotel.entity.Guest;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 
@@ -17,6 +16,6 @@ public interface IGuestDao extends IGenericDao<Guest> {
 
     public Integer getIdByNumberOnlist(Session session, Integer number) throws SQLException;
 
-    public Guest createMiracleGuest(String name, Date arrivalDate, Date dateOfDeparture);
+
 
 }

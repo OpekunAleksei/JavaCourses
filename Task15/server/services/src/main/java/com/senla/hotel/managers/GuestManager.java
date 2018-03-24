@@ -64,12 +64,12 @@ public class GuestManager implements IGuestManager {
     }
 
     @Override
-    public void createGuest(String name, Date arrivalDate, Date dateOfDeparture) throws Exception {
+    public void createGuest(Guest guest) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            guestDao.create(session, guestDao.createMiracleGuest(name, arrivalDate, dateOfDeparture));
+            guestDao.create(session, guest);
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

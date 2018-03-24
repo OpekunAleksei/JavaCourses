@@ -7,7 +7,6 @@ package com.senla.hotel.api.managers;
 
 import com.senla.hotel.entity.Guest;
 
-import java.util.Date;
 import java.util.List;
 
 public interface IGuestManager {
@@ -16,7 +15,7 @@ public interface IGuestManager {
 
     public Integer getIdByNumberOnList(Integer number) throws Exception;
 
-    public void createGuest(String name, Date arrivalDate, Date dateOfDeparture) throws Exception;
+    public void createGuest(Guest guest) throws Exception;
 
     public Guest getGuestByID(Integer id) throws Exception;
 

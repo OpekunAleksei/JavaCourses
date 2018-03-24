@@ -26,7 +26,7 @@ public class HistoryDaoImpl extends AbstractDao<History> implements IHistoryDao 
 
     @Override
     public Long getPriceForAccommodation(Session session, Guest guest, Room room) throws SQLException {
-        History history = getHistory(session, guest, room);
+        History history = HistoryDaoImpl.this.getHistory(session, guest, room);
         List<Service> list = history.getService();
         int amount = 0;
         Long days = (history.getGuest().getDepartureDate().getTime() - history.getGuest().getArrivalDate().getTime()) / (24 * 60 * 60 * 1000);
@@ -65,7 +65,7 @@ public class HistoryDaoImpl extends AbstractDao<History> implements IHistoryDao 
 
     @Override
     public void setService(Session session, Guest guest, Room room, Service service) throws SQLException {
-        History history = getHistory(session, guest, room);
+        History history = HistoryDaoImpl.this.getHistory(session, guest, room);
         history.getService().add(service);
         update(session, history);
 
@@ -84,22 +84,6 @@ public class HistoryDaoImpl extends AbstractDao<History> implements IHistoryDao 
         Criteria criteria = session.createCriteria(History.class
         ).add(Restrictions.eq("guest", guest)).add(Restrictions.eq("room", room)).add(Restrictions.eq("enable", false));
         return (History) criteria.list().get(0);
-    }
-
-    @Override
-    public History getMiracleHistory(Guest guest, Room room, Boolean enable) {
-        History miracleHistory = new History();
-        miracleHistory.setGuest(guest);
-        miracleHistory.setRoom(room);
-        miracleHistory.setEnable(enable);
-        return miracleHistory;
-    }
-
-    @Override
-    public History getMiracleHistory(Session session, Guest guest, Room room, Boolean enable) {
-        History miracleHistory = getHistory(session, guest, room);
-        miracleHistory.setEnable(enable);
-        return miracleHistory;
     }
 
 }

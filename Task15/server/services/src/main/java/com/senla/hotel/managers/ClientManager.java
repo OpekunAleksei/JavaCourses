@@ -47,12 +47,12 @@ public class ClientManager implements IClientManager {
     }
 
     @Override
-    public void registerUser(String login, String password) throws Exception {
+    public void registerUser(Client client) throws Exception {
         Session session = HibernateUtil.getIstance().getSession();
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-            clientDao.create(session, clientDao.createMiracleClient(login, password.hashCode()));
+            clientDao.create(session, client);
             transaction.commit();
         } catch (SQLException ex) {
             logger.error(new Date() + " " + ex.getMessage());

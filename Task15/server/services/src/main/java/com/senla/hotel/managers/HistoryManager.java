@@ -15,6 +15,7 @@ import java.util.List;
 import com.senla.hotel.api.managers.IHistoryManager;
 import com.senla.hotel.daoimpl.HistoryDaoImpl;
 import com.senla.hotel.daoimpl.RoomDaoImpl;
+import com.senla.hotel.entity.History;
 
 import com.senla.hotel.hibernateutil.HibernateUtil;
 import java.sql.SQLException;
@@ -42,7 +43,9 @@ public class HistoryManager implements IHistoryManager {
         try {
             transaction.begin();
             roomDao.changePartOfRoom(session, room.getId(), Boolean.FALSE, "busy");
-            historyDao.create(session, historyDao.getMiracleHistory(guest, room, Boolean.FALSE));
+            History history = historyDao.getHistory(session, guest, room);
+            history.setEnable(Boolean.FALSE);
+            historyDao.create(session, history);
             transaction.commit();
 
         } catch (SQLException ex) {
@@ -63,7 +66,9 @@ public class HistoryManager implements IHistoryManager {
             if (historyDao.checForPresense(session, room) == false) {
                 roomDao.changePartOfRoom(session, room.getId(), Boolean.TRUE, "busy");
             }
-            historyDao.update(session, historyDao.getMiracleHistory(session, guest, room, Boolean.TRUE));
+            History history = historyDao.getHistory(session, guest, room);
+            history.setEnable(Boolean.TRUE);
+            historyDao.update(session, history);
             transaction.commit();
 
         } catch (SQLException ex) {

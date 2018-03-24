@@ -40,10 +40,4 @@ public class ServiceDaoImpl extends AbstractDao<Service> implements IServiceDao 
         return getAll(session, "zero").get(number).getId();
     }
 
-    @Override
-    public Service getMiracleService(Integer price, String category) {
-        Service miracleService = new Service(price, category, null);
-        return miracleService;
-    }
-
 }

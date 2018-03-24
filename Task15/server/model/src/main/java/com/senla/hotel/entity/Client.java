@@ -27,11 +27,11 @@ public class Client extends AEntity {
     @Id
     private Integer id;
 
-    public Client(Integer password, String login, Integer id, String token) {
+    public Client(Integer password, String login) {
         this.password = password;
         this.login = login;
-        this.id = id;
-        this.token = token;
+        this.id = null;
+        this.token = null;
     }
 
     public Client() {

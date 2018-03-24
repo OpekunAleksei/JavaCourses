@@ -18,20 +18,21 @@ import com.senla.hotel.entity.Service;
 import com.senla.hotel.factory.ManagerFactory;
 import com.senla.hotel.csv.CsvWorker;
 import com.senla.hotel.entity.Client;
+import com.senla.hotel.entity.utils.DateConverter;
+
 import com.senla.hotel.enums.SortName;
-import com.senla.hotel.utils.DateConverter;
-import com.senla.hotel.utils.DataParser;
+
 import com.senla.hotel.utils.Transfer;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 
 public class HotelAdministrator implements IHotelAdministrator {
 
-    private final DataParser textWorker;
     private final IGuestManager guestManager;
     private final IRoomManager roomManager;
     private final IServiceManager serviceManager;
@@ -48,7 +49,6 @@ public class HotelAdministrator implements IHotelAdministrator {
     private HotelAdministrator() {
         configuration = new Configuration();
         managerFactory = new ManagerFactory(configuration.getInjectProperties());
-        textWorker = new DataParser();
         dateConverter = new DateConverter();
         clientManager = (IClientManager) managerFactory.getObject(IClientManager.class);
         roomManager = (IRoomManager) managerFactory.getObject(IRoomManager.class);
@@ -59,7 +59,7 @@ public class HotelAdministrator implements IHotelAdministrator {
         transfer = new Transfer(configuration.getAuditPath());
     }
 
-    public static IHotelAdministrator getInstance() {
+    public synchronized static IHotelAdministrator getInstance() {
         if (hotelAdministrator == null) {
             hotelAdministrator = new HotelAdministrator();
         }
@@ -67,20 +67,30 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void registerUser(String login, String password, String information) {
+    public synchronized void auditData(Client user, String data) {
+
         try {
-            clientManager.registerUser(login, password);
-            transfer.auditUserAction(information);
+            transfer.auditUserAction(user, data);
+        } catch (IOException ex) {
+            logger.error(new Date() + " " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public synchronized void registerUser(String login, String password) {
+        try {
+
+            clientManager.registerUser(new Client(password.hashCode(), login));
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
     }
 
     @Override
-    public synchronized void signOut(Client client, String information) {
+    public synchronized void signOut(Client client) {
         try {
             clientManager.signOut(client);
-            transfer.auditUserAction(information);
+
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -97,30 +107,30 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void signIn(Client client, String token, String information) {
+    public synchronized void signIn(Client client, String token) {
         try {
             clientManager.signIn(client, token);
-            transfer.auditUserAction(information);
+
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
         }
     }
 
     @Override
-    public synchronized String getGuestPriceForAccommodation(Integer guestId, Integer numberRoom, String information) {
+    public synchronized Long getGuestPriceForAccommodation(Integer guestId, Integer numberRoom) {
         try {
-            transfer.auditUserAction(information);
-            return historyManager.getGuestPriceForAccommodation(guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberRoom))).toString();
+
+            return historyManager.getGuestPriceForAccommodation(guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberRoom)));
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
             return null;
         }
     }
 
-    public synchronized String getListOfRooms(String information) {
+    public synchronized List getListOfRooms() {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createRoomList(roomManager.getRooms(), null);
+
+            return roomManager.getRooms();
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -128,9 +138,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars, String information) {
+    public synchronized void changeNumberOfStars(Integer numberOfRoom, Integer numberOfStars) {
         try {
-            transfer.auditUserAction(information);
+
             roomManager.changeNumberOfStars(numberOfRoom, numberOfStars);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
@@ -138,10 +148,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void changeCapacity(Integer numberOfRoom, Integer capacity, String information) {
+    public synchronized void changeCapacity(Integer numberOfRoom, Integer capacity) {
 
         try {
-            transfer.auditUserAction(information);
+
             roomManager.changeCapacity(numberOfRoom, capacity);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
@@ -149,10 +159,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status, String information) {
+    public synchronized void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status) {
         try {
-            transfer.auditUserAction(information);
-            roomManager.createRoom(number, price, capacity, numberOfStars, status);
+
+            roomManager.createRoom(new Room(number, price, capacity, numberOfStars, status, false));
         } catch (NumberFormatException e) {
             logger.error(new Date() + " " + e.getMessage());
         } catch (Exception ex) {
@@ -161,9 +171,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void copyRoom(Integer numberOfRoom, Integer newNumber, String information) {
+    public synchronized void copyRoom(Integer numberOfRoom, Integer newNumber) {
         try {
-            transfer.auditUserAction(information);
+
             roomManager.copyRoom(getRoomNumberByNumberOnList(numberOfRoom), newNumber);
         } catch (CloneNotSupportedException ex) {
             logger.error(new Date() + " " + ex.getMessage());
@@ -174,10 +184,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void createGuest(String name, String arrivalDate, String dateOfDeparture, String information) {
+    public synchronized void createGuest(String name, String arrivalDate, String dateOfDeparture) {
         try {
-            transfer.auditUserAction(information);
-            guestManager.createGuest(name, dateConverter.parseDate(arrivalDate), dateConverter.parseDate(dateOfDeparture));
+
+            guestManager.createGuest(new Guest(name, dateConverter.parseDate(arrivalDate), dateConverter.parseDate(dateOfDeparture)));
         } catch (ParseException e) {
             logger.error(new Date() + " " + e.getMessage());
 
@@ -187,11 +197,11 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void importRooms(String information) {
+    public synchronized void importRooms() {
 
         try {
             roomManager.setImportRooms(csvWorker.importData(Room.class));
-            transfer.auditUserAction(information);
+
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ParseException e) {
             logger.error(new Date() + " " + e.getMessage());
         } catch (Exception ex) {
@@ -201,10 +211,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void exportRooms(String information) {
+    public synchronized void exportRooms() {
 
         try {
-            transfer.auditUserAction(information);
             csvWorker.exportData(roomManager.getRooms());
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | IOException ex) {
             logger.error(new Date() + " " + ex.getMessage());
@@ -214,10 +223,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void importServices(String information) {
+    public synchronized void importServices() {
 
         try {
-            transfer.auditUserAction(information);
+
             serviceManager.setImportServices(csvWorker.importData(Service.class));
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ParseException e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -228,10 +237,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void exportServices(String information) {
+    public synchronized void exportServices() {
 
         try {
-            transfer.auditUserAction(information);
+
             csvWorker.exportData(serviceManager.getServices());
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | IOException ex) {
             logger.error(new Date() + " " + ex.getMessage());
@@ -242,10 +251,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void importGuests(String information) {
+    public synchronized void importGuests() {
 
         try {
-            transfer.auditUserAction(information);
+
             guestManager.setImpotrGuests(csvWorker.importData(Guest.class));
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ParseException e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -256,10 +265,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void exportGuests(String information) {
+    public synchronized void exportGuests() {
 
         try {
-            transfer.auditUserAction(information);
+
             csvWorker.exportData(guestManager.getListOfGuest(SortName.zero.toString()));
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | IOException e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -301,10 +310,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void createService(Integer price, String category, String information) {
+    public synchronized void createService(Integer price, String category) {
         try {
-            transfer.auditUserAction(information);
-            serviceManager.createService(price, category);
+
+            serviceManager.createService(new Service(price, category));
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
 
@@ -312,9 +321,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void changeRoomPrice(Integer numberOfRoom, Integer price, String information) {
+    public synchronized void changeRoomPrice(Integer numberOfRoom, Integer price) {
         try {
-            transfer.auditUserAction(information);
+
             roomManager.changeRoomPrice(getRoomNumberByNumberOnList(numberOfRoom), price);
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -322,9 +331,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void changeServicePrice(Integer serviceId, Integer price, String information) {
+    public synchronized void changeServicePrice(Integer serviceId, Integer price) {
         try {
-            transfer.auditUserAction(information);
+
             serviceManager.changeServicePrice(getServiceIdByNumberOnList(serviceId), price);
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -332,10 +341,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getListOfRoomsAvailableByDate(String date, String information) {
+    public synchronized List getListOfRoomsAvailableByDate(String date) {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createRoomList(historyManager.getListOfRoomsAvailableByDate(dateConverter.parseDate(date)), null);
+
+            return historyManager.getListOfRoomsAvailableByDate(dateConverter.parseDate(date));
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
 
@@ -343,14 +352,10 @@ public class HotelAdministrator implements IHotelAdministrator {
         }
     }
 
-    private synchronized String getRoomAbility() {
-        return configuration.getAbilityChangeRoomStatus().toString();
-    }
-
     @Override
-    public synchronized void changeRoomStatus(Integer numberOfRoom, String status, String information) {
+    public synchronized void changeRoomStatus(Integer numberOfRoom, String status) {
         try {
-            transfer.auditUserAction(information);
+
             roomManager.changeRoomStatus(getRoomNumberByNumberOnList(numberOfRoom), status);
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -358,9 +363,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void addServiceToGuest(Integer serviceId, Integer guestId, Integer numberRoom, String information) {
+    public synchronized void addServiceToGuest(Integer serviceId, Integer guestId, Integer numberRoom) {
         try {
-            transfer.auditUserAction(information);
+
             historyManager.addServiceToGuest(serviceManager.getService(getServiceIdByNumberOnList(serviceId)), guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberRoom)));
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -368,9 +373,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void settleInRoom(Integer guestId, Integer numberOfRoom, String information) {
+    public synchronized void settleInRoom(Integer guestId, Integer numberOfRoom) {
         try {
-            transfer.auditUserAction(information);
+
             historyManager.settleInRoom(guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberOfRoom)));
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -378,9 +383,9 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized void evictedFromRoom(Integer guestId, Integer numberOfRoom, String information) {
+    public synchronized void evictedFromRoom(Integer guestId, Integer numberOfRoom) {
         try {
-            transfer.auditUserAction(information);
+
             historyManager.evictedFromRoom(guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberOfRoom)));
         } catch (Exception e) {
 
@@ -390,11 +395,11 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getNumberGuestInHotel(String information) {
+    public synchronized Integer getNumberGuestInHotel() {
 
         try {
-            transfer.auditUserAction(information);
-            return historyManager.getNumberGuestInHotel().toString();
+
+            return historyManager.getNumberGuestInHotel();
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -403,11 +408,11 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getNumberEmptyRoomInHotel(String information) {
+    public synchronized Integer getNumberEmptyRoomInHotel() {
 
         try {
-            transfer.auditUserAction(information);
-            return roomManager.getNumberEmptyRoomInHotel().toString();
+
+            return roomManager.getNumberEmptyRoomInHotel();
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -416,10 +421,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getListOfServices(String information) {
+    public synchronized List getListOfServices() {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createServiceList(serviceManager.getServices());
+
+            return serviceManager.getServices();
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -427,10 +432,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getListLeftGuestThisRoom(Integer numberOfRoom, String information) {
+    public synchronized List getListLeftGuestThisRoom(Integer numberOfRoom) {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createGuestList(historyManager.getListLeftGuestThisRoom(roomManager.getRoom(getRoomNumberByNumberOnList(numberOfRoom)), configuration.getNumberRecordsGuests()));
+
+            return historyManager.getListLeftGuestThisRoom(roomManager.getRoom(getRoomNumberByNumberOnList(numberOfRoom)), configuration.getNumberRecordsGuests());
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
             return null;
@@ -438,10 +443,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getDetailsOfRoom(Integer numberOfRoom, String information) {
+    public synchronized List getDetailsOfRoom(Integer numberOfRoom) {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createRoomList(roomManager.getDetailsOfRoom(getRoomNumberByNumberOnList(numberOfRoom)), null);
+
+            return roomManager.getDetailsOfRoom(getRoomNumberByNumberOnList(numberOfRoom));
 
         } catch (Exception e) {
             logger.error(new Date() + " " + e.getMessage());
@@ -450,10 +455,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getListServiceOfGuest(Integer guestId, Integer numberRoom, String name, String information) {
+    public synchronized List getListServiceOfGuest(Integer guestId, Integer numberRoom, String name) {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createServiceList(historyManager.getGuestServices(guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberRoom)), name));
+
+            return historyManager.getGuestServices(guestManager.getGuestByID(getGuestIdByNumberOnList(guestId)), roomManager.getRoom(getRoomNumberByNumberOnList(numberRoom)), name);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -461,10 +466,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getListOfRooms(String name, Boolean busy, String information) {
+    public synchronized List getListOfRooms(String name, Boolean busy) {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createRoomList(roomManager.getListRooms(name, busy), null);
+
+            return roomManager.getListRooms(name, busy);
         } catch (Exception ex) {
             logger.error(new Date() + " " + ex.getMessage());
         }
@@ -472,10 +477,10 @@ public class HotelAdministrator implements IHotelAdministrator {
     }
 
     @Override
-    public synchronized String getListGuest(String name, String information) {
+    public synchronized List getListGuest(String name) {
         try {
-            transfer.auditUserAction(information);
-            return textWorker.createGuestList(guestManager.getListOfGuest(name));
+
+            return guestManager.getListOfGuest(name);
         } catch (Exception ex) {
             logger.error(new Date() + " " + Arrays.toString(ex.getStackTrace()));
         }

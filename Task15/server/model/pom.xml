@@ -16,6 +16,7 @@
                     <useOSGiDependencies>false</useOSGiDependencies>
                     <publicPackages>
                         <publicPackage>com.senla.hotel.entity</publicPackage>
+                        <publicPackage>com.senla.hotel.entity.utils</publicPackage>
                         <publicPackage>com.senla.hotel.enums</publicPackage>
                     </publicPackages>
                 </configuration>

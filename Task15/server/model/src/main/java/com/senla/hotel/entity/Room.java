@@ -50,11 +50,11 @@ public class Room extends AEntity implements Cloneable {
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<History> history = new HashSet<History>();
 
-    public Room(Integer number, Integer price, Integer capacity, Integer numberOfStars, Integer id, String status, Boolean busy) {
+    public Room(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status, Boolean busy) {
         this.busy = busy;
         this.number = number;
         this.capacity = capacity;
-        this.id = id;
+        this.id = null;
         this.numberOfStars = numberOfStars;
         this.price = price;
         this.status = status;
@@ -139,5 +139,21 @@ public class Room extends AEntity implements Cloneable {
     public void setId(Integer id) {
         this.id = id;
     }
-
+  @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(number);
+        builder.append(";");
+        builder.append(capacity);
+        builder.append(";");
+        builder.append(id);
+        builder.append(";");
+        builder.append(numberOfStars);
+        builder.append(";");
+        builder.append(price);
+        builder.append(";");
+        builder.append(status);
+        builder.append("\n");
+        return builder.toString();
+    }
 }

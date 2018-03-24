@@ -16,8 +16,6 @@ public interface IRoomDao extends IGenericDao<Room> {
 
     public Integer getIdByNumberOnlist(Session session, Integer number) throws SQLException;
 
-    public Room createMiracleRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status);
-
     public Room copyRoom(Session session, Integer numberOfRoom, Integer newNumber) throws SQLException, CloneNotSupportedException;
 
     public Integer getNumberEmptyRoom(Session session) throws SQLException;

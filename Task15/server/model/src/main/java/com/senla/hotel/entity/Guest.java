@@ -8,6 +8,7 @@ package com.senla.hotel.entity;
 import com.senla.hotel.annotation.enums.PropertyType;
 import com.senla.hotel.annotations.CsvEntity;
 import com.senla.hotel.annotations.CsvProperty;
+import com.senla.hotel.entity.utils.DateConverter;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +27,8 @@ import javax.persistence.Temporal;
 @Table(name = "guest")
 @CsvEntity(fileName = "Guest.csv", valuesSeparator = ";")
 public class Guest extends AEntity {
+
+    private final transient DateConverter converter = new DateConverter();
 
     @Column(name = "name")
     @CsvProperty(colomnNumber = 0, propertyType = PropertyType.SimpleProperty)
@@ -48,10 +51,10 @@ public class Guest extends AEntity {
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<History> history = new HashSet<History>();
 
-    public Guest(String name, Date arrivalDate, Date dateOfDeparture, Integer id) {
+    public Guest(String name, Date arrivalDate, Date dateOfDeparture) {
         this.arrivalDate = arrivalDate;
         this.departureDate = dateOfDeparture;
-        this.id = id;
+        this.id = null;
         this.name = name;
     }
 
@@ -100,4 +103,17 @@ public class Guest extends AEntity {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(name);
+        builder.append(";");
+        builder.append(id);
+        builder.append(";");
+        builder.append(converter.parseDate(arrivalDate));
+        builder.append(";");
+        builder.append(converter.parseDate(departureDate));
+        builder.append("\n");
+        return builder.toString();
+    }
 }

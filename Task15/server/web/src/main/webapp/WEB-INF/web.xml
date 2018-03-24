@@ -33,24 +33,40 @@
         <servlet-class>com.senla.hotel.web.ServiceServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.senla.hotel.web.UserServlet</servlet-class>
+        <servlet-name>LogInServlet</servlet-name>
+        <servlet-class>com.senla.hotel.web.LogInServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogOutServlet</servlet-name>
+        <servlet-class>com.senla.hotel.web.LogOutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>com.senla.hotel.web.RegistrationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GuestServlet</servlet-name>
-        <url-pattern>/GuestServlet</url-pattern>
+        <url-pattern>/Guest</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RoomServlet</servlet-name>
-        <url-pattern>/RoomServlet</url-pattern>
+        <url-pattern>/Room</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServiceServlet</servlet-name>
-        <url-pattern>/ServiceServlet</url-pattern>
+        <url-pattern>/Service</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/UserServlet</url-pattern>
+        <servlet-name>LogInServlet</servlet-name>
+        <url-pattern>/LogIn</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogOutServlet</servlet-name>
+        <url-pattern>/LogOut</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/Registration</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

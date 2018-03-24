@@ -9,7 +9,6 @@ import com.senla.hotel.api.dao.IGuestDao;
 import com.senla.hotel.entity.Guest;
 import com.senla.hotel.enums.SortName;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 
@@ -17,13 +16,6 @@ public class GuestDaoImpl extends AbstractDao<Guest> implements IGuestDao {
 
     public GuestDaoImpl() {
         super(new Guest());
-    }
-
-    @Override
-    public Guest createMiracleGuest(String name, Date arrivalDate, Date dateOfDeparture) {
-        Guest miracleGuest = new Guest(name, arrivalDate, dateOfDeparture, null);
-
-        return miracleGuest;
     }
 
     @Override

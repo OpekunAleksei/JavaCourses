@@ -17,7 +17,7 @@ public interface IRoomManager {
 
     public Integer getIdByNumberOnList(Integer number) throws Exception;
 
-    public void createRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status) throws Exception;
+    public void createRoom(Room room) throws Exception;
 
     public void changeRoomPrice(Integer numberOfRoom, Integer price) throws Exception;
 

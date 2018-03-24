@@ -38,12 +38,6 @@ public class RoomDaoImpl extends AbstractDao<Room> implements IRoomDao {
     }
 
     @Override
-    public Room createMiracleRoom(Integer number, Integer price, Integer capacity, Integer numberOfStars, String status) {
-        Room miracleRoom = new Room(number, price, capacity, numberOfStars, null, status, false);
-        return miracleRoom;
-    }
-
-    @Override
     public Integer getNumberEmptyRoom(Session session) throws SQLException {
         Criteria criteria = session.createCriteria(Room.class).add(Restrictions.eq("busy", false));
         return criteria.list().size();
