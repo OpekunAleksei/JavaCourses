@@ -1,0 +1,9 @@
+<nav>
+  <a routerLink="/hotel">Hotel</a>
+</nav>
+<input type="text" placeholder="New price" #price>
+<div>
+  <a routerLink="/room">
+    <button (click)="changePrice(price)">Change Price</button>
+  </a>
+</div>

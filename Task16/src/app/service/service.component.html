@@ -1,0 +1,20 @@
+<nav>
+  <a routerLink="/hotel">Hotel</a>
+</nav>
+
+<div>
+      <ul class="service">
+              <li *ngFor="let service of services">
+                  <a> <span class="badge">{{service.category}}</span>{{service.price}}        
+                  </a>
+                  <a routerLink="/changeServicePrice">
+                    <button class="update" title="update" (click)="update(service)">update</button>
+                  </a>
+              </li>
+          </ul>
+</div>
+<div>
+  <a routerLink="/createService">
+    <button>Create Service</button>
+  </a>
+</div>

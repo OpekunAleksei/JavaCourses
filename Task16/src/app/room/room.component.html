@@ -1,0 +1,14 @@
+<nav>
+  <a routerLink="/hotel">Hotel</a>
+</nav>
+
+  <ul class="room">
+    <li *ngFor="let room of rooms">
+      <a>
+        <span class="badge">{{room.number}}</span> {{room.capacity}} {{room.price}} {{room.numberOfStars}} {{room.busy}} {{room.status}}
+      </a>
+      <a routerLink="/changeRoomPrice">
+        <button class="update" title="update" (click)="update(room)">update</button>
+      </a>
+    </li>
+  </ul>

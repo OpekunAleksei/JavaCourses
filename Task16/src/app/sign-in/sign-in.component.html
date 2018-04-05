@@ -1,0 +1,11 @@
+<input type="text" placeholder="Login" #login>
+<input type="text" placeholder="Password" #password>
+
+  <div>
+    <button (click)="signIn(login,password)">SignIn</button>
+</div>
+<div>
+    <a routerLink="/registration">
+      <button>Registration</button>
+    </a>
+  </div>

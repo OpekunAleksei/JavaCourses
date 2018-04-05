@@ -1,0 +1,11 @@
+<nav>
+  <a routerLink="/hotel">Guest</a>
+</nav>
+<div>
+  <input type="text" placeholder="name" #name>
+  <p>Выберите дату: <input type="date" name="calendar"#arrivalDate>
+    <p>Выберите дату: <input type="date" name="calendar"#departureDate>
+  <a routerLink="/guest">
+    <button (click)="createGuest(name,arrivalDate,departureDate)">CreateGuest</button>
+ </a>
+</div>

@@ -1,0 +1,19 @@
+<nav>
+    <a routerLink="/hotel">Hotel</a>
+  </nav>
+
+<div>
+        <ul class="guest">
+                <li *ngFor="let guest of guests">
+                    <a> <span class="badge">{{guest.name}}</span>{{guest.arrivalDate}} {{guest.departureDate}}       
+                    </a>
+                    <button class="delete" title="deleteGuest"
+                     (click)="deleteGuest(guest)">x</button>
+                </li>
+            </ul>
+</div>
+<div>
+    <a routerLink="/createGuest">
+      <button>CreateGuest</button>
+    </a>
+  </div>

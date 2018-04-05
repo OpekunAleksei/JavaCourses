@@ -1,0 +1,10 @@
+<nav>
+  <a routerLink="/hotel">Guest</a>
+</nav>
+<div>
+  <input type="text" placeholder="price" #price>
+  <input type="text" placeholder="category" #category>
+  <a routerLink="/service">
+    <button (click)="createService(price,category)">createService</button>
+  </a>
+</div>
