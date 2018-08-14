@@ -1,0 +1,3 @@
+<app-product-profile-meta *ngIf="!isProductUpdate" [product]="product"></app-product-profile-meta>
+<app-product-settings *ngIf="isProductUpdate" (createProduct)="productCreate($event)" [product]="product" [isProductCreate]="false"></app-product-settings>
+<button *ngIf="!isProductUpdate" (click)="updateProduct()" name="singlebutton">Update</button>

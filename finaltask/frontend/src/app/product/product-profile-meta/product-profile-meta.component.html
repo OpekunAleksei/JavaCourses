@@ -1,0 +1,25 @@
+<div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9" *ngIf="product">
+    <div class="ui-g-12 ui-md-8 product-details">
+      <div class="ui-g">
+        <div class="ui-g-2 ui-sm-6">Title: </div>
+        <div class="ui-g-10 ui-sm-6">
+          <b>{{product.title}}</b>
+        </div>
+        <div class="ui-g-2 ui-sm-6">Price: </div>
+        <div class="ui-g-10 ui-sm-6">
+          <b>{{product.price}}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+<p-dataList *ngIf="product" [value]="product.productCharacteristic">
+  <p-header>
+    Characteristics
+  </p-header>
+  <ng-template let-productCharacteristic pTemplate="item">
+    <div class="ui-g">
+      <div class="ui-g-2 ui-sm-6">Name: {{productCharacteristic.characteristic.name}}</div>
+      <div class="ui-g-2 ui-sm-6">Value: {{productCharacteristic.amount}}</div>     
+    </div>
+  </ng-template>
+</p-dataList>

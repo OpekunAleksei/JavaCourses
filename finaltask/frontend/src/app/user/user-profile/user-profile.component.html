@@ -1,0 +1,2 @@
+<app-user-profile-meta *ngIf="!isUserUpdate" [user]="user" (isUpdateStart)="isUserUpdate=$event"></app-user-profile-meta>
+<app-registration *ngIf="isUserUpdate" (updateComplete)="updateUser($event)" [user]="user"></app-registration>

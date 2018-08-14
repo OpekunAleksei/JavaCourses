@@ -1,0 +1,150 @@
+<form [formGroup]="userform" (ngSubmit)="onSubmit()">
+    <p-panel header="User form">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div *ngIf="!isUserUpdate" class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    Login *:
+                </div>
+                <div class="ui-grid-col-6">
+                    <input pInputText type="text" (change)="checkLoginIdentical()" formControlName="login" [(ngModel)]="currentUser.login" placeholder="Login"
+                    />
+                </div>
+                <div class="ui-grid-col-4" *ngIf="loiginIdentical">
+                    <div class="ui-message ui-messages-error ui-corner-all">
+                        <i class="fa fa-close"></i>
+                        This login already exist
+                    </div>
+                </div>
+                <div class="ui-grid-col-4" *ngIf="!loiginIdentical">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['login'].valid&&userform.controls['login'].dirty">
+                        <i class="fa fa-close"></i>
+                        <validator-message [field]="userform.get('login')"></validator-message>
+                    </div>
+                </div>
+            </div>
+            <form formGroupName="passwords">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-2">
+                        Password *:
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <input pInputText type="password" [(ngModel)]="currentUser.password" formControlName="pwd" placeholder="Password" />
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="userform.get('passwords').get('pwd').invalid && userform.get('passwords').get('pwd').touched">
+                            <i class="fa fa-close"></i>
+                            <validator-message [field]="userform.get('passwords').get('pwd')"></validator-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-grid-row" *ngIf="currentUser.password">
+                    <div class="ui-grid-col-2">
+                        Confirm password *:
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <input pInputText type="password" formControlName="confirm" placeholder="Confirm password" />
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <div class="ui-message ui-messages-error ui-corner-all" 
+                        *ngIf="!userform.get('passwords').valid&&userform.get('passwords').get('confirm').valid">
+                            <i class="fa fa-close"></i>
+                            <validator-message [field]="userform.get('passwords')"></validator-message>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div *ngIf="!isUserUpdate" class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    Nickname *:
+                </div>
+                <div class="ui-grid-col-6">
+                    <input pInputText type="text" (change)="checkNickIdentical()" formControlName="nickname" [(ngModel)]="currentUser.nickname" placeholder="Nickname"
+                    />
+                </div>
+                <div class="ui-grid-col-4" *ngIf="nickNameIdentical">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['nickname'].valid&&userform.controls['nickname'].dirty">
+                        <i class="fa fa-close"></i>
+                        This nickname alredy exist
+                    </div>
+                </div>
+                <div class="ui-grid-col-4" *ngIf="!nickNameIdentical">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['nickname'].valid&&userform.controls['nickname'].dirty">
+                        <i class="fa fa-close"></i>
+                        <validator-message [field]="userform.get('nickname')"></validator-message>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    First Name *:
+                </div>
+                <div class="ui-grid-col-6">
+                    <input pInputText type="text" [(ngModel)]="currentUser.person.firstName" formControlName="firstname" placeholder="First name" />
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['firstname'].valid&&userform.controls['firstname'].dirty">
+                        <i class="fa fa-close"></i>
+                        <validator-message [field]="userform.get('firstname')"></validator-message>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    Second Name *:
+                </div>
+                <div class="ui-grid-col-6">
+                    <input pInputText type="text" [(ngModel)]="currentUser.person.secondName" formControlName="secondname" placeholder="Second name"
+                    />
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['secondname'].valid&&userform.controls['secondname'].dirty">
+                        <i class="fa fa-close"></i>
+                        <validator-message [field]="userform.get('secondname')"></validator-message>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    Phone number *:
+                </div>
+                <div class="ui-grid-col-6">
+                    <p-inputMask mask="+999 (99) 999-9999" [(ngModel)]="currentUser.person.phoneNumber" formControlName="phoneNumber" placeholder="Phone number"></p-inputMask>
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['phoneNumber'].valid&&userform.controls['phoneNumber'].dirty">
+                        <i class="fa fa-close"></i>
+                        <validator-message [field]="userform.get('phoneNumber')"></validator-message>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    Email *:
+                </div>
+                <div class="ui-grid-col-6">
+                    <input pInputText type="text" formControlName="email" [(ngModel)]="currentUser.person.email" placeholder="Email" />
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!userform.controls['email'].valid&&userform.controls['email'].dirty">
+                        <i class="fa fa-close"></i>
+                        <validator-message [field]="userform.get('email')"></validator-message>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"></div>
+                <div class="ui-grid-col-6">
+                    <button pButton type="submit" label="Submit" [disabled]="!nickNameIdentical&&!loiginIdentical&&!userform.valid"></button>
+                </div>
+                <div class="ui-grid-col-4"></div>
+            </div>
+            <div class="ui-grid-row">
+                    <div class="ui-grid-col-2"></div>
+                    <div class="ui-grid-col-6">
+                        <button pButton  label="Back" (click)="back()" *ngIf="isUserUpdate"></button>
+                    </div>
+                    <div class="ui-grid-col-4"></div>
+                </div>
+        </div>
+    </p-panel>
+</form>

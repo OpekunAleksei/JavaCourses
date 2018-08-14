@@ -1,0 +1,17 @@
+<div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9" *ngIf="user">
+  <div class="ui-g-12 ui-md-8 user-details">
+    <div class="ui-g">
+      <div class="ui-g-2 ui-sm-6">Nickname: </div>
+      <div class="ui-g-10 ui-sm-6">
+        <b>{{user.nickname}}</b>
+      </div>
+      <div class="ui-g-2 ui-sm-6">Role: </div>
+      <div class="ui-g-10 ui-sm-6">
+        <b>{{user.role.title}}</b>
+      </div>
+    </div>
+  </div>
+</div>
+<a [routerLink]="['/userProfile', user.id]">
+  <span>User profile</span>
+</a>

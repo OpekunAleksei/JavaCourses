@@ -1,0 +1,112 @@
+<div>
+  <label>Title</label>
+  <input name="5" type="text" [(ngModel)]="product.title">
+</div>
+
+<div>
+  <label>Price</label>
+  <input name="4" type="text" [(ngModel)]="product.price">
+</div>
+<div *ngIf="isProductCreate">
+  <label>Select Manufacturer</label>
+  <p-dropdown [options]="manufacturers" [(ngModel)]="product.manufacturer" placeholder="Select manufacturer" [style]="{'width':'300px'}">
+    <ng-template let-manufacturer pTemplate="selectedItem">
+      <div class="ui-helper-clearfix" style="position: relative;height: 50px;">
+        <div> Name: {{manufacturer.label}}</div>
+        <div> Country of assembly: {{manufacturer.title}}</div>
+      </div>
+    </ng-template>
+    <ng-template let-manufacturer pTemplate="item">
+      <div class="ui-helper-clearfix" style="position: relative;height: 50px;">
+        <div> Name: {{manufacturer.label}}</div>
+        <div> Country of assembly: {{manufacturer.title}}</div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+</div>
+<div *ngIf="isProductCreate">
+  <label>Select Category</label>
+  <p-dropdown [options]="categorys" [(ngModel)]="product.productCategory" placeholder="Select category">
+  </p-dropdown>
+</div>
+
+<div>
+  <p-table [columns]="cols" [value]="product.productCharacteristic" [(selection)]="selectProductCharacteristic" selectionMode="single"
+    (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          Product characteristics
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+      <tr [pSelectableRow]="rowData">
+        <td>
+          <div> Name: {{rowData.characteristic.name}}</div>
+          <div> Value: {{rowData.amount}}</div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary" let-rowData>
+      <div style="text-align:left">
+        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add"></button>
+      </div>
+    </ng-template>
+
+  </p-table>
+
+  <p-dialog *ngIf="productCharacterstic" header="Characteristic details " [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true" [width]="500" [contentStyle]="{'max-height':'400'}">
+    <div class="ui-g ui-fluid">
+      <ul *ngIf="isCreate">
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Characteristic:</label>
+          </div>
+          <div class="ui-g-8">
+            <p-dropdown [options]="characteristics" [(ngModel)]="productCharacterstic.characteristic"
+             placeholder="Select characteristic">
+            </p-dropdown>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Amount:</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText [(ngModel)]="productCharacterstic.amount" />
+            </div>
+          </div>
+        </div>
+      </ul>
+      <ul *ngIf="!isCreate">
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Characteristics:</label>
+          </div>
+          <div class="ui-g-8">
+              <label>{{productCharacterstic.characteristic.name}}</label>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Amount:</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputText [(ngModel)]="productCharacterstic.amount" />
+          </div>
+        </div>
+      </ul>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button *ngIf="isCreate" type="button" pButton icon="fa fa-close" (click)="deleteCharacteristic()" label="Delete"></button>
+        <button *ngIf="isCreate" type="button" pButton icon="fa fa-check" (click)="saveCharacteristic()" label="Save"></button>
+        <button *ngIf="!isCreate" type="button" pButton icon="fa fa-check" (click)="updateCharacteristic()" label="Update"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</div>
+<button *ngIf="isProductCreate" type="button" pButton icon="fa fa-check" (click)="saveProduct()" label="Save"></button>
+<button *ngIf="!isProductCreate" type="button" pButton icon="fa fa-check" (click)="updateProduct()" label="Update"></button>
